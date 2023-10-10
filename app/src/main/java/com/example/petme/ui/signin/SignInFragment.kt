@@ -56,7 +56,11 @@ class SignInFragment : Fragment() {
     private fun initObservers() {
 
        lifecycleScope.launch {
-    viewModel.result.collectLatest {
+           viewModel.checkCurrentUser.observe(viewLifecycleOwner) {
+               if (it!!) findNavController().navigate(R.id.action_signInFragment2_to_addpet)
+           }
+
+           viewModel.result.collectLatest {
         when (it) {
             is Resource.Success -> {
                 binding.statusLoadingWheel.visibility = View.GONE
