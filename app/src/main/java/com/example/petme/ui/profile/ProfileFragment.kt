@@ -1,6 +1,5 @@
 package com.example.petme.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,8 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.petme.MainActivity
-import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,9 +30,7 @@ class ProfileFragment : Fragment() {
         initObservers()
         binding.btnSignOut.setOnClickListener {
             profileViewModel.signOut()
-             findNavController().navigate(R.id.action_profileFragment_to_signInFragment2)
-
-        }
+             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSignInFragment2())        }
 
 
         return binding.root

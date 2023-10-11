@@ -36,7 +36,7 @@ class ForgotPasswordFragment : Fragment() {
                 }
             }
         binding.doNotHave.setOnClickListener {
-            it.findNavController().navigate(R.id.action_forgotPasswordFragment_to_signUpFragment)
+            it.findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignUpFragment())
         }
          observer()
 
@@ -55,8 +55,8 @@ class ForgotPasswordFragment : Fragment() {
                 when (it) {
                     is Resource.Success -> {
                         statusLoadingWheel.visibility=View.GONE
-                        Toast.makeText(context, "Success send please check your emile ", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_forgotPasswordFragment_to_signInFragment2)
+                        Toast.makeText(context, "Success send please check your email ", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment2())
                     }
 
                     is Resource.Error -> {

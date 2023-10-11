@@ -2,15 +2,14 @@ package com.example.petme.ui.signin
 
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,10 +40,10 @@ class SignInFragment : Fragment() {
            }
         }
         binding.signup.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment2_to_signUpFragment)
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToSignUpFragment())
         }
         binding.forgotPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment2_to_forgotPasswordFragment)
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToForgotPasswordFragment())
         }
 
         return binding.root
@@ -57,7 +56,7 @@ class SignInFragment : Fragment() {
 
        lifecycleScope.launch {
            viewModel.checkCurrentUser.observe(viewLifecycleOwner) {
-               if (it!!) findNavController().navigate(R.id.action_signInFragment2_to_addpet)
+               if (it!!) findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
            }
 
            viewModel.result.collectLatest {
@@ -65,7 +64,7 @@ class SignInFragment : Fragment() {
             is Resource.Success -> {
                 binding.statusLoadingWheel.visibility = View.GONE
                 Toast.makeText(context, "Signing Success", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_signInFragment2_to_addpet)
+                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
             }
             is Resource.Error -> {
                 binding.statusLoadingWheel.visibility = View.GONE

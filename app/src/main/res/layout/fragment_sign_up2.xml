@@ -10,7 +10,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E9D6CA"
         tools:context=".ui.signup.SignUpFragment">
 
         <EditText
@@ -19,10 +18,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="112dp"
             android:layout_marginEnd="24dp"
             android:autofillHints=""
-            android:ems="10"
             android:hint="@string/Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
@@ -40,15 +38,14 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="24dp"
-            android:autofillHints=""
-            android:ems="10"
             android:hint="@string/nickname"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextTextPassword4"
@@ -58,7 +55,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="24dp"
-            android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:minHeight="48dp"
@@ -66,7 +62,8 @@
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextTextPassword5"
@@ -76,15 +73,14 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
-            android:autofillHints=""
-            android:ems="10"
             android:hint="@string/VerifyPassword"
             android:inputType="textPassword"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword4"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextPhone2"
@@ -94,8 +90,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
-            android:autofillHints=""
-            android:ems="10"
             android:hint="@string/Phone"
             android:inputType="phone"
             android:minHeight="48dp"
@@ -103,11 +97,11 @@
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword5"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/button"
-            style="@style/button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -122,7 +116,6 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="gone"
-            android:theme="@style/Theme.FindMyPet.WhiteAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -130,7 +123,6 @@
 
         <TextView
             android:id="@+id/textView"
-            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
@@ -144,7 +136,6 @@
 
         <TextView
             android:id="@+id/Signing"
-            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

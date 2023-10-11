@@ -26,7 +26,7 @@ class AddPet : Fragment(),MenuProvider {
         requireActivity().addMenuProvider(this,viewLifecycleOwner)
 
         binding.button3.setOnClickListener {
-            findNavController().navigate(R.id.action_addpet_to_profileFragment)
+            findNavController().navigate(AddPetDirections.actionAddpetToProfileFragment())
         }
         return binding.root
     }

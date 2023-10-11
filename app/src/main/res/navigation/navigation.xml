@@ -50,8 +50,7 @@
         <action
             android:id="@+id/action_profileFragment_to_signInFragment2"
             app:destination="@id/signInFragment2"
-            app:popUpTo="@id/signInFragment2"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

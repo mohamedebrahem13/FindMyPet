@@ -3,11 +3,11 @@ package com.example.petme.ui.signup
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.petme.R
@@ -45,7 +45,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.Signing.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpFragment_to_signInFragment2)
+            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment2())
 
         }
 
@@ -63,7 +63,7 @@ class SignUpFragment : Fragment() {
         with(viewModel) {
 
             checkCurrentUser.observe(viewLifecycleOwner) {
-                if (it!!) findNavController().navigate(R.id.action_signUpFragment_to_addpet)
+                if (it!!) findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAddpet())
             }
 
             result.observe(viewLifecycleOwner) {
@@ -71,7 +71,7 @@ class SignUpFragment : Fragment() {
                     is Resource.Success -> {
                         Log.v("Success","Success")
                        binding.statusLoadingWheel.visibility =View.GONE
-                        findNavController().navigate(R.id.action_signUpFragment_to_signInFragment2)
+                        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment2())
                         Log.v("Success","Success")
                         Toast.makeText(context, "SignUP Success", Toast.LENGTH_SHORT).show()
                     }
