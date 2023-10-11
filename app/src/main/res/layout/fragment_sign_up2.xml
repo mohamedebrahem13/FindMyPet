@@ -24,6 +24,7 @@
             android:hint="@string/Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,14 +39,15 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="24dp"
+            android:autofillHints=""
             android:hint="@string/nickname"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3"
-            android:autofillHints="" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3" />
 
         <EditText
             android:id="@+id/editTextTextPassword4"
@@ -55,15 +57,16 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="24dp"
+            android:autofillHints=""
             android:hint="@string/password"
             android:inputType="textPassword"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:autofillHints="" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <EditText
             android:id="@+id/editTextTextPassword5"
@@ -73,14 +76,15 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
+            android:autofillHints=""
             android:hint="@string/VerifyPassword"
             android:inputType="textPassword"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword4"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:autofillHints="" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <EditText
             android:id="@+id/editTextPhone2"
@@ -90,15 +94,16 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
+            android:autofillHints=""
             android:hint="@string/Phone"
             android:inputType="phone"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword5"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:autofillHints="" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/button"
