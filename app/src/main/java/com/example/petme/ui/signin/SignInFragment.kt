@@ -1,6 +1,7 @@
 package com.example.petme.ui.signin
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class SignInFragment : Fragment() {
         binding= FragmentSignInBinding.inflate(inflater)
 
         initObservers()
+        viewModelObserver()
         binding.loginbtn.setOnClickListener{
            if (checking()){
                viewModel.signInWithEmailAndPassword(
@@ -46,25 +48,35 @@ class SignInFragment : Fragment() {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToForgotPasswordFragment())
         }
 
+
         return binding.root
     }
 
 
+private fun viewModelObserver() {
 
+    lifecycleScope.launchWhenResumed {
+        viewModel.checkCurrentUser.collectLatest { isUserSignedIn ->
+            if (isUserSignedIn == true) {
+                Log.v("currentUser", "user is signed in")
+                Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
+//                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
+                          }
+        }
+    }
+
+}
 
     private fun initObservers() {
 
        lifecycleScope.launch {
-           viewModel.checkCurrentUser.observe(viewLifecycleOwner) {
-               if (it!!) findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
-           }
 
            viewModel.result.collectLatest {
         when (it) {
             is Resource.Success -> {
                 binding.statusLoadingWheel.visibility = View.GONE
                 Toast.makeText(context, "Signing Success", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
+//                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
             }
             is Resource.Error -> {
                 binding.statusLoadingWheel.visibility = View.GONE
@@ -108,4 +120,6 @@ class SignInFragment : Fragment() {
         }
 
     }
+
+
 }

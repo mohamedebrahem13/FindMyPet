@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -30,7 +34,8 @@ class ProfileFragment : Fragment() {
         initObservers()
         binding.btnSignOut.setOnClickListener {
             profileViewModel.signOut()
-             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSignInFragment2())        }
+
+        }
 
 
         return binding.root
@@ -41,36 +46,41 @@ class ProfileFragment : Fragment() {
     private fun initObservers() {
         with(binding) {
             with(profileViewModel) {
+                lifecycleScope.launchWhenResumed {
+                    currentUser.collectLatest { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+                                user = resource.data
+                                statusLoadingWheel.visibility = View.GONE
+                            }
+                            is Resource.Error -> {
+                                Log.v("profile", resource.toString())
+                                statusLoadingWheel.visibility = View.GONE
+                            }
+                            Resource.Loading -> statusLoadingWheel.visibility = View.VISIBLE
+                            else -> {
+                                // Handle other states if necessary
+                            }
+                        }
+                    }
+                }
 
-                checkCurrentUser.observe(viewLifecycleOwner) {
-                    if (it!!){
-                        Log.v("user","User is here")
-
+                lifecycleScope.launch{
+                    checkCurrentUser.collect { isUserSignedIn ->
+                        if (isUserSignedIn == true) {
+                            Log.v("user", "User is here")
+                        } else {
+                            if (findNavController().currentDestination?.id == R.id.profileFragment) {
+                                // The user is not signed in; pop the back stack to remove ProfileFragment
+                                findNavController().popBackStack()
+                            }
+                        }
                     }
                 }
 
 
-                currentUser.observe(viewLifecycleOwner) {
-                    when (it) {
-                        is Resource.Success -> {
-                            user = it.data
-                           statusLoadingWheel.visibility =View.GONE
-
-                        }
-                        is Resource.Error -> {
-                            Log.v("profile",it.toString())
-                          statusLoadingWheel.visibility =View.GONE
-
-                        }
-                        Resource.Loading ->  statusLoadingWheel.visibility =View.VISIBLE
-
-                        else -> {
-
-
-                        }
-                    }
-                }
             }
         }
     }
+
 }

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.data.model.User
 import com.example.petme.databinding.FragmentSignUp2Binding
@@ -63,7 +62,7 @@ class SignUpFragment : Fragment() {
         with(viewModel) {
 
             checkCurrentUser.observe(viewLifecycleOwner) {
-                if (it!!) findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAddpet())
+//                if (it!!) findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAddpet())
             }
 
             result.observe(viewLifecycleOwner) {

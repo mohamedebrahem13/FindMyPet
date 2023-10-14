@@ -1,6 +1,6 @@
 package com.example.petme.ui.signin
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.petme.common.Resource
@@ -19,8 +19,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     private val _result = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val result: StateFlow<Resource<FirebaseUser>?> = _result
 
-    private val _checkCurrentUser = MutableLiveData<Boolean?>()
-    val checkCurrentUser: MutableLiveData<Boolean?> = _checkCurrentUser
+    private val _checkCurrentUser = MutableStateFlow<Boolean?>(null)
+    val checkCurrentUser: StateFlow<Boolean?> = _checkCurrentUser
 
     init {
         checkCurrentUser()
@@ -37,7 +37,13 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     private fun checkCurrentUser() {
         viewModelScope.launch {
-            _checkCurrentUser.value = checkCurrentUserUseCase()
+            try {
+                val result = checkCurrentUserUseCase()
+                _checkCurrentUser.value = result
+            } catch (e: Exception) {
+                Log.e("ProfileViewModel", "Error in checkCurrentUser: ${e.message}")
+                // Handle the error, show a message, or perform other actions as needed
+            }
         }
     }
 }

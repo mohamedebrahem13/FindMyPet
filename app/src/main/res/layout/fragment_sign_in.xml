@@ -67,6 +67,7 @@
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="@string/Sign_Up"
             android:textSize="15sp"
             app:fontFamily="sans-serif-black"
@@ -82,7 +83,7 @@
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text="@string/do_not_have_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="50sp"
+            android:textSize="40sp"
             app:fontFamily="sans-serif"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,14 +127,15 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="248dp"
-            android:layout_height="182dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="301dp"
+            android:layout_height="241dp"
+            android:layout_marginTop="52dp"
+            android:contentDescription="@string/find_my_pet_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pet2" />
+            app:srcCompat="@drawable/pet1"
+            tools:ignore="ImageContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

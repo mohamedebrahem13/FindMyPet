@@ -11,21 +11,13 @@
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment2"
             app:destination="@id/signInFragment2"
-            app:popUpTo="@id/signInFragment2" />
-        <action
-            android:id="@+id/action_signUpFragment_to_addpet"
-            app:destination="@id/addpet"
-            app:popUpTo="@id/addpet" />
+            app:popUpTo="@id/signInFragment2"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment2"
         android:name="com.example.petme.ui.signin.SignInFragment"
         android:label="SignInFragment" >
-        <action
-            android:id="@+id/action_signInFragment2_to_addpet"
-            app:destination="@id/addpet"
-            app:popUpTo="@id/signInFragment2"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signInFragment2_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -37,21 +29,11 @@
         android:id="@+id/addpet"
         android:name="com.example.petme.ui.addpet.AddPet"
         android:label="fragment_addpet"
-        tools:layout="@layout/fragment_addpet" >
-        <action
-            android:id="@+id/action_addpet_to_profileFragment"
-            app:destination="@id/profileFragment"
-            app:popUpTo="@id/profileFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_addpet" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.petme.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" >
-        <action
-            android:id="@+id/action_profileFragment_to_signInFragment2"
-            app:destination="@id/signInFragment2"
-            app:popUpTo="@id/profileFragment" />
-    </fragment>
+        android:label="ProfileFragment" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.example.petme.ui.forgotpassword.ForgotPasswordFragment"
@@ -59,10 +41,21 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment2"
             app:destination="@id/signInFragment2"
-            app:popUpTo="@id/signInFragment2" />
+            app:popUpTo="@id/signInFragment2"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment"
-            app:popUpTo="@id/signUpFragment" />
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.petme.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_addpet"
+            app:destination="@id/addpet" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>
