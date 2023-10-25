@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:132997115664:android:ff1efacfe7907f8cf9ff95",
+        "mobilesdk_app_id": "1:132997115664:android:b6bfb1bd510177a3f9ff95",
         "android_client_info": {
           "package_name": "com.example.petme"
         }
@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "132997115664-5f0jdi3hgn5m68i2e21tg3akf0c8qci4.apps.googleusercontent.com",
+          "client_id": "132997115664-cvgucivb6r239fcjmro4c4uphp3f6rf6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

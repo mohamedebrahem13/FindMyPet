@@ -1,5 +1,8 @@
 package com.example.petme.ui.signin
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -7,10 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.petme.PetActivity
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +35,9 @@ class SignInFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding= FragmentSignInBinding.inflate(inflater)
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
-        initObservers()
+
         viewModelObserver()
         binding.loginbtn.setOnClickListener{
            if (checking()){
@@ -39,13 +45,15 @@ class SignInFragment : Fragment() {
                    binding.editTextTextEmailAddress.text.toString(),
                    binding.editTextTextPassword.text.toString()
                )
+               initObservers()
+
            }
         }
         binding.signup.setOnClickListener {
-            findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToSignUpFragment())
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         }
         binding.forgotPassword.setOnClickListener {
-            findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToForgotPasswordFragment())
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment())
         }
 
 
@@ -60,12 +68,17 @@ private fun viewModelObserver() {
             if (isUserSignedIn == true) {
                 Log.v("currentUser", "user is signed in")
                 Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
-//                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
-                          }
+                Intent(requireActivity(),PetActivity::class.java).also {
+                        intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }                          }
         }
     }
 
 }
+
+
+
 
     private fun initObservers() {
 
@@ -74,16 +87,19 @@ private fun viewModelObserver() {
            viewModel.result.collectLatest {
         when (it) {
             is Resource.Success -> {
-                binding.statusLoadingWheel.visibility = View.GONE
+                binding.prograss.visibility = View.GONE
                 Toast.makeText(context, "Signing Success", Toast.LENGTH_SHORT).show()
-//                findNavController().navigate(SignInFragmentDirections.actionSignInFragment2ToAddpet())
+                Intent(requireActivity(),PetActivity::class.java).also {
+                    intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
             }
             is Resource.Error -> {
-                binding.statusLoadingWheel.visibility = View.GONE
+                binding.prograss.visibility = View.GONE
                 Toast.makeText(context, "Signing error", Toast.LENGTH_SHORT).show()
 
             }
-            Resource.Loading -> binding.statusLoadingWheel.visibility = View.VISIBLE
+            Resource.Loading -> binding.prograss.visibility = View.VISIBLE
 
 
             else -> {

@@ -37,14 +37,14 @@ class SignUpFragment : Fragment() {
                   User( email = binding.editTextTextEmailAddress3.text.toString(),
                       nickname = binding.editTextTextPersonName2.text.toString(),
                       phoneNumber = binding.editTextPhone2.text.toString()),
-               binding.editTextTextPassword4.text.toString()
+               binding.editTextTextPassword4.text.toString(),
          )
 
             }
         }
 
         binding.Signing.setOnClickListener {
-            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment2())
+        findNavController().navigateUp()
 
         }
 
@@ -61,27 +61,22 @@ class SignUpFragment : Fragment() {
 
         with(viewModel) {
 
-            checkCurrentUser.observe(viewLifecycleOwner) {
-//                if (it!!) findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAddpet())
-            }
-
             result.observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Success -> {
-                        Log.v("Success","Success")
-                       binding.statusLoadingWheel.visibility =View.GONE
-                        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment2())
+                       binding.prograss.visibility =View.GONE
+                        findNavController().navigateUp()
                         Log.v("Success","Success")
                         Toast.makeText(context, "SignUP Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
-                        binding.statusLoadingWheel.visibility =View.GONE
+                        binding.prograss.visibility =View.GONE
                         Toast.makeText(context, "SignUP error", Toast.LENGTH_SHORT).show()
                         Log.v("error","SignUP error")
 
                     }
                     is Resource.Loading-> {
-                        binding.statusLoadingWheel.visibility = View.VISIBLE
+                        binding.prograss.visibility = View.VISIBLE
 
 
                     }
@@ -126,7 +121,6 @@ class SignUpFragment : Fragment() {
                 editTextPhone2.error = "phone must be 11 number"
                 return false
             }
-
 
 
             // after all validation return true.

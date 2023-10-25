@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,11 +31,10 @@ class ForgotPasswordFragment : Fragment() {
            binding.send.setOnClickListener {
                 if (checking()){
                     viewModel.sendPasswordResetEmail(binding.editTextTextEmailAddress.text.toString())
-                    it.findNavController().navigate(R.id.action_forgotPasswordFragment_to_signInFragment2)
                 }
             }
-        binding.doNotHave.setOnClickListener {
-            it.findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignUpFragment())
+        binding.alreadyHaveAccount.setOnClickListener {
+            it.findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment())
         }
          observer()
 
@@ -54,18 +52,18 @@ class ForgotPasswordFragment : Fragment() {
 
                 when (it) {
                     is Resource.Success -> {
-                        statusLoadingWheel.visibility=View.GONE
+                        prograss.visibility=View.GONE
                         Toast.makeText(context, "Success send please check your email ", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment2())
+                        findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment())
                     }
 
                     is Resource.Error -> {
-                        statusLoadingWheel.visibility=View.GONE
+                        prograss.visibility=View.GONE
                         Toast.makeText(context, "error something wrong ", Toast.LENGTH_SHORT).show()
 
                     }
 
-                    Resource.Loading ->   statusLoadingWheel.visibility=View.VISIBLE
+                    Resource.Loading ->   prograss.visibility=View.VISIBLE
 
                     else -> {}
                 }

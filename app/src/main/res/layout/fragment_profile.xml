@@ -9,6 +9,10 @@
             name="user"
             type="com.example.petme.data.model.User" />
 
+        <variable
+            name="viewModle"
+            type="com.example.petme.ui.profile.ProfileViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,25 +20,27 @@
         android:layout_height="match_parent"
         tools:context=".ui.profile.ProfileFragment">
 
-        <ImageView
-            android:id="@+id/img_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="334dp"
-            android:layout_marginTop="68dp"
-            android:contentDescription="@string/find_my_pet_logo"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="88dp"
+            android:visibility="visible"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/md_theme_dark_inversePrimary"
+            app:imageUrl="@{user.imagePath}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/pet1" />
+            tools:ignore="ImageContrastCheck" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{user.email}"
-
             app:layout_constraintBottom_toTopOf="@+id/textView8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,12 +61,11 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="@string/Email"
             app:layout_constraintBottom_toTopOf="@+id/tv_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_profile"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image"
             app:layout_constraintVertical_chainStyle="spread" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -96,7 +101,7 @@
             tools:text="0121158775654" />
 
         <ProgressBar
-            android:id="@+id/status_loading_wheel"
+            android:id="@+id/prograss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
@@ -116,6 +121,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone_number" />
+
+        <ImageButton
+            android:id="@+id/editbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="292dp"
+            android:layout_marginTop="88dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_edit_24"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

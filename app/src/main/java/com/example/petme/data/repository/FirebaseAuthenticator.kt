@@ -5,6 +5,7 @@ import com.example.petme.common.Constant.E_MAIL
 import com.example.petme.common.Constant.ID
 import com.example.petme.common.Constant.NICKNAME
 import com.example.petme.common.Constant.PHONE_NUMBER
+import com.example.petme.common.Constant.PROFILE_IMAGE_PATH
 import com.example.petme.data.model.User
 import com.example.petme.domain.repository.Authenticator
 import com.google.firebase.auth.AuthResult
@@ -26,7 +27,8 @@ class FirebaseAuthenticator @Inject constructor(
             ID to getFirebaseUserUid(),
             E_MAIL to user.email,
             NICKNAME to user.nickname,
-            PHONE_NUMBER to user.phoneNumber
+            PHONE_NUMBER to user.phoneNumber,
+            PROFILE_IMAGE_PATH to user.imagePath
         )
 
         firebaseFirestore.collection(COLLECTION_PATH).document(getFirebaseUserUid())
@@ -50,6 +52,7 @@ class FirebaseAuthenticator @Inject constructor(
             user[E_MAIL] as String,
             user[NICKNAME] as String,
             user[PHONE_NUMBER] as String,
+            user[PROFILE_IMAGE_PATH] as String
         )    }
 
     override suspend fun signOut() = firebaseAuth.signOut()

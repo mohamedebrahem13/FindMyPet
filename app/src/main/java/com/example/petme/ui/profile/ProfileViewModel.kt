@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.petme.common.Resource
 import com.example.petme.data.model.User
-import com.example.petme.domain.usecase.firebaseUseCase.CheckCurrentUserUseCase
 import com.example.petme.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
 import com.example.petme.domain.usecase.firebaseUseCase.SignOutUseCase
+import com.example.petme.domain.usecase.firebaseUseCase.profile.GetImageUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,36 +18,43 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val checkCurrentUserUseCase: CheckCurrentUserUseCase
+    private val getImageUrlUseCase:GetImageUrlUseCase
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
     val currentUser: StateFlow<Resource<User>?> = _currentUser
 
-    private val _checkCurrentUser = MutableStateFlow<Boolean?>(null)
-    val checkCurrentUser: StateFlow<Boolean?> = _checkCurrentUser
 
-    init {
-        getCurrentUser()
-        checkCurrentUser()
-    }
+    private val _getImageUrl = MutableStateFlow<Resource<String>>(Resource.Loading)
+    val getImageUrl: StateFlow<Resource<String>> = _getImageUrl
 
-    private fun checkCurrentUser() {
+
+
+    private fun getImageUrl() {
         viewModelScope.launch {
             try {
-                val result = checkCurrentUserUseCase()
-                _checkCurrentUser.value = result
+                val result = getImageUrlUseCase()
+                _getImageUrl.value = result
+                Log.e("ProfileViewModel", "sucsses in getImageUrl in ProfileViewModel: $result")
+
             } catch (e: Exception) {
-                Log.e("ProfileViewModel", "Error in checkCurrentUser: ${e.message}")
+                Log.e("ProfileViewModel", "Error in getImageUrl in ProfileViewModel: ${e.message}")
                 // Handle the error, show a message, or perform other actions as needed
             }
         }
     }
 
-    private fun getCurrentUser() {
+
+
+
+
+
+     fun getCurrentUser() {
         viewModelScope.launch {
             try {
                 _currentUser.value = getCurrentUserUseCase()
+                Log.v("ProfileViewModel", " success get user data ${_currentUser.value.toString()} :")
+
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Error in getCurrentUser: ${e.message}")
                 // Handle the error, show a message, or perform other actions as needed

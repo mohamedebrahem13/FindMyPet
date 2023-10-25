@@ -16,8 +16,15 @@
     <string name="SignUp">Sign Up</string>
     <string name="Signing">login</string>
     <string name="SignOut">SignOut</string>
+    <string name="Boy">Boy</string>
+    <string name="Girl">Girl</string>
+    <string name="Take_pet">this image for taking pet image from gallery </string>
+
     <string name="Sign_Up">Sign Up</string>
     <string name="find_my_pet_logo">find my pet logo </string>
+    <string name="PetDescription">Pet Description</string>
+
+    PetDescription
 
 
     <string name="do_not_have_account">don\'t have account ?</string>
@@ -26,6 +33,17 @@
     <string name="invalid_verify_password">"Invalid Verify Password"</string>
     <string name="ForgotPassword">Forgot Password</string>
     <string name="send">Send</string>
+    <string name="Gender">Gender</string>
+
+    <string name="pet_name">Pet Name</string>
+    <string name="pet_age">Pet Age</string>
+    <string name="Pet_Gender">Pet Gender</string>
+
+
     <string name="profile">Profile</string>
     <string name="developer">developer</string>
+    <string name="take_image_pet">Take Pet Image</string>
+    <string name="SelectYourLocation">Select Your Location</string>
+    <string name="Post">Post</string>
+    <string name="Edit_profile">Edit Profile</string>
 </resources>
