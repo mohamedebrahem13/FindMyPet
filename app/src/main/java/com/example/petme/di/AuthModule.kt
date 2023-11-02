@@ -1,9 +1,9 @@
 package com.example.petme.di
 
+import com.example.petme.data.repository.EditProfileRepositoryImpl
 import com.example.petme.data.repository.FirebaseAuthenticator
-import com.example.petme.data.repository.ProfileImageRepositoryImpl
 import com.example.petme.domain.repository.Authenticator
-import com.example.petme.domain.repository.ProfileImageRepository
+import com.example.petme.domain.repository.EditProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +25,7 @@ class AuthModule {
 
 
     @Provides
-    fun provideProfileImageRepository(): ProfileImageRepository = ProfileImageRepositoryImpl(
+    fun provideProfileImageRepository(): EditProfileRepository = EditProfileRepositoryImpl(
         storage = Firebase.storage,
         db = Firebase.firestore,
         firebaseAuth = Firebase.auth

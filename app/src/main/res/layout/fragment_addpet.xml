@@ -10,11 +10,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.addpet.AddPet">
+        tools:context=".ui.addpet.AddPetFragment">
+
+
+        <GridLayout
+            android:id="@+id/imageGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:columnCount="3"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/PetDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:visibility="gone"> <!-- Set the GridLayout as initially invisible -->
+            <!-- Add ImageViews for displaying images here -->
+        </GridLayout>
 
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
@@ -150,7 +166,7 @@
             android:id="@+id/selectLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="40dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -163,17 +179,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-        <TextView
-            android:id="@+id/selectedLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/selectLocation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/selectLocation"
-            app:layout_constraintVertical_bias="0.482"
-            tools:text="Location" />
 
         <EditText
             android:id="@+id/PetDescription"
@@ -191,6 +196,18 @@
             app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/selectLocation" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="203dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:entries="@array/egypt_cities"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/selectLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

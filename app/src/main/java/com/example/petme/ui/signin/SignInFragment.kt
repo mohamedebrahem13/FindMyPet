@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.petme.PetActivity
+import com.example.petme.activities.PetActivity
 import com.example.petme.common.Resource
 import com.example.petme.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,7 +68,7 @@ private fun viewModelObserver() {
             if (isUserSignedIn == true) {
                 Log.v("currentUser", "user is signed in")
                 Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
-                Intent(requireActivity(),PetActivity::class.java).also {
+                Intent(requireActivity(), PetActivity::class.java).also {
                         intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }                          }
@@ -89,7 +89,7 @@ private fun viewModelObserver() {
             is Resource.Success -> {
                 binding.prograss.visibility = View.GONE
                 Toast.makeText(context, "Signing Success", Toast.LENGTH_SHORT).show()
-                Intent(requireActivity(),PetActivity::class.java).also {
+                Intent(requireActivity(), PetActivity::class.java).also {
                     intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }

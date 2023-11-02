@@ -46,4 +46,45 @@
     <string name="SelectYourLocation">Select Your Location</string>
     <string name="Post">Post</string>
     <string name="Edit_profile">Edit Profile</string>
+    <string name="update">Update</string>
+
+    <string-array name="egypt_cities">
+        <item>Alexandria</item>
+        <item>Cairo</item>
+        <item>Giza</item>
+        <item>Shubra El-Kheima</item>
+        <item>Port Said</item>
+        <item>Suez</item>
+        <item>Luxor</item>
+        <item>Tanta</item>
+        <item>Asyut</item>
+        <item>Mansoura</item>
+        <item>Beni Suef</item>
+        <item>Zagazig</item>
+        <item>Faiyum</item>
+        <item>Ismailia</item>
+        <item>Aswan</item>
+        <item>Damanhur</item>
+        <item>Minya</item>
+        <item>Beni Mazar</item>
+        <item>Hurghada</item>
+        <item>Qena</item>
+        <item>Shebin El Kom</item>
+        <item>El Arish</item>
+        <item>Desouk</item>
+        <item>Kafr El Sheikh</item>
+        <item>Mallawi</item>
+        <item>El-Mahalla El-Kubra</item>
+        <item>Banha</item>
+        <item>Mit Ghamr</item>
+        <item>Qalyub</item>
+        <item>Dikirnis</item>
+        <item>Akhmim</item>
+        <item>Siwa</item>
+        <item>Quseir</item>
+        <!-- Add more cities as needed -->
+    </string-array>
+    <!-- res/values/strings.xml -->
+    <string name="default_city">Alexandria</string>
+
 </resources>

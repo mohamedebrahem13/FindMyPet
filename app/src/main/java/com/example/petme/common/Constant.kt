@@ -9,18 +9,17 @@ object Constant {
 
 
     const val COLLECTION_PATH = "users"
+    const val POSTS="posts"
     const val IMAGES = "images"
+    const val USERID="userId"
 
     //Image fields
     const val URL = "url"
     const val CREATED_AT = "createdAt"
 
-    //User details
-    const val UID = "B0WkDyoJFrS52vwzTqpN7YURyJJ3"
     //File names
-    const val PROFILE_IMAGE_NAME = "$UID.jpg"
+    const val PROFILE_IMAGE_NAME = ".jpg"
 
-    const val  url: String = "https://firebasestorage.googleapis.com/v0/b/petme-dddc4.appspot.com/o/images%2FB0WkDyoJFrS52vwzTqpN7YURyJJ3.jpg?alt=media&token=9a570288-6a47-417d-b162-4a36cf32a3eb"
 
 
 

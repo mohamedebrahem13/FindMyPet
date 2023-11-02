@@ -11,13 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.petme.MainActivity
+import com.example.petme.activities.MainActivity
 import com.example.petme.common.Resource
+import com.example.petme.data.model.User
 import com.example.petme.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
+    private var User: User? =null
     private lateinit var binding:FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -37,8 +39,12 @@ class ProfileFragment : Fragment() {
         initObservers()
 
 
+
         binding.editbutton.setOnClickListener {
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit())
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit(
+                    User!!
+                ))
+
         }
 
         binding.btnSignOut.setOnClickListener {
@@ -75,6 +81,7 @@ class ProfileFragment : Fragment() {
                         when (resource) {
                             is Resource.Success -> {
                                 user = resource.data
+                                User =resource.data
                                 prograss.visibility = View.GONE
                             }
                             is Resource.Error -> {
