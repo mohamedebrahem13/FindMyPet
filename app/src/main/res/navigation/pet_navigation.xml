@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pet_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/addPet"
+        android:name="com.example.petme.ui.addpet.AddPetFragment"
+        android:label="AddPet" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.petme.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileEdit"
+            app:destination="@id/profileEdit" />
+        <argument
+            android:name="clickedpost"
+            app:argType="com.example.petme.data.model.Post"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileEdit"
+        android:name="com.example.petme.ui.profile.edit.ProfileEdit"
+        android:label="ProfileEdit" >
+        <argument
+            android:name="user_profile"
+            app:argType="com.example.petme.data.model.User" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.petme.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_addPet"
+            app:destination="@id/addPet" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.petme.ui.postdetails.PostDetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_post_details" >
+        <argument
+            android:name="post"
+            app:argType="com.example.petme.data.model.Post" />
+    </fragment>
+</navigation>

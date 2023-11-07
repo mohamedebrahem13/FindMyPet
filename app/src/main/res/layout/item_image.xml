@@ -1,0 +1,22 @@
+<!-- item_image.xml -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="imageUri"
+            type="String" />
+    </data>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="4dp"
+        android:background="@drawable/image_border"
+        android:src="@{imageUri}" />
+</layout>
