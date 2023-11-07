@@ -11,7 +11,7 @@ object Constant {
     const val COLLECTION_PATH = "users"
     const val POSTS="posts"
     const val IMAGES = "images"
-    const val USERID="userId"
+    const val USERID="user.userId"
 
     //Image fields
     const val URL = "url"

@@ -10,22 +10,31 @@
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.138" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_baseline_error_24.xml" value="0.138" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1615" />
-        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_location.xml" value="0.1615" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_location.xml" value="0.12" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/ic_save.xml" value="0.1615" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/image_border.xml" value="0.11" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/shape.xml" value="0.1" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/solid_black.xml" value="0.175" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/drawable/solid_top_left.xml" value="0.175" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/activity_main.xml" value="0.22846781504986402" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/activity_pet.xml" value="0.24660018132366274" />
-        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_addpet.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_addpet.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_details.xml" value="0.28603807796917496" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_forgot_password.xml" value="0.5" />
-        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_home.xml" value="0.4868139700641482" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_home.xml" value="0.4022646007151371" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_post_details.xml" value="0.481111903064861" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_profile.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_profile_edit.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_sign_in.xml" value="0.29333333333333333" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_sign_up.xml" value="0.4049008168028005" />
-        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_sign_up2.xml" value="0.35572916666666665" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/fragment_sign_up2.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/item_image.xml" value="0.14103635603844547" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/layout.xml" value="0.13539490179690764" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/network_security_config.xml" value="0.22056159420289856" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/layout/post_item.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/menu/profilemenu.xml" value="0.15902777777777777" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/menu/user_menu.xml" value="0.25092592592592594" />
+        <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1045" />
         <entry key="..\:/Users/moham/AndroidStudioProjects/FindMyPet/app/src/main/res/xml/network_security_config.xml" value="0.13043478260869565" />
       </map>
     </option>
@@ -39,7 +48,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.4868139700641482" />
+        <option name="scale" value="0.5" />
       </ProjectState>
     </option>
   </component>

@@ -19,14 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
+
     private var User: User? =null
     private lateinit var binding:FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
-
-
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +31,30 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=FragmentProfileBinding.inflate(inflater)
 
-        fetchUserProfile()
-        initObservers()
+        val args = arguments?.let { ProfileFragmentArgs.fromBundle(it) }
+        val post = args?.clickedpost
+
+        with(binding){
+            if (post != null) {
+                // This is a profile view for the user who created the post
+
+                val clickedUser = post.user
+                user = clickedUser
+                btnSignOut.visibility=View.GONE
+                editbutton.visibility=View.GONE
+
+                // Handle user data
+            } else {
+                // This is the profile view for the current user
+                btnSignOut.visibility=View.VISIBLE
+                editbutton.visibility=View.VISIBLE
+                fetchUserProfile()
+                initObservers()
+
+            }
+
+        }
+
 
 
 

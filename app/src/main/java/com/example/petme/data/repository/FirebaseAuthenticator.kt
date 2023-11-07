@@ -49,6 +49,7 @@ class FirebaseAuthenticator @Inject constructor(
                 .get().await()
 
         return User(
+            user[ID]as String,
             user[E_MAIL] as String,
             user[NICKNAME] as String,
             user[PHONE_NUMBER] as String,

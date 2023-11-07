@@ -86,5 +86,9 @@
     </string-array>
     <!-- res/values/strings.xml -->
     <string name="default_city">Alexandria</string>
+    <string name="im_lost">I\'m Lost</string>
+    <string name="Pet_Details">Pet Details</string>
+    <string name="pet_location">Pet Location</string>
+    <string name="Hi">Hi,</string>
 
 </resources>

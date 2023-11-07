@@ -15,6 +15,14 @@
 
     </style>
 
+    <style name="text_warning">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_theme_dark_errorContainer</item>
+
+    </style>
+
+
+
     <!--style for edittext-->
     <style name="edittext_style">
         <item name="android:paddingStart">10dp</item>

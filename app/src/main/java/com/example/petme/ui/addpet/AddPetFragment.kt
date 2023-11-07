@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.GridLayout
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,18 +14,23 @@ import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petme.R
 import com.example.petme.common.Resource
 import com.example.petme.data.model.Post
+import com.example.petme.data.model.User
 import com.example.petme.databinding.FragmentAddpetBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class AddPetFragment : Fragment() {
-
+    private var User: User? =null
+    private val selectedImageUrisFlow = MutableStateFlow<List<Uri>>(emptyList())
     private var selectedGender: String? = null
     private var selectedCity: String? = null
-    private val selectedImageUris: MutableList<Uri> = mutableListOf()
     private val postViewModel:PostViewModel by viewModels()
     private lateinit var imagePicker: ActivityResultLauncher<String>
     private val permissionLauncher: ActivityResultLauncher<String> =
@@ -42,14 +45,18 @@ class AddPetFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        imagePicker =
-            registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-                if (uris.isNotEmpty()) {
-                    // Append the selected URIs to the list
-                    selectedImageUris.addAll(uris)
+        imagePicker = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+            if (uris.isNotEmpty()) {
+                if (selectedImageUrisFlow.value.size + uris.size > MAX_IMAGES) {
+                    Toast.makeText(requireContext(), "You can select a maximum of 8 images", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Clear the list before selecting new images
+                    selectedImageUrisFlow.value = uris
                 }
-
             }
+        }
+
+
     }
 
 
@@ -61,19 +68,24 @@ class AddPetFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding= FragmentAddpetBinding.inflate(inflater)
+        fetchUserProfile()
+        initObservers()
 
         radioCheck()
-        gridlayout()
         setSpinner()
         val defaultCity = getString(R.string.default_city)
         val cityArray = resources.getStringArray(R.array.egypt_cities)
         val defaultCityIndex = cityArray.indexOf(defaultCity)
         binding.spinner.setSelection(defaultCityIndex)
 
+        observeSelectedImageUris()
+
 
         binding.post.setOnClickListener {
             if (checkAllFields()){
-                postViewModel.addPostWithImages(Post(pet_name = binding.editTextTextPersonName.toString(), pet_description = binding.PetDescription.toString(), pet_age = binding.editTextNumber.toString(), pet_gender = selectedGender.toString(),postViewModel.uid,null,selectedCity.toString()),selectedImageUris )
+                postViewModel.addPostWithImages(Post(
+                    pet_name = binding.editTextTextPersonName.text.toString(), pet_description = binding.PetDescription.text.toString(), pet_age = binding.editTextNumber.text.toString(), pet_gender = selectedGender.toString(),null,selectedCity.toString(),null,
+                user = User ), selectedImageUrisFlow.value )
                 addPetObserver()
             }
         }
@@ -87,13 +99,12 @@ class AddPetFragment : Fragment() {
 
 
 
+        private fun fetchUserProfile() {
+        lifecycleScope.launchWhenResumed {
+            postViewModel.getCurrentUser() // Trigger a data refresh when the fragment is resumed
+        }    }
 
-    // Load and display the image using Glide
-    private fun displayImage(imageUri: Uri, imageView: ImageView) {
-        Glide.with(this)
-            .load(imageUri)
-            .into(imageView)
-    }
+
 
     private fun radioCheck(){
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -112,6 +123,39 @@ class AddPetFragment : Fragment() {
         }
     }
 
+
+    private fun observeSelectedImageUris() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            selectedImageUrisFlow.collect { uris ->
+                if (uris.isNotEmpty()) {
+                    // Hide "Take Pet" button and "Take Pet Image"
+                    binding.TakePet.visibility = View.GONE
+                    binding.takePetImage.visibility = View.GONE
+
+                    // Show the RecyclerView
+                    binding.recyclerView.visibility = View.VISIBLE
+                    setupRecyclerView()
+                } else {
+                    // Show "Take Pet" button and "Take Pet Image"
+                    binding.TakePet.visibility = View.VISIBLE
+                    binding.takePetImage.visibility = View.VISIBLE
+
+                    // Hide the RecyclerView
+                    binding.recyclerView.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
+
+    private fun setupRecyclerView() {
+        val imageAdapter = ImageAdapter(selectedImageUrisFlow.value.map { it.toString() })
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = imageAdapter
+        }
+    }
 
 
     private fun setSpinner() {
@@ -132,39 +176,6 @@ class AddPetFragment : Fragment() {
     }
 
 
-    private fun gridlayout(){
-
-        with(binding){
-            if (selectedImageUris.isNotEmpty()) {
-                // Selected image URIs are not empty, so show the GridLayout
-                imageGrid.visibility = View.VISIBLE
-                takePetImage.visibility = View.GONE
-                for (uri in selectedImageUris) {
-                    val imageView = ImageView(requireContext())
-                    imageView.layoutParams = GridLayout.LayoutParams().apply {
-                        width = 0
-                        height = GridLayout.LayoutParams.WRAP_CONTENT
-                        columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-                    }
-                    displayImage(uri,imageView)
-
-                    imageGrid.addView(imageView)
-                }
-            } else {
-                // Selected image URIs are empty, so hide the GridLayout
-                imageGrid.visibility = View.GONE
-                takePetImage.visibility = View.VISIBLE
-            }
-
-
-        }
-
-    }
-
-
-
-
-
     private fun addPetObserver(){
         lifecycleScope.launchWhenResumed {
             postViewModel.addPostResult.collect { result ->
@@ -178,10 +189,15 @@ class AddPetFragment : Fragment() {
                         // Handle successful post addition
                         Log.v("Success","Success addPost ")
                         Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
+                        binding.prograss.visibility = View.GONE
+                        findNavController().navigateUp()
+
                     }
                     is Resource.Error -> {
                         val throwable = result.throwable
                         Toast.makeText(context,throwable.toString(), Toast.LENGTH_SHORT).show()
+                        binding.prograss.visibility = View.GONE
+
                         // Handle failure (e.g., display an error message)
                     }
                 }
@@ -192,13 +208,40 @@ class AddPetFragment : Fragment() {
 
     }
 
+    private fun initObservers() {
+        with(binding) {
+            with(postViewModel) {
+                lifecycleScope.launchWhenResumed {
+                    currentUser.collect { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+                                User = resource.data
+                                prograss.visibility = View.GONE
+                            }
+                            is Resource.Error -> {
+                                Log.v("profile", resource.toString())
+                                prograss.visibility = View.GONE
+                            }
+                            is Resource.Loading -> {
+                                prograss.visibility = View.VISIBLE
+                            }
+                            else -> {
+                                // Handle other states if necessary
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
 
 
     private fun checkAllFields():Boolean {
         with(binding){
-            if(selectedImageUris.isEmpty()){
+            if(selectedImageUrisFlow.value.isEmpty()){
                 Toast.makeText(context, "Please select the pet images", Toast.LENGTH_SHORT).show()
                 return false
             }
@@ -207,9 +250,14 @@ class AddPetFragment : Fragment() {
                 editTextTextPersonName.error = "please enter pet name"
                 return false
             }
-            if (editTextNumber.text.isNullOrEmpty()
-            ) {
-                editTextNumber.error = "please enter pet age"
+            if (!editTextNumber.text.isNullOrEmpty()) {
+                val age = editTextNumber.text.toString().toInt()
+                if (age > 20) {
+                    editTextNumber.error = "Please enter a valid age (20 or less)"
+                    return false
+                }
+            } else {
+                editTextNumber.error = "Please enter pet age"
                 return false
             }
             if (selectedGender == null) {
@@ -229,6 +277,12 @@ class AddPetFragment : Fragment() {
     }
 
 
+
+    companion object{
+        private const val MAX_IMAGES = 8
+
+    }
+
     private fun checkPermissionAndOpenGallery() {
         val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
         if (PermissionChecker.checkSelfPermission(requireContext(), permission) == PermissionChecker.PERMISSION_GRANTED) {
@@ -243,9 +297,13 @@ class AddPetFragment : Fragment() {
     }
 
     private fun openGallery() {
-        // Use the modern approach for all Android versions
-        imagePicker.launch("image/*") // You can specify the MIME type here if needed
+        if (selectedImageUrisFlow.value.size < MAX_IMAGES) {
+            // Use the modern approach for all Android versions
+            imagePicker.launch("image/*") // You can specify the MIME type here if needed
+        }
     }
+
+
 
 
 
