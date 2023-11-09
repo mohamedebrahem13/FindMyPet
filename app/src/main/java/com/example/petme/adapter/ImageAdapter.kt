@@ -1,4 +1,4 @@
-package com.example.petme.ui.addpet
+package com.example.petme.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

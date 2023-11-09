@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petme.R
+import com.example.petme.adapter.ImageAdapter
 import com.example.petme.common.Resource
 import com.example.petme.data.model.Post
 import com.example.petme.data.model.User

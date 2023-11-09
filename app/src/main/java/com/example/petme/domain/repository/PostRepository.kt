@@ -7,8 +7,8 @@ import com.example.petme.data.model.Post
 interface PostRepository {
     suspend fun addPost(post: Post): Resource<Unit>
     suspend fun uploadImagesAndGetDownloadUrls(imageUris: List<Uri>): Resource<List<String>>
-    suspend fun getPostsForUser(userId: String): Resource<List<Post>>
+    suspend fun getPostsForCurrentUser(): Resource<List<Post>>
     suspend fun getAllPostsSortedByTimestamp(): Resource<List<Post>>
-
+    suspend fun getFirebaseUserUid(): String
 
 }

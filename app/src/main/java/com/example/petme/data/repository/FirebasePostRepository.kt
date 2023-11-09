@@ -6,6 +6,7 @@ import com.example.petme.common.Constant.USERID
 import com.example.petme.common.Resource
 import com.example.petme.data.model.Post
 import com.example.petme.domain.repository.PostRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 class FirebasePostRepository @Inject constructor(
     private val db: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    private val storage: FirebaseStorage,
+    private val firebaseAuth: FirebaseAuth
 ) : PostRepository {
 
     override suspend fun uploadImagesAndGetDownloadUrls(imageUris: List<Uri>): Resource<List<String>> {
@@ -41,17 +43,25 @@ class FirebasePostRepository @Inject constructor(
         }
     }
 
-    override suspend fun getPostsForUser(userId: String): Resource<List<Post>> {
-        return try {
-            val postsCollection = db.collection(Constant.POSTS)
-            val userPostsQuery = postsCollection.whereEqualTo(USERID, userId).get().await()
+    override suspend fun getPostsForCurrentUser(): Resource<List<Post>> {
+        val userId = getFirebaseUserUid()
 
-            val userPosts = userPostsQuery.toObjects(Post::class.java)
-            Resource.Success(userPosts)
-        } catch (e: Exception) {
-            Resource.Error(e)
+        return if (userId.isNotEmpty()) {
+            try {
+                val postsCollection = db.collection(Constant.POSTS)
+                val userPostsQuery = postsCollection.whereEqualTo(USERID, userId).get().await()
+
+                val userPosts = userPostsQuery.toObjects(Post::class.java)
+                Resource.Success(userPosts)
+            } catch (e: Exception) {
+                Resource.Error(e)
+            }
+        } else {
+            // Handle the case where there is no authenticated user
+            Resource.Error(Exception("User not authenticated"))
         }
     }
+
 
     override suspend fun getAllPostsSortedByTimestamp(): Resource<List<Post>> {
         return try {
@@ -67,6 +77,8 @@ class FirebasePostRepository @Inject constructor(
             Resource.Error(e)
         }
     }
+
+    override suspend fun getFirebaseUserUid(): String = firebaseAuth.currentUser?.uid.orEmpty()
 
 
     override suspend fun addPost(post: Post): Resource<Unit> {

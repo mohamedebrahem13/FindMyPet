@@ -1,4 +1,4 @@
-package com.example.petme.ui.home
+package com.example.petme.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

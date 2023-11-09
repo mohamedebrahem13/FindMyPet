@@ -8,10 +8,10 @@
             type="com.example.petme.data.model.Post" />
         <variable
             name="clickListener"
-            type="com.example.petme.ui.home.PostListAdapter.PostListener" />
+            type="com.example.petme.adapter.PostListAdapter.PostListener" />
         <variable
             name="profileImageClickListener"
-            type="com.example.petme.ui.home.PostListAdapter.ProfileImageClickListener" />
+            type="com.example.petme.adapter.PostListAdapter.ProfileImageClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
