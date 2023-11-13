@@ -41,9 +41,21 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
+    implementation 'androidx.hilt:hilt-common:1.0.0'
+    def room_version="2.5.1"
+
 
 //circleimageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // Room components
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+// Room Kotlin extensions and coroutines support
+    implementation "androidx.room:room-ktx:$room_version"
+
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     // Hilt
     implementation "com.google.dagger:hilt-android:2.43.2"

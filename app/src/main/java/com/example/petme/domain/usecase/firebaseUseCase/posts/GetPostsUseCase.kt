@@ -5,8 +5,8 @@ import com.example.petme.data.model.Post
 import com.example.petme.domain.repository.PostRepository
 import javax.inject.Inject
 
-class GetPostsSortedByTimestampUseCase @Inject constructor(private val postRepository: PostRepository) {
+class GetPostsUseCase @Inject constructor(private val postRepository: PostRepository) {
     suspend fun execute(): Resource<List<Post>> {
-        return postRepository.getAllPostsSortedByTimestamp()
+        return postRepository.refreshPosts()
     }
 }

@@ -21,9 +21,6 @@ import javax.inject.Singleton
 class AuthModule {
 
 
-
-
-
     @Provides
     fun provideProfileImageRepository(): EditProfileRepository = EditProfileRepositoryImpl(
         storage = Firebase.storage,

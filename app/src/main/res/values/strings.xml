@@ -18,6 +18,8 @@
     <string name="SignOut">SignOut</string>
     <string name="Boy">Boy</string>
     <string name="Girl">Girl</string>
+    <string name="search_hint">you can search by pet name </string>
+
     <string name="Take_pet">this image for taking pet image from gallery </string>
 
     <string name="Sign_Up">Sign Up</string>

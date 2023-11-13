@@ -1,7 +1,7 @@
 package com.example.petme.di
 
 import com.example.petme.domain.repository.PostRepository
-import com.example.petme.domain.usecase.firebaseUseCase.posts.GetPostsSortedByTimestampUseCase
+import com.example.petme.domain.usecase.firebaseUseCase.posts.GetPostsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 object GetPostsSortedByTimestampUseCaseModule {
     @Provides
     @ViewModelScoped
-    fun provideGetPostsSortedByTimestampUseCase(postRepository: PostRepository): GetPostsSortedByTimestampUseCase {
-        return GetPostsSortedByTimestampUseCase(postRepository)
+    fun provideGetPostsSortedByTimestampUseCase(postRepository: PostRepository): GetPostsUseCase {
+        return GetPostsUseCase(postRepository)
     }
 }

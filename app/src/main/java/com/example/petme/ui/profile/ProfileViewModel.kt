@@ -8,6 +8,7 @@ import com.example.petme.data.model.User
 import com.example.petme.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
 import com.example.petme.domain.usecase.firebaseUseCase.SignOutUseCase
 import com.example.petme.domain.usecase.firebaseUseCase.profile.GetImageUrlUseCase
+import com.example.petme.domain.usecase.user.ClearUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val getImageUrlUseCase:GetImageUrlUseCase
+    private val getImageUrlUseCase:GetImageUrlUseCase, private val clearUserDataUseCase: ClearUserDataUseCase
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
@@ -28,6 +29,15 @@ class ProfileViewModel @Inject constructor(
     private val _getImageUrl = MutableStateFlow<Resource<String>>(Resource.Loading)
     val getImageUrl: StateFlow<Resource<String>> = _getImageUrl
 
+
+
+
+    fun clearUserData() {
+        viewModelScope.launch {
+            clearUserDataUseCase.execute()
+            // Add additional UI-related logic after clearing user data if needed
+        }
+    }
 
 
     private fun getImageUrl() {
@@ -66,8 +76,13 @@ class ProfileViewModel @Inject constructor(
     fun signOut() {
         viewModelScope.launch {
             try {
+                // Call clearUserData before signing out
+                clearUserDataUseCase.execute()
+
+                // Sign out the user
                 signOutUseCase()
-                Log.v("ProfileViewModel", "user is signOut success :")
+
+                Log.v("ProfileViewModel", "User is signed out successfully")
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Error in signOut: ${e.message}")
                 // Handle the error, show a message, or perform other actions as needed

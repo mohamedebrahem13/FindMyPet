@@ -1,6 +1,7 @@
 package com.example.petme.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,6 +14,13 @@ class PostListAdapter(
     private val profileImageClickListener: ProfileImageClickListener
 ) : ListAdapter<Post, PostListAdapter.PostViewHolder>(PostDiffUtil()) {
 
+    enum class ListType {
+        Sorted,
+        Searched
+    }
+
+    private var currentListType: ListType = ListType.Sorted
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = PostItemBinding.inflate(layoutInflater, parent, false)
@@ -24,7 +32,12 @@ class PostListAdapter(
         holder.bind(post, postClickListener, profileImageClickListener)
     }
 
-    class PostViewHolder(private val binding: PostItemBinding) :
+    fun submitListWithType(list: List<Post>?, listType: ListType) {
+        currentListType = listType
+        submitList(list)
+    }
+
+    inner class PostViewHolder(private val binding: PostItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post, postClickListener: PostListener, profileImageClickListener: ProfileImageClickListener) {
@@ -32,7 +45,30 @@ class PostListAdapter(
             binding.executePendingBindings()
             binding.clickListener = postClickListener
             binding.profileImageClickListener = profileImageClickListener
+
+            // Customize the item view based on the list type
+            when (currentListType) {
+                ListType.Sorted -> {
+                    // Customize UI for the sorted list if needed
+                }
+                ListType.Searched -> {
+                    // Customize UI for the searched list if needed
+                }
+            }
+
+            updateEmptyMessageVisibility()
         }
+
+
+        private fun updateEmptyMessageVisibility() {
+            if (currentListType == ListType.Searched && currentList.isEmpty()) {
+                binding.tvEmptyMessage.visibility = View.VISIBLE
+                binding.tvEmptyMessage.text = "No results found"
+            } else {
+                binding.tvEmptyMessage.visibility = View.GONE
+            }
+        }
+
     }
 
     class PostDiffUtil : DiffUtil.ItemCallback<Post>() {

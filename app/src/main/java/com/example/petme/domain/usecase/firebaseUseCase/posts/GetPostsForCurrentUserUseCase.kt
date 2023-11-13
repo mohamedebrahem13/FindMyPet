@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class GetPostsForCurrentUserUseCase @Inject constructor(private val postRepository: PostRepository) {
     suspend fun execute(): Resource<List<Post>> {
-        return postRepository.getPostsForCurrentUser()
+        return postRepository.getPostsForUserById()
     }
 }
