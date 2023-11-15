@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.petme.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:label="Profile" >
         <action
             android:id="@+id/action_profileFragment_to_profileEdit"
             app:destination="@id/profileEdit" />
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/profileEdit"
         android:name="com.example.petme.ui.profile.edit.ProfileEdit"
-        android:label="ProfileEdit" >
+        android:label="EditProfile" >
         <argument
             android:name="user_profile"
             app:argType="com.example.petme.data.model.User" />
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.petme.ui.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="Home" >
         <action
             android:id="@+id/action_homeFragment_to_addPet"
             app:destination="@id/addPet" />
@@ -51,10 +51,13 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.petme.ui.postdetails.PostDetailsFragment"
-        android:label="fragment_details"
+        android:label="@string/Pet_Details"
         tools:layout="@layout/fragment_post_details" >
         <argument
             android:name="post"
             app:argType="com.example.petme.data.model.Post" />
+        <argument
+            android:name="sourceFragment"
+            app:argType="string" />
     </fragment>
 </navigation>

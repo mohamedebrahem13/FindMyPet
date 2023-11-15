@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.example.petme.ui.forgotpassword.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment" >
+        android:label="ForgotPassword" >
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.example.petme.ui.signin.SignInFragment"
-        android:label="SignInFragment" >
+        android:label="SignIn" >
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.petme.ui.signup.SignUpFragment"
-        android:label="SignUpFragment" >
+        android:label="SignUp" >
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment"

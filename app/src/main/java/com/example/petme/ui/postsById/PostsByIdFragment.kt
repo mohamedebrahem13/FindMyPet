@@ -35,7 +35,7 @@ class PostsByIdFragment : Fragment() {
         userPostsAdapter =UserPostsAdapter(UserPostsAdapter.PostListener{
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                    it))
+                    it,"PostsByIdFragment"))
 
         })
         setupRecyclerView()
@@ -55,6 +55,7 @@ class PostsByIdFragment : Fragment() {
                     }
                     is Resource.Error -> {
                         val error = resource.throwable.message
+
                         // Handle the error
                     }
                 }

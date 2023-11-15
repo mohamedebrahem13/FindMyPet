@@ -1,5 +1,7 @@
 package com.example.petme.ui.postdetails
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ class PostDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPostDetailsBinding
     private lateinit var imageAdapter: ImageAdapter
 
+    // Inside PostDetailsFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,19 +27,49 @@ class PostDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentPostDetailsBinding.inflate(inflater)
 
-        with(binding){
-        val post= PostDetailsFragmentArgs.fromBundle(requireArguments()).post
+        with(binding) {
+            val post = PostDetailsFragmentArgs.fromBundle(requireArguments()).post
             postData= post
+            val sourceFragment = PostDetailsFragmentArgs.fromBundle(requireArguments()).sourceFragment
+
             // Set up the RecyclerView and its LinearLayoutManager
-            imageUrlsRecyclerView.layoutManager =   LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            imageUrlsRecyclerView.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
             // Initialize and set up the ImageAdapter with the post's imageUrls
             imageAdapter = ImageAdapter(post.imageUrls)
             imageUrlsRecyclerView.adapter = imageAdapter
+
+            // Handle views based on the source fragment
+            when (sourceFragment) {
+                "PostsByIdFragment" -> {
+                    // Code specific to PostsByIdFragment
+                    imageButton.visibility = View.GONE // or View.INVISIBLE
+                }
+
+                "AllPostsFragment" -> {
+                    // Code specific to AllPostsFragment
+                    imageButton.visibility = View.VISIBLE
+
+                    // Set OnClickListener for dialer
+                    imageButton.setOnClickListener {
+                        // Open dialer
+                        val dialIntent = Intent(Intent.ACTION_DIAL)
+                        dialIntent.data = Uri.parse("tel:${post.user?.phoneNumber}")
+                        startActivity(dialIntent)
+                    }
+                }
+                // Add more cases as needed for other source fragments
+                else -> {
+                    // Default case
+                    imageButton.visibility = View.VISIBLE
+                }
+            }
         }
 
         return binding.root
-
     }
+
 
 
 }

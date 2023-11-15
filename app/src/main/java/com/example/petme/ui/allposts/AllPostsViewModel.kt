@@ -32,7 +32,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
 
 
 
-    init {
+    fun getPosts(){
         viewModelScope.launch {
             try {
                 // Get all posts
@@ -50,7 +50,9 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
                 _sortedPosts.value = Resource.Error(e)
             }
         }
+
     }
+
 
     // Function to perform user search by pet_name
     fun searchPostsByPetName(petNameQuery: String?) {

@@ -40,7 +40,7 @@ class AllPostsFragment : Fragment() {
                 Toast.makeText(this.context, post.pet_name, Toast.LENGTH_SHORT).show()
 
                 findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(post)
+                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(post,"AllPostsFragment")
                 )
             },
             PostListAdapter.ProfileImageClickListener { post ->
@@ -48,6 +48,8 @@ class AllPostsFragment : Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(post))
             })
         binding.postListAdapter = postListAdapter
+
+        allPostsViewModel.getPosts()
 
         fetchHomeData()
         initObservers()
