@@ -7,11 +7,11 @@
 
         <variable
             name="user"
-            type="com.example.petme.data.model.User" />
+            type="com.example.findmypet.data.model.User" />
 
         <variable
             name="viewModle"
-            type="com.example.petme.ui.profile.ProfileViewModel" />
+            type="com.example.findmypet.ui.profile.ProfileViewModel" />
 
     </data>
 
@@ -38,6 +38,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_email"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{user.email}"
@@ -49,6 +50,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView8"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nickname"
@@ -59,6 +61,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView7"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Email"
@@ -70,6 +73,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView9"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Phone"
@@ -80,6 +84,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_nickname"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{user.nickname}"
@@ -91,6 +96,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_phone_number"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{user.phoneNumber}"
@@ -126,12 +132,17 @@
             android:id="@+id/editbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="292dp"
-            android:layout_marginTop="28dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="76dp"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.315"
             app:srcCompat="@drawable/ic_baseline_edit_24"
-            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

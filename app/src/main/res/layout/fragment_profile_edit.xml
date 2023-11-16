@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.example.petme.data.model.User" />
+            type="com.example.findmypet.data.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,13 +5,13 @@
     <data>
         <variable
             name="post"
-            type="com.example.petme.data.model.Post" />
+            type="com.example.findmypet.data.model.Post" />
         <variable
             name="clickListener"
-            type="com.example.petme.adapter.PostListAdapter.PostListener" />
+            type="com.example.findmypet.adapter.PostListAdapter.PostListener" />
         <variable
             name="profileImageClickListener"
-            type="com.example.petme.adapter.PostListAdapter.ProfileImageClickListener" />
+            type="com.example.findmypet.adapter.PostListAdapter.ProfileImageClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

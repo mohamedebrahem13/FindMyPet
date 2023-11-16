@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/addPet"
-        android:name="com.example.petme.ui.addpet.AddPetFragment"
+        android:name="com.example.findmypet.ui.addpet.AddPetFragment"
         android:label="AddPet" />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.petme.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:name="com.example.findmypet.ui.profile.ProfileFragment"
+        android:label="Profile" >
         <action
             android:id="@+id/action_profileFragment_to_profileEdit"
             app:destination="@id/profileEdit" />
         <argument
             android:name="clickedpost"
-            app:argType="com.example.petme.data.model.Post"
+            app:argType="com.example.findmypet.data.model.Post"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
 
     <fragment
         android:id="@+id/profileEdit"
-        android:name="com.example.petme.ui.profile.edit.ProfileEdit"
-        android:label="ProfileEdit" >
+        android:name="com.example.findmypet.ui.profile.edit.ProfileEdit"
+        android:label="EditProfile" >
         <argument
             android:name="user_profile"
-            app:argType="com.example.petme.data.model.User" />
+            app:argType="com.example.findmypet.data.model.User" />
     </fragment>
 
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.petme.ui.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:name="com.example.findmypet.ui.home.HomeFragment"
+        android:label="Home" >
         <action
             android:id="@+id/action_homeFragment_to_addPet"
             app:destination="@id/addPet" />
@@ -50,11 +50,14 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.petme.ui.postdetails.PostDetailsFragment"
-        android:label="fragment_details"
+        android:name="com.example.findmypet.ui.postdetails.PostDetailsFragment"
+        android:label="@string/Pet_Details"
         tools:layout="@layout/fragment_post_details" >
         <argument
             android:name="post"
-            app:argType="com.example.petme.data.model.Post" />
+            app:argType="com.example.findmypet.data.model.Post" />
+        <argument
+            android:name="sourceFragment"
+            app:argType="string" />
     </fragment>
 </navigation>

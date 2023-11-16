@@ -12,7 +12,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId 'com.example.petme'
+        applicationId 'com.example.findmypet'
         minSdk 22
         targetSdk 32
         versionCode 1
@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation 'androidx.work:work-runtime-ktx:2.8.1'
-    implementation 'androidx.hilt:hilt-common:1.0.0'
+    implementation 'androidx.hilt:hilt-common:1.1.0'
     def room_version="2.5.1"
 
 
@@ -61,7 +61,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.43.2"
     implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    kapt "com.google.dagger:hilt-compiler:2.43.2"
+    kapt "com.google.dagger:hilt-compiler:2.48.1"
 
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
