@@ -1,7 +1,7 @@
-package com.example.findmypet.di
+package com.example.findmypet.di.auth
 
 import com.example.findmypet.domain.repository.Authenticator
-import com.example.findmypet.domain.usecase.firebaseUseCase.SignOutUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.CheckCurrentUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,10 +10,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object SignOutUseCaseModule {
+object CheckCurrentUserUseCaseModule {
     @Provides
     @ViewModelScoped
-    fun provideSignOutUseCase(authenticator: Authenticator): SignOutUseCase {
-        return SignOutUseCase(authenticator)
+    fun provideCheckCurrentUserUseCase(authenticator: Authenticator): CheckCurrentUserUseCase {
+        return CheckCurrentUserUseCase(authenticator)
     }
 }

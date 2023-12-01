@@ -1,7 +1,7 @@
-package com.example.findmypet.di
+package com.example.findmypet.di.posts
 
 import com.example.findmypet.domain.repository.PostRepository
-import com.example.findmypet.domain.usecase.firebaseUseCase.posts.UploadImagesUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,10 +10,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object UploadImagesUseCaseModule {
+object GetPostsSortedByTimestampUseCaseModule {
     @Provides
     @ViewModelScoped
-    fun provideUploadImagesUseCase(postRepository: PostRepository): UploadImagesUseCase {
-        return UploadImagesUseCase(postRepository)
+    fun provideGetPostsSortedByTimestampUseCase(postRepository: PostRepository): GetPostsUseCase {
+        return GetPostsUseCase(postRepository)
     }
 }

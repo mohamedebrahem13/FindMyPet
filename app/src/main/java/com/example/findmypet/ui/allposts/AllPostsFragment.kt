@@ -11,7 +11,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmypet.adapter.PostListAdapter
@@ -19,6 +21,7 @@ import com.example.findmypet.common.Resource
 import com.example.findmypet.databinding.AllPostsFragmentBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AllPostsFragment : Fragment() {
@@ -46,39 +49,42 @@ class AllPostsFragment : Fragment() {
             PostListAdapter.ProfileImageClickListener { post ->
 
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(post))
+            },PostListAdapter.FaveImageClickListener{
+                allPostsViewModel.addFav(postId = it.postId.toString())
+                addFaveObserver() },PostListAdapter.RemoveFaveImageClickListener{
+                allPostsViewModel.removeFav(postId = it.postId.toString())
+                removeFaveObserver()
             })
         binding.postListAdapter = postListAdapter
 
-        allPostsViewModel.getPosts()
-
-        fetchHomeData()
+        getCurrentUser()
         initObservers()
+        refresh()
+
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupSearchListener(binding.etSearch)
-
-        observeSearchedPosts()
     }
 
     private fun setupSearchListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.tvEmptySearched.visibility =View.GONE
                 // Not needed for your use case
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                allPostsViewModel.searchPostsByPetName(s?.toString())
+                allPostsViewModel.searchPosts(s?.toString() ?: "")
             }
 
             override fun afterTextChanged(s: Editable?) {
                 if (s.isNullOrBlank()) {
-                    // If the search bar is empty, clear the search and show the sorted list
-                    allPostsViewModel.searchPostsByPetName(null)
+                    // If the search bar is empty, reset the search and show the original list of posts
+                    allPostsViewModel.resetSearch()
                 }
             }
         })
@@ -86,6 +92,72 @@ class AllPostsFragment : Fragment() {
 
 
 
+    private fun refresh(){
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            allPostsViewModel.fetchPosts()
+            binding.swipeRefreshLayout.isRefreshing = false // To stop the refreshing animation
+        }
+    }
+
+    private fun removeFaveObserver(){
+
+        lifecycleScope.launchWhenStarted{
+            allPostsViewModel.removeFaveSharedFlow.collect{ result ->
+                // Update UI based on the result state
+                when (result) {
+                    is Resource.Loading -> {
+                        binding.prograss.visibility=View.VISIBLE
+
+                    }
+                    is Resource.Success -> {
+                        binding.prograss.visibility=View.GONE
+                        Toast.makeText(requireContext(),"Success remove the post from favorite ", Toast.LENGTH_SHORT).show()
+
+                    }
+                    is Resource.Error -> {
+                        binding.prograss.visibility=View.GONE
+                        val error = result.throwable.message
+                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+
+
+                    }
+                }
+            }
+
+        }
+    }
+
+
+
+    private fun addFaveObserver(){
+
+        // Observe addfave post loading state
+        lifecycleScope.launchWhenStarted{
+            allPostsViewModel.addFaveSharedFlow.collect { result ->
+                // Update UI based on the result state
+                when (result) {
+                    is Resource.Loading -> {
+                        binding.prograss.visibility=View.VISIBLE
+
+                    }
+                    is Resource.Success -> {
+                        binding.prograss.visibility=View.GONE
+                        Toast.makeText(requireContext(),"Success add the post to favorite ", Toast.LENGTH_SHORT).show()
+
+                    }
+                    is Resource.Error -> {
+                        binding.prograss.visibility=View.GONE
+                        val error = result.throwable.message
+                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+
+
+                    }
+                }
+            }
+
+        }
+
+    }
 
 
     private fun observeCurrentUser() {
@@ -93,12 +165,12 @@ class AllPostsFragment : Fragment() {
             allPostsViewModel.currentUser.collect { resource ->
                 when (resource) {
                     is Resource.Success -> {
-                        binding.tvNickname.text = resource.data?.nickname?.split(" ")?.get(0)
+                        binding.tvNickname.text = resource.data.nickname.split(" ")[0]
                         binding.prograss.visibility = View.GONE
                         binding.hi.visibility = View.VISIBLE
                     }
                     is Resource.Error -> {
-                        Log.v("HomeFragment", resource.toString())
+                        Log.v("currentuser", resource.toString())
                         binding.prograss.visibility = View.GONE
                         binding.hi.visibility = View.GONE
                     }
@@ -114,67 +186,64 @@ class AllPostsFragment : Fragment() {
         }
     }
 
-    private fun observeSortedPosts() {
-        lifecycleScope.launchWhenResumed {
-            allPostsViewModel.sortedPosts.collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        binding.prograss.visibility = View.GONE
-                        postListAdapter.submitListWithType(result.data, PostListAdapter.ListType.Sorted)
-                        binding.tvEmptyMessage.visibility = if (result.data.isEmpty()) View.VISIBLE else View.GONE
+    private fun observePostsLiveData() {
 
-                        Log.v("success", result.data.toString())
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility = View.GONE
-                        val error = result.throwable
-                        Log.v("Home", error.toString())
-                    }
-                    Resource.Loading -> {
-                        binding.prograss.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        // Handle other states if necessary
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                allPostsViewModel.postsStateFlow.collect { result ->
+                    when (result) {
+
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            postListAdapter.submitList(result.data)
+                            binding.tvEmptySorted.visibility =
+                                if (result.data.isEmpty()) View.VISIBLE else View.GONE
+                            binding.tvEmptySearched.visibility = View.GONE
+
+                            Log.v("success", result.data.toString())
+                            Toast.makeText(
+                                requireContext(),
+                                "Success get the posts ",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is Resource.Error -> {
+                            handleResourceError(result)
+                            Toast.makeText(
+                                requireContext(),
+                                "error get the posts ",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+                        Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun observeSearchedPosts() {
-        lifecycleScope.launchWhenResumed {
-            allPostsViewModel.searchedPosts.collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        binding.prograss.visibility = View.GONE
-                        postListAdapter.submitListWithType(result.data, PostListAdapter.ListType.Searched)
-                        Log.v("success", result.data.toString())
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility = View.GONE
-                        val error = result.throwable
-                        Log.v("Search", error.toString())
-                    }
-                    Resource.Loading -> {
-                        binding.prograss.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        // Handle other states if necessary
-                    }
-                }
-            }
-        }
-    }
+
+
 
     private fun initObservers() {
         observeCurrentUser()
-        observeSortedPosts()
-        observeSearchedPosts()
+        observePostsLiveData()
     }
 
-    private fun fetchHomeData() {
+    private fun getCurrentUser() {
         lifecycleScope.launchWhenResumed {
             allPostsViewModel.getCurrentUser()
         }
     }
+
+    private fun handleResourceError(resource: Resource.Error) {
+        binding.prograss.visibility = View.GONE
+        val error = resource.throwable
+        Log.v("allPosts", error.toString())
+        Toast.makeText(requireContext(), "Error getting the posts", Toast.LENGTH_SHORT).show()
+    }
+
 }

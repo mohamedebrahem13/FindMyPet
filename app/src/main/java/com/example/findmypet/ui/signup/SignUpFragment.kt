@@ -48,7 +48,6 @@ class SignUpFragment : Fragment() {
 
         }
 
-
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -117,8 +116,8 @@ class SignUpFragment : Fragment() {
                 editTextTextPassword5.error = "Password must be the same"
                 return false
             }
-            if (editTextPhone2.text.isNullOrEmpty() || editTextPhone2.length()<11) {
-                editTextPhone2.error = "phone must be 11 number"
+            if (editTextPhone2.text.isNullOrEmpty() || editTextPhone2.length() < 11 || !editTextPhone2.text.startsWith("01")) {
+                editTextPhone2.error = "Phone number must start with 01 and be 11 digits long"
                 return false
             }
 

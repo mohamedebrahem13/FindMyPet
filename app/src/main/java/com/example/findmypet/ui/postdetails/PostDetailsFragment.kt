@@ -47,9 +47,10 @@ class PostDetailsFragment : Fragment() {
                     imageButton.visibility = View.GONE // or View.INVISIBLE
                 }
 
-                "AllPostsFragment" -> {
+                "AllPostsFragment", "FavoriteFragment" -> {
                     // Code specific to AllPostsFragment
                     imageButton.visibility = View.VISIBLE
+
 
                     // Set OnClickListener for dialer
                     imageButton.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.example.findmypet.di
+package com.example.findmypet.di.auth
 
 import com.example.findmypet.data.repository.EditProfileRepositoryImpl
 import com.example.findmypet.data.repository.FirebaseAuthenticator

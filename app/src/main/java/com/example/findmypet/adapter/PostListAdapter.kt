@@ -12,14 +12,11 @@ import com.example.findmypet.databinding.PostItemBinding
 class PostListAdapter(
     private val postClickListener: PostListener,
     private val profileImageClickListener: ProfileImageClickListener
+    ,private val faveImageClickListener:FaveImageClickListener,private val removeFaveImageClickListener:RemoveFaveImageClickListener
 ) : ListAdapter<Post, PostListAdapter.PostViewHolder>(PostDiffUtil()) {
 
-    enum class ListType {
-        Sorted,
-        Searched
-    }
 
-    private var currentListType: ListType = ListType.Sorted
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -29,45 +26,58 @@ class PostListAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = getItem(position)
-        holder.bind(post, postClickListener, profileImageClickListener)
+        holder.bind(post, postClickListener, profileImageClickListener,faveImageClickListener,removeFaveImageClickListener)
     }
 
-    fun submitListWithType(list: List<Post>?, listType: ListType) {
-        currentListType = listType
-        submitList(list)
-    }
+
 
     inner class PostViewHolder(private val binding: PostItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(post: Post, postClickListener: PostListener, profileImageClickListener: ProfileImageClickListener) {
+        fun bind(post: Post, postClickListener: PostListener, profileImageClickListener: ProfileImageClickListener,FaveImageClickListener:FaveImageClickListener,removeFaveImageClickListener: RemoveFaveImageClickListener) {
             binding.post = post
             binding.executePendingBindings()
+            binding.faveImageClickListener=FaveImageClickListener
             binding.clickListener = postClickListener
             binding.profileImageClickListener = profileImageClickListener
+            binding.removeFaveImageClickListener=removeFaveImageClickListener
+            binding.faveFill.setOnClickListener {
+                if (binding.faveFill.visibility == View.VISIBLE) {
+                    binding.faveFill.visibility = View.GONE
+                    binding.imageView3.visibility = View.VISIBLE
+                } else {
+                    binding.faveFill.visibility = View.VISIBLE
+                    binding.imageView3.visibility = View.GONE
+                }
 
-            // Customize the item view based on the list type
-            when (currentListType) {
-                ListType.Sorted -> {
-                    // Customize UI for the sorted list if needed
-                }
-                ListType.Searched -> {
-                    // Customize UI for the searched list if needed
-                }
+                // Notify the listener about the click event
+                removeFaveImageClickListener.onClick(post)
+
             }
 
-            updateEmptyMessageVisibility()
+
+
+
+
+
+            binding.imageView3.setOnClickListener {
+                // Toggle the visibility of ImageViews when clicked
+                if (binding.imageView3.visibility == View.VISIBLE) {
+                    binding.imageView3.visibility = View.GONE
+                    binding.faveFill.visibility = View.VISIBLE
+                } else {
+                    binding.imageView3.visibility = View.VISIBLE
+                    binding.faveFill.visibility = View.GONE
+                }
+
+                // Notify the listener about the click event
+                faveImageClickListener.onClick(post)
+            }
+
         }
 
 
-        private fun updateEmptyMessageVisibility() {
-            if (currentListType == ListType.Searched && currentList.isEmpty()) {
-                binding.tvEmptyMessage.visibility = View.VISIBLE
-                binding.tvEmptyMessage.text = "No results found"
-            } else {
-                binding.tvEmptyMessage.visibility = View.GONE
-            }
-        }
+
 
     }
 
@@ -86,6 +96,13 @@ class PostListAdapter(
     }
 
     class ProfileImageClickListener(val clickListener: (post: Post) -> Unit) {
+        fun onClick(post: Post) = clickListener(post)
+    }
+
+    class FaveImageClickListener(val clickListener: (post: Post) -> Unit) {
+        fun onClick(post: Post) = clickListener(post)
+    }
+    class RemoveFaveImageClickListener(val clickListener: (post: Post) -> Unit) {
         fun onClick(post: Post) = clickListener(post)
     }
 }

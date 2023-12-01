@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/petNameTextView"
-                style="@style/text"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -48,11 +48,11 @@
 
             <TextView
                 android:id="@+id/petDescriptionTextView"
-                style="@style/text"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,9 +63,8 @@
 
             <TextView
                 android:id="@+id/petAgeTextView"
-                style="@style/text"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="15sp"
@@ -76,7 +75,7 @@
 
             <TextView
                 android:id="@+id/petGenderTextView"
-                style="@style/text"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -88,7 +87,7 @@
 
             <TextView
                 android:id="@+id/petLocationTextView"
-                style="@style/text"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -159,7 +158,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/pet_age"
                 app:layout_constraintEnd_toStartOf="@+id/petAgeTextView"
-                app:layout_constraintHorizontal_bias="0.018"
+                app:layout_constraintHorizontal_bias="0.009"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -171,7 +170,7 @@
                 android:layout_marginTop="12dp"
                 android:text="@string/Pet_Gender"
                 app:layout_constraintEnd_toStartOf="@+id/petGenderTextView"
-                app:layout_constraintHorizontal_bias="0.022"
+                app:layout_constraintHorizontal_bias="0.011"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -184,7 +183,7 @@
                 android:text="@string/pet_location"
                 app:layout_constraintBottom_toBottomOf="@+id/petLocationTextView"
                 app:layout_constraintEnd_toStartOf="@+id/petLocationTextView"
-                app:layout_constraintHorizontal_bias="0.03"
+                app:layout_constraintHorizontal_bias="0.015"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -192,8 +191,9 @@
                 style="@style/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/PetDescription"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -223,6 +223,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/petLocationTextView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

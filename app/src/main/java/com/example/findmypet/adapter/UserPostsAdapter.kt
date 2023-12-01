@@ -29,7 +29,6 @@ class UserPostsAdapter(
         fun bind(post: Post, postListener: PostListener) {
             binding.post = post
             binding.executePendingBindings()
-
             binding.postListener = postListener
         }
     }
@@ -46,9 +45,11 @@ class UserPostsAdapter(
 
     class PostListener(
         val clickListener: (post: Post) -> Unit,
-        val deleteClickListener: (post: Post) -> Unit
+        val deleteClickListener: (post: Post) -> Unit,
+
     ) {
         fun onClick(post: Post) = clickListener(post)
         fun onDeleteClick(post: Post) = deleteClickListener(post)
+
     }
 }

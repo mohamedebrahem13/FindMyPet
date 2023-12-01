@@ -4,12 +4,15 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.findmypet.common.Constant
+import com.example.findmypet.common.Constant.ADDITIONAL_TEXT
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
 import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.UploadImagesUseCase
+import com.example.findmypet.domain.usecase.notification.SendNotificationToTopicUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val uploadImagesUseCase: UploadImagesUseCase,
-    private val addPostUseCase: AddPostUseCase,private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val addPostUseCase: AddPostUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    ,private val sendNotificationToTopicUseCase: SendNotificationToTopicUseCase
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
@@ -30,8 +35,19 @@ class PostViewModel @Inject constructor(
     private val _addPostResult = MutableStateFlow<Resource<Unit>>(Resource.Loading)
     val addPostResult: StateFlow<Resource<Unit>> = _addPostResult
 
+    private val _selectedImageUrisFlow = MutableStateFlow<List<Uri>>(emptyList())
+    val selectedImageUrisFlow: StateFlow<List<Uri>> = _selectedImageUrisFlow
 
 
+    fun updateSelectedImageUris(uris: List<Uri>) {
+        _selectedImageUrisFlow.value = uris
+    }
+
+    fun removeImageUriAtPosition(position: Int) {
+        val currentUris = _selectedImageUrisFlow.value.toMutableList()
+        currentUris.removeAt(position)
+        _selectedImageUrisFlow.value = currentUris
+    }
 
 
 
@@ -59,10 +75,21 @@ class PostViewModel @Inject constructor(
             if (uploadResult is Resource.Success) {
                 // Step 2: Add post with image URLs
                 val addResult = addPostUseCase(post, uploadResult.data)
+
+
+                val notificationBody = "$ADDITIONAL_TEXT ${post.pet_name}"
+
+                sendNotificationToTopicUseCase. sendNotificationToTopic(
+                    "New Pet Notification", notificationBody,
+                    Constant.Topic
+                )
+
+                //here notify the users
                 _addPostResult.value = addResult
+
             } else {
                 // Image upload failed
-                _addPostResult.value = Resource.Error(Exception("Image upload failed"))
+                _addPostResult.value = Resource.Error(Throwable("Image upload failed"))
             }
         }
     }

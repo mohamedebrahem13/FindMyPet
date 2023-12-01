@@ -6,9 +6,9 @@ import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.DeletePostUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsForCurrentUserUseCase
+import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,32 +18,48 @@ class PostsByUserViewModel @Inject constructor(
     private val getPostsForCurrentUserUseCase: GetPostsForCurrentUserUseCase, private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
 
-    private val _postsStateFlow  = MutableStateFlow<Resource<List<Post>>>(Resource.Loading)
-    val postsStateFlow: StateFlow<Resource<List<Post>>> = _postsStateFlow
+    private val _userPostsStateFlow = MutableStateFlow<Resource<List<Post>>>(Resource.Loading)
+    val userPostsStateFlow: StateFlow<Resource<List<Post>>> = _userPostsStateFlow
 
-    private val _deletePostStateFlow = MutableStateFlow<Resource<Unit>>(Resource.Success(Unit))
-    val deletePostStateFlow: StateFlow<Resource<Unit>> = _deletePostStateFlow
+    private val _deletePostStateFlow = MutableSharedFlow<Resource<Unit>>()
+    val deletePostSharedFlow: SharedFlow<Resource<Unit>> = _deletePostStateFlow.asSharedFlow()
 
 
-    fun deletePost(postId: String) {
+    init {
+        fetchPostsForCurrentUser()
+    }
+
+    fun observeDeletePostAction(postId: String) {
         viewModelScope.launch {
             try {
-                _deletePostStateFlow.value = Resource.Loading
+                _deletePostStateFlow.emit(Resource.Loading)
                 val result = deletePostUseCase(postId)
-                _deletePostStateFlow.value = result
-                // Handle the result as needed (update UI, show success message, etc.)
+                _deletePostStateFlow.emit(result)
             } catch (e: Exception) {
-                _deletePostStateFlow.value = Resource.Error(e)
+                if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.UNAVAILABLE) {
+                    _deletePostStateFlow.emit(Resource.Error(e))
+                } else {
+                    _deletePostStateFlow.emit(Resource.Error(e))
+                }
+            }
+
+        }
+    }
+
+
+
+     fun fetchPostsForCurrentUser() {
+        viewModelScope.launch {
+            try {
+                getPostsForCurrentUserUseCase().collect { postsResource ->
+                    _userPostsStateFlow.value = postsResource
+                }
+            } catch (e: Throwable) {
+                _userPostsStateFlow.value = Resource.Error(e)
+                // Handle exceptions thrown during collection
+                // e.g., handle network or other errors
             }
         }
     }
 
-
-
-    fun getPostsForCurrentUser() {
-        viewModelScope.launch {
-            val result = getPostsForCurrentUserUseCase.execute()
-            _postsStateFlow.value = result
-        }
-    }
 }

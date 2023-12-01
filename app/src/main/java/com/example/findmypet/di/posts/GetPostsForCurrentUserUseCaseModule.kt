@@ -1,4 +1,4 @@
-package com.example.findmypet.di
+package com.example.findmypet.di.posts
 
 import com.example.findmypet.domain.repository.PostRepository
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsForCurrentUserUseCase

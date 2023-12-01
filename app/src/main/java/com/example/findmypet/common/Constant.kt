@@ -20,6 +20,18 @@ object Constant {
     //File names
     const val PROFILE_IMAGE_NAME = ".jpg"
 
+    const val FAVORITE="favoritePosts"
+
+     const val channelId = "new_pet_channel"
+     const val channelName = "New Pet"
+    const val Topic="/topics/new_pet"
+
+     const val channelDescription = "Notifications for new pets"
+    const val SERVER_KEY="AAAAHg17aTM:APA91bGHhzMnl0AM7gdU1iwdndyaqXYZp-i4SazcUmF376rUvA__SWbtkxArNpS6vzC50HxD5m4mBywwB2CaiSl4b8kOJHRk4iFSOOj3cpM70NlGjsQQsNPodhlM96ZJZk-CN5r9jGlT"
+    const val BASE_URL="https://fcm.googleapis.com"
+    const val CONTENT_TYPE="application/json"
+    const val ADDITIONAL_TEXT = "There is a new post added: "
+
 
 
 

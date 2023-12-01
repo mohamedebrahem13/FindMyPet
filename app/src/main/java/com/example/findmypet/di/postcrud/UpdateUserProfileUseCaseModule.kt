@@ -1,4 +1,4 @@
-package com.example.findmypet.di
+package com.example.findmypet.di.postcrud
 
 import com.example.findmypet.domain.repository.EditProfileRepository
 import com.example.findmypet.domain.usecase.firebaseUseCase.profile.UpdateUserProfileUseCase

@@ -8,7 +8,6 @@ import com.example.findmypet.data.model.User
 import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.SignOutUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.profile.GetImageUrlUseCase
-import com.example.findmypet.domain.usecase.user.ClearUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val getImageUrlUseCase:GetImageUrlUseCase, private val clearUserDataUseCase: ClearUserDataUseCase
+    private val getImageUrlUseCase:GetImageUrlUseCase
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
@@ -32,12 +31,7 @@ class ProfileViewModel @Inject constructor(
 
 
 
-    fun clearUserData() {
-        viewModelScope.launch {
-            clearUserDataUseCase.execute()
-            // Add additional UI-related logic after clearing user data if needed
-        }
-    }
+
 
 
     private fun getImageUrl() {
@@ -76,9 +70,6 @@ class ProfileViewModel @Inject constructor(
     fun signOut() {
         viewModelScope.launch {
             try {
-                // Call clearUserData before signing out
-                clearUserDataUseCase.execute()
-
                 // Sign out the user
                 signOutUseCase()
 

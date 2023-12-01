@@ -1,6 +1,5 @@
 package com.example.findmypet.ui.addpet
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,15 +22,14 @@ import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentAddpetBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddPetFragment : Fragment() {
-    private var User: User? =null
-    private val selectedImageUrisFlow = MutableStateFlow<List<Uri>>(emptyList())
+class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
+    private var currentUser: User? =null
     private var selectedGender: String? = null
     private var selectedCity: String? = null
+    private var imageAdapter:ImageAdapter?=null
     private val postViewModel:PostViewModel by viewModels()
     private lateinit var imagePicker: ActivityResultLauncher<String>
     private val permissionLauncher: ActivityResultLauncher<String> =
@@ -48,11 +46,11 @@ class AddPetFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imagePicker = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
-                if (selectedImageUrisFlow.value.size + uris.size > MAX_IMAGES) {
+                if (postViewModel.selectedImageUrisFlow.value.size + uris.size > MAX_IMAGES) {
                     Toast.makeText(requireContext(), "You can select a maximum of 8 images", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Clear the list before selecting new images
-                    selectedImageUrisFlow.value = uris
+                    // add selecting new images
+                    postViewModel.updateSelectedImageUris(uris)
                 }
             }
         }
@@ -86,7 +84,7 @@ class AddPetFragment : Fragment() {
             if (checkAllFields()){
                 postViewModel.addPostWithImages(Post(
                     pet_name = binding.editTextTextPersonName.text.toString(), pet_description = binding.PetDescription.text.toString(), pet_age = binding.editTextNumber.text.toString(), pet_gender = selectedGender.toString(),null,selectedCity.toString(),null,
-                    user = User ), selectedImageUrisFlow.value )
+                    user = currentUser ), postViewModel.selectedImageUrisFlow.value )
                 addPetObserver()
             }
         }
@@ -100,6 +98,12 @@ class AddPetFragment : Fragment() {
 
 
 
+
+
+
+
+
+
     private fun fetchUserProfile() {
         lifecycleScope.launchWhenResumed {
             postViewModel.getCurrentUser() // Trigger a data refresh when the fragment is resumed
@@ -108,7 +112,7 @@ class AddPetFragment : Fragment() {
 
 
     private fun radioCheck(){
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.girl -> {
                     selectedGender = "Girl"
@@ -127,7 +131,7 @@ class AddPetFragment : Fragment() {
 
     private fun observeSelectedImageUris() {
         viewLifecycleOwner.lifecycleScope.launch {
-            selectedImageUrisFlow.collect { uris ->
+            postViewModel.selectedImageUrisFlow.collect { uris ->
                 if (uris.isNotEmpty()) {
                     // Hide "Take Pet" button and "Take Pet Image"
                     binding.TakePet.visibility = View.GONE
@@ -151,7 +155,7 @@ class AddPetFragment : Fragment() {
 
 
     private fun setupRecyclerView() {
-        val imageAdapter = ImageAdapter(selectedImageUrisFlow.value.map { it.toString() })
+         imageAdapter = ImageAdapter(postViewModel.selectedImageUrisFlow.value.map { it.toString() },this)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = imageAdapter
@@ -187,6 +191,7 @@ class AddPetFragment : Fragment() {
 
                     }
                     is Resource.Success -> {
+
                         // Handle successful post addition
                         Log.v("Success","Success addPost ")
                         Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
@@ -196,7 +201,8 @@ class AddPetFragment : Fragment() {
                     }
                     is Resource.Error -> {
                         val throwable = result.throwable
-                        Toast.makeText(context,throwable.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            "failed add the pet check your internet$throwable", Toast.LENGTH_SHORT).show()
                         binding.prograss.visibility = View.GONE
 
                         // Handle failure (e.g., display an error message)
@@ -216,7 +222,7 @@ class AddPetFragment : Fragment() {
                     currentUser.collect { resource ->
                         when (resource) {
                             is Resource.Success -> {
-                                User = resource.data
+                                this@AddPetFragment.currentUser = resource.data
                                 prograss.visibility = View.GONE
                             }
                             is Resource.Error -> {
@@ -242,7 +248,7 @@ class AddPetFragment : Fragment() {
 
     private fun checkAllFields():Boolean {
         with(binding){
-            if(selectedImageUrisFlow.value.isEmpty()){
+            if(postViewModel.selectedImageUrisFlow.value.isEmpty()){
                 Toast.makeText(context, "Please select the pet images", Toast.LENGTH_SHORT).show()
                 return false
             }
@@ -298,14 +304,16 @@ class AddPetFragment : Fragment() {
     }
 
     private fun openGallery() {
-        if (selectedImageUrisFlow.value.size < MAX_IMAGES) {
+        if (postViewModel.selectedImageUrisFlow.value.size < MAX_IMAGES) {
             // Use the modern approach for all Android versions
             imagePicker.launch("image/*") // You can specify the MIME type here if needed
         }
     }
 
-
-
+    override fun onImageClick(position: Int) {
+        postViewModel.removeImageUriAtPosition(position)
+        imageAdapter?.notifyItemRemoved(position)
+    }
 
 
 }
