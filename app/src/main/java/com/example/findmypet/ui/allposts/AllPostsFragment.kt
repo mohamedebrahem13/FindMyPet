@@ -200,7 +200,7 @@ class AllPostsFragment : Fragment() {
                                 if (result.data.isEmpty()) View.VISIBLE else View.GONE
                             binding.tvEmptySearched.visibility = View.GONE
 
-                            Log.v("success", result.data.toString())
+                            Log.v("success GET THE POSTS", result.data.toString())
                             Toast.makeText(
                                 requireContext(),
                                 "Success get the posts ",
@@ -214,6 +214,7 @@ class AllPostsFragment : Fragment() {
                                 "error get the posts ",
                                 Toast.LENGTH_SHORT
                             ).show()
+
 
                         }
                         Resource.Loading -> {

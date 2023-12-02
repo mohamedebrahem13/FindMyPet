@@ -1,7 +1,6 @@
 package com.example.findmypet.common
 
 import android.widget.ImageView
-import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.findmypet.R
@@ -33,15 +32,6 @@ fun postImage(imageView: ImageView, url: String?) {
     }
 }
 
-//for spinner in the edit post
-@BindingAdapter("selectedCity")
-fun Spinner.setSelectedCity(city: String?) {
-    city?.let { selectedCity ->
-        val citiesArray = resources.getStringArray(R.array.egypt_cities)
-        val cityPosition = citiesArray.indexOf(selectedCity)
-        setSelection(cityPosition)
-    }
-}
 
 
 

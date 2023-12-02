@@ -90,7 +90,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
         viewModelScope.launch {
             try {
                 _removeFaveSharedFlow.emit(Resource.Loading)
-                val result = removePostFromFavoriteUseCase.removePostFromFavorites(postId)
+                val result = removePostFromFavoriteUseCase.execute(postId)
                 _removeFaveSharedFlow.emit(result)
             } catch (e: Exception) {
                 if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.UNAVAILABLE) {
@@ -106,7 +106,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
         viewModelScope.launch {
             try {
                 _addFaveSharedFlow.emit(Resource.Loading)
-                val result = AddPostToFavoriteUseCase(postId)
+                val result = AddPostToFavoriteUseCase.execute(postId)
                 _addFaveSharedFlow.emit(result)
             } catch (e: Exception) {
                 if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.UNAVAILABLE) {

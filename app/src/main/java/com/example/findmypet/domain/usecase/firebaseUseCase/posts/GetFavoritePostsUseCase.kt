@@ -6,8 +6,8 @@ import com.example.findmypet.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPostsUseCase @Inject constructor(private val postRepository: PostRepository) {
-     fun execute(): Flow<Resource<List<Post>>> {
-        return postRepository.refreshPosts()
+class GetFavoritePostsUseCase @Inject constructor(private val postRepository: PostRepository) {
+    fun execute(): Flow<Resource<List<Post>>> {
+        return postRepository.getFavoritePosts()
     }
 }

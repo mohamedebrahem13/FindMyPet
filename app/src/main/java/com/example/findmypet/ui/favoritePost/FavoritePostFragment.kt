@@ -76,7 +76,7 @@ class FavoritePostFragment : Fragment() {
     private fun observeFavoritePosts() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.favoritePostsStateFlow.collect { postsResource ->
+                viewModel.favoritePosts.collect { postsResource ->
                     when (postsResource) {
                         is Resource.Success -> handleSuccess(postsResource.data)
                         is Resource.Error -> handleError(postsResource.throwable)

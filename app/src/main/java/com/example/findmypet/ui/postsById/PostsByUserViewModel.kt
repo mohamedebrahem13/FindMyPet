@@ -33,7 +33,7 @@ class PostsByUserViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _deletePostStateFlow.emit(Resource.Loading)
-                val result = deletePostUseCase(postId)
+                val result = deletePostUseCase.execute(postId)
                 _deletePostStateFlow.emit(result)
             } catch (e: Exception) {
                 if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.UNAVAILABLE) {

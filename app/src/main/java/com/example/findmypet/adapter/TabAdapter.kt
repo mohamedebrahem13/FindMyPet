@@ -6,8 +6,13 @@ import com.example.findmypet.ui.allposts.AllPostsFragment
 import com.example.findmypet.ui.favoritePost.FavoritePostFragment
 import com.example.findmypet.ui.postsById.PostsByIdFragment
 
-class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 3
+class TabAdapter(
+    fragment: Fragment,
+    private val tabIcons: Array<Int>,
+    private val tabTitles: Array<String>
+) : FragmentStateAdapter(fragment) {
+
+    override fun getItemCount(): Int = tabTitles.size
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
@@ -16,5 +21,13 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
             2 -> FavoritePostFragment()
             else -> throw IllegalArgumentException("Invalid position")
         }
+    }
+
+    fun getTabIcon(position: Int): Int {
+        return tabIcons[position]
+    }
+
+    fun getTabTitle(position: Int): String {
+        return tabTitles[position]
     }
 }
