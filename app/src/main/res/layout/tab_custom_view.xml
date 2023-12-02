@@ -1,0 +1,35 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="tabIcon"
+            type="String" />
+        <variable
+            name="tabText"
+            type="String" />
+    </data>
+
+    <!-- Your custom tab layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/tab_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@{tabIcon}"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tab_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{tabText}"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:paddingTop="4dp" />
+    </LinearLayout>
+</layout>
