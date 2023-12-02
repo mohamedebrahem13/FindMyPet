@@ -73,7 +73,6 @@ class AllPostsFragment : Fragment() {
     private fun setupSearchListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.tvEmptySearched.visibility =View.GONE
                 // Not needed for your use case
             }
 
@@ -196,16 +195,21 @@ class AllPostsFragment : Fragment() {
                         is Resource.Success -> {
                             binding.prograss.visibility = View.GONE
                             postListAdapter.submitList(result.data)
-                            binding.tvEmptySorted.visibility =
-                                if (result.data.isEmpty()) View.VISIBLE else View.GONE
-                            binding.tvEmptySearched.visibility = View.GONE
 
-                            Log.v("success GET THE POSTS", result.data.toString())
-                            Toast.makeText(
-                                requireContext(),
-                                "Success get the posts ",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                if (result.data.isEmpty()) {
+                                    binding.tvEmptySorted.visibility =View.VISIBLE
+
+                                } else{
+                                    binding.tvEmptySorted.visibility = View.GONE
+                                    Log.v("success GET THE POSTS", result.data.toString())
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Success get the posts ",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+
                         }
                         is Resource.Error -> {
                             handleResourceError(result)

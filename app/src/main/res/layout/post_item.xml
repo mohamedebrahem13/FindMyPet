@@ -28,10 +28,10 @@
         android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
-        app:contentPadding="10dp"
         android:onClick="@{() -> clickListener.onClick(post)}"
         app:cardCornerRadius="8dp"
         app:cardElevation="6dp"
+        app:contentPadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="0dp"
-                android:layout_height="298dp"
+                android:layout_width="375dp"
+                android:layout_height="206dp"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{post.imageUrls[0]}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,12 +60,12 @@
 
             <ImageView
                 android:id="@+id/faveFill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="47dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="gone"
                 android:onClick="@{() -> removeFaveImageClickListener.onClick(post)}"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.96"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent"
@@ -81,18 +81,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
 
+
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> faveImageClickListener.onClick(post)}"
-                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.961"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
 
             <TextView
                 android:id="@+id/postDateTextView"
