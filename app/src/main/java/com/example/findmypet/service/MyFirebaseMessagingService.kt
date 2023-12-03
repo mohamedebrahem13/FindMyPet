@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -56,11 +57,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
 
+        // Create a Bitmap from the same drawable resource for the large icon
+        val largeIconBitmap = BitmapFactory.decodeResource(resources, R.drawable.pet1)
+
         // Build the notification
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(body)
-            .setSmallIcon(R.drawable.pet1)
+            .setLargeIcon(largeIconBitmap)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()

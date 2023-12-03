@@ -201,8 +201,8 @@
 
             <ImageView
                 android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="38dp"
+                android:layout_height="39dp"
                 android:layout_marginTop="16dp"
                 android:minHeight="48dp"
                 android:src="@drawable/ic_baseline_phone_24"

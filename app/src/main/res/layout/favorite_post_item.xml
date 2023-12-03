@@ -23,18 +23,19 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:contentPadding="10dp"
         android:onClick="@{() -> clickListener.onClick(post)}"
         app:cardCornerRadius="8dp"
         app:cardElevation="6dp"
+        app:contentPadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

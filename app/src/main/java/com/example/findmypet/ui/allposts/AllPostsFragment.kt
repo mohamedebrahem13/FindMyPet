@@ -20,11 +20,13 @@ import com.example.findmypet.adapter.PostListAdapter
 import com.example.findmypet.common.Resource
 import com.example.findmypet.databinding.AllPostsFragmentBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
+import com.google.android.gms.ads.AdRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AllPostsFragment : Fragment() {
+
 
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var binding: AllPostsFragmentBinding
@@ -36,7 +38,11 @@ class AllPostsFragment : Fragment() {
     ): View {
         binding = AllPostsFragmentBinding.inflate(inflater)
         val recyclerView = binding.recyclerView
+        recyclerView.setHasFixedSize(true)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        setupAdView()
 
         postListAdapter = PostListAdapter(
             PostListAdapter.PostListener { post ->
@@ -89,6 +95,10 @@ class AllPostsFragment : Fragment() {
         })
     }
 
+    private fun setupAdView() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
 
 
     private fun refresh(){
@@ -185,7 +195,7 @@ class AllPostsFragment : Fragment() {
         }
     }
 
-    private fun observePostsLiveData() {
+    private fun observePostsData() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -235,7 +245,7 @@ class AllPostsFragment : Fragment() {
 
     private fun initObservers() {
         observeCurrentUser()
-        observePostsLiveData()
+        observePostsData()
     }
 
     private fun getCurrentUser() {

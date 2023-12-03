@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmypet.R
+import com.example.findmypet.activities.PetActivity
 import com.example.findmypet.adapter.ImageAdapter
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
@@ -26,6 +27,8 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
+
+
     private var currentUser: User? =null
     private var selectedGender: String? = null
     private var selectedCity: String? = null
@@ -67,6 +70,8 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
     ): View {
         // Inflate the layout for this fragment
         binding= FragmentAddpetBinding.inflate(inflater)
+        // Call the method to show the preloaded ad from the activity
+        (activity as? PetActivity)?.showAdInFragment()
         fetchUserProfile()
         initObservers()
 
@@ -95,6 +100,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
         return binding.root
     }
+
 
 
 

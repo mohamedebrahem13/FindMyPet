@@ -21,6 +21,7 @@
     <string name="Boy">Boy</string>
     <string name="Girl">Girl</string>
     <string name="search_hint">you can search by pet name </string>
+    <string name="ads_id">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="Take_pet">this image for taking pet image from gallery </string>
 
