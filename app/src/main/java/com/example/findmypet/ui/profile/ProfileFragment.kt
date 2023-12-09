@@ -59,9 +59,15 @@ class ProfileFragment : Fragment() {
 
 
         binding.editbutton.setOnClickListener {
-                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit(
-                    User!!
-                ))
+            binding.editbutton.setOnClickListener {
+                if (User != null) {
+                    findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit(User!!))
+                } else {
+                    // Handle the case where User is null (no internet or user data not fetched)
+                    Toast.makeText(context, "User data not available. Check your internet connection.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
 
         }
 

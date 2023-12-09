@@ -96,8 +96,8 @@ private fun viewModelObserver() {
             }
             is Resource.Error -> {
                 binding.prograss.visibility = View.GONE
-                Toast.makeText(context, "Signing error", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(context, "Signing error: ${it.throwable.message.toString()}", Toast.LENGTH_SHORT).show()
+                // Handle the error message received from the ViewModel if needed
             }
             Resource.Loading -> binding.prograss.visibility = View.VISIBLE
 

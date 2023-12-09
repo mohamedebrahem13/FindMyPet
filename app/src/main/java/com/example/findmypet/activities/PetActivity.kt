@@ -61,6 +61,8 @@ class PetActivity : AppCompatActivity() {
             }
         )
     }
+
+
     // Function to show the preloaded ad
     fun showAdInFragment() {
         interstitialAd?.show(this)

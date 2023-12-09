@@ -18,6 +18,7 @@ import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.databinding.FragmentPostsByIdBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
+import com.google.android.gms.ads.AdRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -54,6 +55,7 @@ class PostsByIdFragment : Fragment() {
             }// Add this line
 
         ))
+        setupAdView()
         setupRecyclerView()
         refresh()
 
@@ -68,6 +70,12 @@ class PostsByIdFragment : Fragment() {
         // Other initialization code
         observeUserPosts()
     }
+
+    private fun setupAdView() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
+
 
 
     private fun showDeleteConfirmationDialog(post: Post) {

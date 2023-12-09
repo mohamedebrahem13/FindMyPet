@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Find My Pet</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_results">No results found</string>
-    <string name="no_matching_posts">No matching posts found</string>
 
     <string name="invalid_mail">Not a valid email address. Should be your@email.com</string>
     <string name="invalid_nickname">Please enter a nickname</string>
@@ -16,24 +14,31 @@
     <string name="already_have_account">already have account ?</string>
     <string name="VerifyPassword"> Verify Password</string>
     <string name="SignUp">Sign Up</string>
-    <string name="Signing">login</string>
+    <string name="Signing">Login</string>
     <string name="SignOut">SignOut</string>
     <string name="Boy">Boy</string>
     <string name="Girl">Girl</string>
     <string name="search_hint">you can search by pet name </string>
     <string name="ads_id">ca-app-pub-3940256099942544/1033173712</string>
 
+    <string name="remove">remove the post from favorite</string>
+    <string name="add_favorite">add the post to favorite</string>
+    <string name="pet_image">this is a pet image</string>
+    <string name="profile_image">this is a profile image for the post creator</string>
+
+
+
+
     <string name="Take_pet">this image for taking pet image from gallery </string>
 
-    <string name="Sign_Up">Sign Up</string>
     <string name="find_my_pet_logo">find my pet logo </string>
     <string name="PetDescription">Pet Description</string>
 
-    <string name="do_not_have_account">don\'t have account ?</string>
+    <string name="do_not_have_account">Don\'t have account ?</string>
 
 
     <string name="invalid_verify_password">"Invalid Verify Password"</string>
-    <string name="ForgotPassword">Forgot Password</string>
+    <string name="ForgotPassword">Forgot Password ?</string>
     <string name="send">Send</string>
     <string name="Gender">Gender</string>
 
@@ -43,7 +48,6 @@
 
 
     <string name="profile">Profile</string>
-    <string name="developer">developer</string>
     <string name="take_image_pet">Take Pet Image</string>
     <string name="SelectYourLocation">Select Your Location</string>
     <string name="Post">Post</string>
@@ -88,7 +92,6 @@
     </string-array>
     <!-- res/values/strings.xml -->
     <string name="default_city">Alexandria</string>
-    <string name="im_lost">I\'m Lost</string>
     <string name="Pet_Details">Pet Details</string>
     <string name="pet_location">Pet Location</string>
     <string name="Hi">Hi,</string>

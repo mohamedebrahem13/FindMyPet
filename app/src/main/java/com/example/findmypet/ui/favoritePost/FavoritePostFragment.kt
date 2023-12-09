@@ -18,6 +18,7 @@ import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.databinding.FragmentFavoritePostBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
+import com.google.android.gms.ads.AdRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,6 +37,8 @@ class FavoritePostFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding=FragmentFavoritePostBinding.inflate(inflater)
+
+
 
         // Initialize RecyclerView and Adapter
         favoritePostAdapter = FavoritePostListAdapter(
@@ -61,6 +64,7 @@ class FavoritePostFragment : Fragment() {
 
             }
         )
+        setupAdView()
         setupRecyclerView()
         refresh()
 
@@ -134,6 +138,12 @@ class FavoritePostFragment : Fragment() {
 
         }
     }
+
+    private fun setupAdView() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
+
 
     private fun removeFaveObserver(){
 

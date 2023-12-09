@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -70,7 +69,6 @@ class HomeFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.Profile -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
-            R.id.developer -> Toast.makeText(context, "Developer Selected", Toast.LENGTH_SHORT).show()
         }
         return true
     }

@@ -223,13 +223,6 @@ class AllPostsFragment : Fragment() {
                         }
                         is Resource.Error -> {
                             handleResourceError(result)
-                            Toast.makeText(
-                                requireContext(),
-                                "error get the posts ",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-
                         }
                         Resource.Loading -> {
                             binding.prograss.visibility = View.VISIBLE

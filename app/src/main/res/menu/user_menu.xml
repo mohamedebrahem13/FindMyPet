@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/signout"
-        android:title="@string/SignOut" />
-    <item
         android:id="@+id/Profile"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        app:showAsAction="always"
         android:title="@string/profile" />
-    <item
-        android:id="@+id/developer"
-        android:title="@string/developer" />
+
 </menu>

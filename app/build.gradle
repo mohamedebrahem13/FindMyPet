@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -44,7 +45,7 @@ dependencies {
     implementation 'androidx.hilt:hilt-common:1.1.0'
 
 
-//circleimageview
+//circle imageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.google.code.gson:gson:2.8.9'

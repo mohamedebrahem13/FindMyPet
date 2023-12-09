@@ -30,10 +30,16 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     fun signInWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
-            _result.emit(Resource.Loading)
-            _result.emit (signInUseCase(email, password))
+            try {
+                _result.emit(Resource.Loading)
+                val signInResult = signInUseCase(email, password)
+                _result.emit(signInResult)
+            } catch (e: Exception) {
+                _result.emit(Resource.Error(e))
+            }
         }
     }
+
 
     private fun checkCurrentUser() {
         viewModelScope.launch {
