@@ -55,10 +55,10 @@ class PostViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _currentUser.value = getCurrentUserUseCase()
-                Log.v("ProfileViewModel", " success get user data ${_currentUser.value.toString()} :")
+                Log.v("addPetViewModel", " success get user data ${_currentUser.value.toString()} :")
 
             } catch (e: Exception) {
-                Log.e("ProfileViewModel", "Error in getCurrentUser: ${e.message}")
+                Log.e("addPetViewModel", "Error in getCurrentUser: ${e.message}")
                 // Handle the error, show a message, or perform other actions as needed
             }
         }

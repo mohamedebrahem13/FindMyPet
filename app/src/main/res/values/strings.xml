@@ -27,8 +27,6 @@
     <string name="profile_image">this is a profile image for the post creator</string>
 
 
-
-
     <string name="Take_pet">this image for taking pet image from gallery </string>
 
     <string name="find_my_pet_logo">find my pet logo </string>
@@ -96,5 +94,8 @@
     <string name="pet_location">Pet Location</string>
     <string name="Hi">Hi,</string>
     <string name="Search_by_pet_name">Search by pet name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chat">type your message here</string>
 
 </resources>

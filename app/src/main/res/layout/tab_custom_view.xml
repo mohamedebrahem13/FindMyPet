@@ -2,11 +2,11 @@
 
     <data>
         <variable
-            name="tabIcon"
+            name="iconResource"
             type="String" />
         <variable
-            name="tabText"
-            type="String" />
+            name="customTabText"
+        type="String" />
     </data>
 
     <!-- Your custom tab layout -->
@@ -20,16 +20,16 @@
             android:id="@+id/tab_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@{tabIcon}"
+            android:src="@{iconResource}"
             android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/tab_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{tabText}"
-            android:textSize="12sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="4dp" />
+            android:text="@{customTabText}"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"
+        android:paddingTop="4dp" />
     </LinearLayout>
 </layout>

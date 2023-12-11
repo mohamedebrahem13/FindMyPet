@@ -26,9 +26,9 @@ class ForgotPasswordFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
 
-        binding= FragmentForgotPasswordBinding.inflate(inflater)
-
-           binding.send.setOnClickListener {
+        binding = FragmentForgotPasswordBinding.inflate(inflater)
+        observer()
+        binding.send.setOnClickListener {
                 if (checking()){
                     viewModel.sendPasswordResetEmail(binding.editTextTextEmailAddress.text.toString())
                 }
@@ -36,7 +36,6 @@ class ForgotPasswordFragment : Fragment() {
         binding.alreadyHaveAccount.setOnClickListener {
             it.findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment())
         }
-         observer()
 
 
         return binding.root

@@ -1,8 +1,6 @@
 package com.example.findmypet.di
 
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -21,17 +19,7 @@ object FirebaseModule {
     fun provideFirebaseUser() = Firebase.auth
     @Provides
     @Singleton
-    fun provideFirebaseFirestore(): FirebaseFirestore {
-        val firestore = Firebase.firestore
-
-        // Disable offline persistence directly during Firestore initialization
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setPersistenceEnabled(false)
-            .build()
-
-        firestore.firestoreSettings = settings
-        return firestore
-    }
+    fun provideFirebaseFirestore()= Firebase.firestore
 
     @Provides
     @Singleton

@@ -13,7 +13,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.activities.PetActivity
 import com.example.findmypet.common.Resource
@@ -63,17 +65,21 @@ class SignInFragment : Fragment() {
 
 private fun viewModelObserver() {
 
-    lifecycleScope.launchWhenResumed {
-        viewModel.checkCurrentUser.collectLatest { isUserSignedIn ->
-            if (isUserSignedIn == true) {
-                Log.v("currentUser", "user is signed in")
-                Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
-                Intent(requireActivity(), PetActivity::class.java).also {
-                        intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                }                          }
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewModel.checkCurrentUser.collectLatest { isUserSignedIn ->
+                if (isUserSignedIn == true) {
+                    Log.v("currentUser", "user is signed in")
+                    Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
+                    Intent(requireActivity(), PetActivity::class.java).also { intent ->
+                        intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                }
+            }
         }
     }
+
 
 }
 

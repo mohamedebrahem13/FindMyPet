@@ -23,10 +23,21 @@
             android:visibility="visible"
             app:civ_border_color="@color/md_theme_dark_inversePrimary"
             app:civ_border_width="2dp"
-            app:imageUrl="@{user.imagePath}"
+            app:imageUrl="@{user.profile_image}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:srcCompat="@drawable/ic_baseline_add_a_photo_24"
             tools:ignore="ImageContrastCheck" />
 
         <EditText
@@ -63,7 +74,7 @@
             android:hint="@string/Phone"
             android:inputType="phone"
             android:minHeight="48dp"
-            android:text="@{user.phoneNumber}"
+            android:text="@{user.phone}"
             android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

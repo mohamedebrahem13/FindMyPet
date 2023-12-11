@@ -20,7 +20,6 @@ import com.example.findmypet.databinding.FragmentFavoritePostBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
 import com.google.android.gms.ads.AdRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
@@ -53,7 +52,7 @@ class FavoritePostFragment : Fragment() {
             profileImageClickListener = FavoritePostListAdapter.ProfileImageClickListener {
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToProfileFragment(
-                        it
+                        it.user
                     )
                 )
 
@@ -145,33 +144,30 @@ class FavoritePostFragment : Fragment() {
     }
 
 
-    private fun removeFaveObserver(){
-
-        lifecycleScope.launchWhenResumed{
-            viewModel.removeFaveSharedFlow.collectLatest { result ->
-                // Update UI based on the result state
-                when (result) {
-                    is Resource.Loading -> {
-                        binding.prograss.visibility=View.VISIBLE
-
-                    }
-                    is Resource.Success -> {
-                        binding.prograss.visibility=View.GONE
-                        Toast.makeText(requireContext(),"Success remove the post from favorite ", Toast.LENGTH_SHORT).show()
-
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility=View.GONE
-                        val error = result.throwable.message
-                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
-
-
+    private fun removeFaveObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.removeFaveSharedFlow.collect { result ->
+                    // Update UI based on the result state
+                    when (result) {
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(requireContext(), "Success remove the post from favorite", Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            val error = result.throwable.message
+                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-
         }
     }
+
 
 
 

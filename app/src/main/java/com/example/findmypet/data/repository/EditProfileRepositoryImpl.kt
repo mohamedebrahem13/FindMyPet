@@ -68,7 +68,7 @@ class EditProfileRepositoryImpl @Inject constructor(
 
             val userModel = mapOf(
                 Constant.NICKNAME to user.nickname,
-                Constant.PHONE_NUMBER to user.phoneNumber,
+                Constant.PHONE_NUMBER to user.phone,
                 Constant.E_MAIL to user.email
             )
             val userRef = db.collection(COLLECTION_PATH).document(getFirebaseUserUid())

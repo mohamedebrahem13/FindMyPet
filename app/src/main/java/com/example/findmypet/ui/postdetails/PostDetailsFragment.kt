@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmypet.adapter.ImageAdapter
 import com.example.findmypet.databinding.FragmentPostDetailsBinding
@@ -45,6 +46,7 @@ class PostDetailsFragment : Fragment() {
                 "PostsByIdFragment" -> {
                     // Code specific to PostsByIdFragment
                     imageButton.visibility = View.GONE // or View.INVISIBLE
+                    chat.visibility = View.GONE
                 }
 
                 "AllPostsFragment", "FavoriteFragment" -> {
@@ -56,9 +58,18 @@ class PostDetailsFragment : Fragment() {
                     imageButton.setOnClickListener {
                         // Open dialer
                         val dialIntent = Intent(Intent.ACTION_DIAL)
-                        dialIntent.data = Uri.parse("tel:${post.user?.phoneNumber}")
+                        dialIntent.data = Uri.parse("tel:${post.user?.phone}")
                         startActivity(dialIntent)
                     }
+
+                    chat.setOnClickListener {
+                        post.user?.let { user ->
+                            findNavController().navigate(
+                                PostDetailsFragmentDirections.actionDetailsFragmentToChatFragment(user)
+                            )
+                        }
+                    }
+
                 }
                 // Add more cases as needed for other source fragments
                 else -> {

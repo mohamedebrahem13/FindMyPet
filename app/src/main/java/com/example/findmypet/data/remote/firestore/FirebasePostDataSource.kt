@@ -72,10 +72,12 @@ class FirebasePostDataSource @Inject constructor(
                 .await()
 
             val allPosts = allPostsQuery.toObjects(Post::class.java)
-            if(allPosts.isNotEmpty()){
-                emit(Resource.Success(allPosts)) // Emit successful result
-            }else{
+            if(allPosts.isEmpty()){
+
                 emit(Resource.Error(Throwable("list is empty")))
+            }else{
+                emit(Resource.Success(allPosts)) // Emit successful result
+
             }
 
         } catch (e: Throwable) {

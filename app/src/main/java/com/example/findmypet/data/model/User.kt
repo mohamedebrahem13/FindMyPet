@@ -6,10 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User(
-    val userId: String?=null,
+    val id: String?=null,
     val email: String="",
     val nickname: String="",
-    val phoneNumber: String="",
-    val imagePath:String = "",
+    val phone: String="",
+    val Profile_image:String = "",
     var favoritePosts: List<String> = emptyList() // Add favorite posts attribute
 ): Parcelable

@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.activities.MainActivity
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -32,14 +35,12 @@ class ProfileFragment : Fragment() {
         binding=FragmentProfileBinding.inflate(inflater)
 
         val args = arguments?.let { ProfileFragmentArgs.fromBundle(it) }
-        val post = args?.clickedpost
+        val userprofile = args?.userprofile
 
         with(binding){
-            if (post != null) {
-                // This is a profile view for the user who created the post
-
-                val clickedUser = post.user
-                user = clickedUser
+            if (userprofile != null) {
+                // This is a profile view for the user who created the post or user i chat with
+                user = userprofile
                 btnSignOut.visibility=View.GONE
                 editbutton.visibility=View.GONE
 
@@ -92,31 +93,37 @@ class ProfileFragment : Fragment() {
 
 
     private fun fetchUserProfile() {
-        lifecycleScope.launchWhenResumed {
-            profileViewModel.getCurrentUser() // Trigger a data refresh when the fragment is resumed
-        }    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                profileViewModel.getCurrentUser()
+            }
+        }
+    }
+
 
 
     private fun initObservers() {
         with(binding) {
             with(profileViewModel) {
-                lifecycleScope.launchWhenResumed {
-                    currentUser.collect { resource ->
-                        when (resource) {
-                            is Resource.Success -> {
-                                user = resource.data
-                                User =resource.data
-                                prograss.visibility = View.GONE
-                            }
-                            is Resource.Error -> {
-                                Log.v("profile", resource.toString())
-                                prograss.visibility = View.GONE
-                            }
-                            is Resource.Loading -> {
-                                prograss.visibility = View.VISIBLE
-                            }
-                            else -> {
-                                // Handle other states if necessary
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                        currentUser.collect { resource ->
+                            when (resource) {
+                                is Resource.Success -> {
+                                    User = resource.data
+                                    user = resource.data
+                                    prograss.visibility = View.GONE
+                                }
+                                is Resource.Error -> {
+                                    Log.v("profile", resource.toString())
+                                    prograss.visibility = View.GONE
+                                }
+                                is Resource.Loading -> {
+                                    prograss.visibility = View.VISIBLE
+                                }
+                                else -> {
+                                    // Handle other states if necessary
+                                }
                             }
                         }
                     }

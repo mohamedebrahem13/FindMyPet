@@ -29,7 +29,7 @@
             android:visibility="visible"
             app:civ_border_color="@color/md_theme_dark_inversePrimary"
             app:civ_border_width="2dp"
-            app:imageUrl="@{user.imagePath}"
+            app:imageUrl="@{user.profile_image}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
-            android:text="@{user.phoneNumber}"
+            android:text="@{user.phone}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -147,7 +147,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.315"
             app:srcCompat="@drawable/ic_baseline_edit_24"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

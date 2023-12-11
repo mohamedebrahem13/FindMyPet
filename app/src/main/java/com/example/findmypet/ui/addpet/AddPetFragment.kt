@@ -197,7 +197,6 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
                     }
                     is Resource.Success -> {
-
                         // Handle successful post addition
                         Log.v("Success","Success addPost ")
                         Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
@@ -206,7 +205,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
                     }
                     is Resource.Error -> {
-                        val throwable = result.throwable
+                        val throwable = result.throwable.message
                         Toast.makeText(context,
                             "failed add the pet check your internet$throwable", Toast.LENGTH_SHORT).show()
                         binding.prograss.visibility = View.GONE
@@ -232,7 +231,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
                                 prograss.visibility = View.GONE
                             }
                             is Resource.Error -> {
-                                Log.v("profile", resource.toString())
+                                Log.v("current user", resource.toString())
                                 prograss.visibility = View.GONE
                             }
                             is Resource.Loading -> {

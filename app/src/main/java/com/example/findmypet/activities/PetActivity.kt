@@ -16,8 +16,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 
-
-
 @AndroidEntryPoint
 class PetActivity : AppCompatActivity() {
 
@@ -61,6 +59,7 @@ class PetActivity : AppCompatActivity() {
             }
         )
     }
+
 
 
     // Function to show the preloaded ad

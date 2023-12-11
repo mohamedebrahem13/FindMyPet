@@ -21,18 +21,33 @@ class FirebaseAuthenticator @Inject constructor(
 
     override suspend fun getFirebaseUserUid(): String = firebaseAuth.currentUser?.uid.orEmpty()
 
+
     override suspend fun signUpWithEmailAndPassword(user: User, password: String) {
+
+
+        val phoneExists = checkPhoneNumberExists(user.phone)
+
+        if (phoneExists) {
+            // Handle scenario where phone number already exists
+            throw throw Exception("Phone number already exists")
+        }
         firebaseAuth.createUserWithEmailAndPassword(user.email.trim(), password.trim()).await()
         val userModel = hashMapOf(
             ID to getFirebaseUserUid(),
             E_MAIL to user.email,
             NICKNAME to user.nickname,
-            PHONE_NUMBER to user.phoneNumber,
-            PROFILE_IMAGE_PATH to user.imagePath
+            PHONE_NUMBER to user.phone,
+            PROFILE_IMAGE_PATH to user.Profile_image
         )
 
         firebaseFirestore.collection(COLLECTION_PATH).document(getFirebaseUserUid())
             .set(userModel).await()
+    }
+
+    private suspend fun checkPhoneNumberExists(phoneNumber: String): Boolean {
+        val usersRef = firebaseFirestore.collection(COLLECTION_PATH)
+        val snapshot = usersRef.whereEqualTo(PHONE_NUMBER, phoneNumber).get().await()
+        return !snapshot.isEmpty
     }
 
     override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()

@@ -54,7 +54,7 @@ class AllPostsFragment : Fragment() {
             },
             PostListAdapter.ProfileImageClickListener { post ->
 
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(post))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(post.user))
             },PostListAdapter.FaveImageClickListener{
                 allPostsViewModel.addFav(postId = it.postId.toString())
                 addFaveObserver() },PostListAdapter.RemoveFaveImageClickListener{
@@ -108,92 +108,85 @@ class AllPostsFragment : Fragment() {
         }
     }
 
-    private fun removeFaveObserver(){
-
-        lifecycleScope.launchWhenStarted{
-            allPostsViewModel.removeFaveSharedFlow.collect{ result ->
-                // Update UI based on the result state
-                when (result) {
-                    is Resource.Loading -> {
-                        binding.prograss.visibility=View.VISIBLE
-
-                    }
-                    is Resource.Success -> {
-                        binding.prograss.visibility=View.GONE
-                        Toast.makeText(requireContext(),"Success remove the post from favorite ", Toast.LENGTH_SHORT).show()
-
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility=View.GONE
-                        val error = result.throwable.message
-                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
-
-
+    private fun removeFaveObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                allPostsViewModel.removeFaveSharedFlow.collect { result ->
+                    // Update UI based on the result state
+                    when (result) {
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(requireContext(), "Success remove the post from favorite", Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            val error = result.throwable.message
+                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-
         }
     }
 
 
 
-    private fun addFaveObserver(){
-
-        // Observe addfave post loading state
-        lifecycleScope.launchWhenStarted{
-            allPostsViewModel.addFaveSharedFlow.collect { result ->
-                // Update UI based on the result state
-                when (result) {
-                    is Resource.Loading -> {
-                        binding.prograss.visibility=View.VISIBLE
-
-                    }
-                    is Resource.Success -> {
-                        binding.prograss.visibility=View.GONE
-                        Toast.makeText(requireContext(),"Success add the post to favorite ", Toast.LENGTH_SHORT).show()
-
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility=View.GONE
-                        val error = result.throwable.message
-                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
-
-
+    private fun addFaveObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                allPostsViewModel.addFaveSharedFlow.collect { result ->
+                    // Update UI based on the result state
+                    when (result) {
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(requireContext(), "Success add the post to favorite", Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            val error = result.throwable.message
+                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-
         }
-
     }
 
 
     private fun observeCurrentUser() {
-        lifecycleScope.launchWhenResumed {
-            allPostsViewModel.currentUser.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        binding.tvNickname.text = resource.data.nickname.split(" ")[0]
-                        binding.prograss.visibility = View.GONE
-                        binding.hi.visibility = View.VISIBLE
-                    }
-                    is Resource.Error -> {
-                        Log.v("currentuser", resource.toString())
-                        binding.prograss.visibility = View.GONE
-                        binding.hi.visibility = View.GONE
-                    }
-                    Resource.Loading -> {
-                        binding.prograss.visibility = View.VISIBLE
-                        binding.hi.visibility = View.GONE
-                    }
-                    else -> {
-                        // Handle other states if necessary
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                allPostsViewModel.currentUser.collect { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            binding.tvNickname.text = resource.data.nickname.split(" ")[0]
+                            binding.prograss.visibility = View.GONE
+                            binding.hi.visibility = View.VISIBLE
+                        }
+                        is Resource.Error -> {
+                            Log.v("currentuser", resource.toString())
+                            binding.prograss.visibility = View.GONE
+                            binding.hi.visibility = View.GONE
+                        }
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                            binding.hi.visibility = View.GONE
+                        }
+                        else -> {
+                            // Handle other states if necessary
+                        }
                     }
                 }
             }
         }
     }
+
 
     private fun observePostsData() {
 
@@ -222,6 +215,7 @@ class AllPostsFragment : Fragment() {
 
                         }
                         is Resource.Error -> {
+
                             handleResourceError(result)
                         }
                         Resource.Loading -> {
@@ -242,16 +236,20 @@ class AllPostsFragment : Fragment() {
     }
 
     private fun getCurrentUser() {
-        lifecycleScope.launchWhenResumed {
-            allPostsViewModel.getCurrentUser()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                allPostsViewModel.getCurrentUser()
+            }
         }
     }
 
+
     private fun handleResourceError(resource: Resource.Error) {
         binding.prograss.visibility = View.GONE
+        binding.tvEmptySorted.visibility =View.VISIBLE
         val error = resource.throwable
         Log.v("allPosts", error.toString())
-        Toast.makeText(requireContext(), "Error getting the posts", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),error.message.toString() , Toast.LENGTH_SHORT).show()
     }
 
 }

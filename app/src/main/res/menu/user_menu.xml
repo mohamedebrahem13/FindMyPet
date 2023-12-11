@@ -2,10 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/baseline_chat_24"
+        app:showAsAction="always"
+        android:title="@string/chat" />
     <item
         android:id="@+id/Profile"
         android:icon="@drawable/ic_baseline_account_box_24"
         app:showAsAction="always"
         android:title="@string/profile" />
+
 
 </menu>

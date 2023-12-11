@@ -141,35 +141,30 @@ class PostsByIdFragment : Fragment() {
 
     }
 
-    private fun deletePostObserver(){
-
-        // Observe delete post loading state
-        lifecycleScope.launchWhenResumed{
-            viewModel.deletePostSharedFlow.collect { result ->
-                // Update UI based on the result state
-                when (result) {
-                    is Resource.Loading -> {
-                        binding.prograss.visibility=View.VISIBLE
-
-                    }
-                    is Resource.Success -> {
-                        binding.prograss.visibility=View.GONE
-                        Toast.makeText(requireContext(),"Success delete the post ", Toast.LENGTH_SHORT).show()
-
-                    }
-                    is Resource.Error -> {
-                        binding.prograss.visibility=View.GONE
-                        val error = result.throwable.message
-                        Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
-
-
+    private fun deletePostObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.deletePostSharedFlow.collect { result ->
+                    // Update UI based on the result state
+                    when (result) {
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(requireContext(), "Success delete the post", Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            val error = result.throwable.message
+                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-
         }
-
     }
+
     private fun refresh(){
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.fetchPostsForCurrentUser()

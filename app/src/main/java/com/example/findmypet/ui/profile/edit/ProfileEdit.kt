@@ -61,7 +61,7 @@ class ProfileEdit : Fragment() {
                    if (checkAllFields()){
                        profileEditViewModel.updateProfile(imageUri, User ( email = binding.editTextTextEmailAddress2.text.toString(),
                            nickname = binding.editTextTextPersonName3.text.toString(),
-                           phoneNumber = binding.editTextPhone.text.toString()))
+                           phone = binding.editTextPhone.text.toString()))
                        updateProfileObserver()
                        initObserver()
 

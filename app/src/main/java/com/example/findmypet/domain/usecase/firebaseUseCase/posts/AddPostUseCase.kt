@@ -9,13 +9,12 @@ class AddPostUseCase @Inject constructor(private val postRepository: PostReposit
     suspend operator fun invoke(post: Post, imageUrls: List<String>): Resource<Unit> {
         post.imageUrls = imageUrls
         return try {
-            val addResult = postRepository.addPostRemote(post)
-            when (addResult) {
+            when (val addResult = postRepository.addPostRemote(post)) {
                 is Resource.Success -> Resource.Success(Unit)
                 is Resource.Error -> addResult
                 is Resource.Loading -> Resource.Loading
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Resource.Error(e)
         }
     }

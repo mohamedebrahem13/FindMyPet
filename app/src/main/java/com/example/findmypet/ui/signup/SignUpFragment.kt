@@ -36,7 +36,7 @@ class SignUpFragment : Fragment() {
               viewModel.signUpWithEmailAndPassword(
                   User( email = binding.editTextTextEmailAddress3.text.toString(),
                       nickname = binding.editTextTextPersonName2.text.toString(),
-                      phoneNumber = binding.editTextPhone2.text.toString()),
+                      phone = binding.editTextPhone2.text.toString()),
                binding.editTextTextPassword4.text.toString(),
          )
 
@@ -70,7 +70,7 @@ class SignUpFragment : Fragment() {
                     }
                     is Resource.Error -> {
                         binding.prograss.visibility =View.GONE
-                        Toast.makeText(context, "SignUP error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "SignUP error ${it.throwable.message.toString()}", Toast.LENGTH_SHORT).show()
                         Log.v("error","SignUP error")
 
                     }

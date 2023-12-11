@@ -18,8 +18,8 @@
             android:id="@+id/action_profileFragment_to_profileEdit"
             app:destination="@id/profileEdit" />
         <argument
-            android:name="clickedpost"
-            app:argType="com.example.findmypet.data.model.Post"
+            android:name="userprofile"
+            app:argType="com.example.findmypet.data.model.User"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_conversationListFragment"
+            app:destination="@id/conversationListFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -59,5 +62,28 @@
         <argument
             android:name="sourceFragment"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.findmypet.ui.chat.ChatFragment"
+        android:label="ChatFragment">
+        <argument
+            android:name="User"
+            app:argType="com.example.findmypet.data.model.User" />
+        <action
+            android:id="@+id/action_chatFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/conversationListFragment"
+        android:name="com.example.findmypet.ui.converstion.ConversationListFragment"
+        android:label="ConversationListFragment" >
+        <action
+            android:id="@+id/action_conversationListFragment_to_chatFragment2"
+            app:destination="@id/chatFragment" />
     </fragment>
 </navigation>

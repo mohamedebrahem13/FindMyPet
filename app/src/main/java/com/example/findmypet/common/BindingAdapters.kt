@@ -1,9 +1,13 @@
 package com.example.findmypet.common
 
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.findmypet.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @BindingAdapter("imageUrl")
 fun loadImage(imageView: ImageView, url: String?) {
@@ -29,6 +33,16 @@ fun postImage(imageView: ImageView, url: String?) {
             .placeholder(R.drawable.ic_launcher_background) // Optional: Use a placeholder image
             .error(R.drawable.ic_baseline_error_24) // Optional: Set an error image
             .into(imageView)
+    }
+}
+object DateConverter {
+
+    @JvmStatic
+    @BindingAdapter("android:text")
+    fun bindDate(textView: TextView, timestamp: Long) {
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(Date(timestamp))
+        textView.text = formattedDate
     }
 }
 

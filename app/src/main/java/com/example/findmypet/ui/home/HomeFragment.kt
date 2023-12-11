@@ -1,7 +1,12 @@
 package com.example.findmypet.ui.home
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.MenuProvider
@@ -69,6 +74,7 @@ class HomeFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.Profile -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
+            R.id.chat -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToConversationListFragment())
         }
         return true
     }
