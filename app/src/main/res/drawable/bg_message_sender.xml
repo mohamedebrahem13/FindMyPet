@@ -1,0 +1,7 @@
+<!-- bg_message_sender.xml -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#3F51B5" /> <!-- Change this color to represent the sender's message -->
+    <corners android:radius="8dp" />
+</shape>
