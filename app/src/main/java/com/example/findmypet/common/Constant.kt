@@ -6,6 +6,7 @@ object Constant {
     const val NICKNAME = "nickname"
     const val PHONE_NUMBER = "phone"
     const val PROFILE_IMAGE_PATH = "Profile_image"
+    const val IMAGE_PASS ="imagePath"
 
 
     const val COLLECTION_PATH = "users"

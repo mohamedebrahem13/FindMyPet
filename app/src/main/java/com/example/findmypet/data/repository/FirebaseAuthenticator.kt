@@ -37,7 +37,7 @@ class FirebaseAuthenticator @Inject constructor(
             E_MAIL to user.email,
             NICKNAME to user.nickname,
             PHONE_NUMBER to user.phone,
-            PROFILE_IMAGE_PATH to user.Profile_image
+            PROFILE_IMAGE_PATH to user.imagePath
         )
 
         firebaseFirestore.collection(COLLECTION_PATH).document(getFirebaseUserUid())

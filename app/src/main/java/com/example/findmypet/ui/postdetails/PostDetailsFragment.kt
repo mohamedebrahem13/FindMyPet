@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmypet.adapter.ImageAdapter
@@ -16,9 +17,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PostDetailsFragment : Fragment() {
 
-
+    private lateinit var currentUid:String
     private lateinit var binding: FragmentPostDetailsBinding
     private lateinit var imageAdapter: ImageAdapter
+    private val viewModel: PostDetailsViewModel by viewModels()
+
+
 
     // Inside PostDetailsFragment
     override fun onCreateView(
@@ -27,6 +31,7 @@ class PostDetailsFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentPostDetailsBinding.inflate(inflater)
+        currentUid = viewModel.uid
 
         with(binding) {
             val post = PostDetailsFragmentArgs.fromBundle(requireArguments()).post
@@ -51,30 +56,28 @@ class PostDetailsFragment : Fragment() {
 
                 "AllPostsFragment", "FavoriteFragment" -> {
                     // Code specific to AllPostsFragment
-                    imageButton.visibility = View.VISIBLE
-
-
-                    // Set OnClickListener for dialer
-                    imageButton.setOnClickListener {
-                        // Open dialer
-                        val dialIntent = Intent(Intent.ACTION_DIAL)
-                        dialIntent.data = Uri.parse("tel:${post.user?.phone}")
-                        startActivity(dialIntent)
-                    }
-
-                    chat.setOnClickListener {
-                        post.user?.let { user ->
-                            findNavController().navigate(
-                                PostDetailsFragmentDirections.actionDetailsFragmentToChatFragment(user)
-                            )
+                    if(post.user?.id ==currentUid){
+                        imageButton.visibility = View.GONE // or View.INVISIBLE
+                        chat.visibility = View.GONE
+                    }else{
+                        imageButton.visibility = View.VISIBLE
+                        chat.visibility = View.VISIBLE
+                        // Set OnClickListener for dialer
+                        imageButton.setOnClickListener {
+                            // Open dialer
+                            val dialIntent = Intent(Intent.ACTION_DIAL)
+                            dialIntent.data = Uri.parse("tel:${post.user?.phone}")
+                            startActivity(dialIntent)
+                        }
+                        chat.setOnClickListener {
+                            post.user?.let { user ->
+                                findNavController().navigate(
+                                    PostDetailsFragmentDirections.actionDetailsFragmentToChatFragment(user)
+                                )
+                            }
                         }
                     }
 
-                }
-                // Add more cases as needed for other source fragments
-                else -> {
-                    // Default case
-                    imageButton.visibility = View.VISIBLE
                 }
             }
         }

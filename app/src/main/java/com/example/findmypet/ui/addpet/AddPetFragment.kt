@@ -1,5 +1,6 @@
 package com.example.findmypet.ui.addpet
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmypet.R
@@ -23,6 +26,7 @@ import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentAddpetBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,7 +39,15 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
     private var imageAdapter:ImageAdapter?=null
     private val postViewModel:PostViewModel by viewModels()
     private lateinit var imagePicker: ActivityResultLauncher<String>
-    private val permissionLauncher: ActivityResultLauncher<String> =
+    private val mediaPermissionLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                openGallery()
+            } else {
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 openGallery()
@@ -111,9 +123,13 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
 
     private fun fetchUserProfile() {
-        lifecycleScope.launchWhenResumed {
-            postViewModel.getCurrentUser() // Trigger a data refresh when the fragment is resumed
-        }    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                postViewModel.getCurrentUser()
+            }
+        }
+
+    }
 
 
 
@@ -188,64 +204,66 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
 
     private fun addPetObserver(){
-        lifecycleScope.launchWhenResumed {
-            postViewModel.addPostResult.collect { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        // Show loading indicator
-                        binding.prograss.visibility = View.VISIBLE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                postViewModel.addPostResult.collect { result ->
+                    when (result) {
+                        is Resource.Loading -> {
+                            // Show loading indicator
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            // Handle successful post addition
+                            Log.v("Success", "Success addPost ")
+                            Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
+                            binding.prograss.visibility = View.GONE
+                            findNavController().navigateUp()
+                        }
+                        is Resource.Error -> {
+                            val throwable = result.throwable.message
+                            Toast.makeText(
+                                context,
+                                "failed add the pet check your internet$throwable",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.prograss.visibility = View.GONE
 
-                    }
-                    is Resource.Success -> {
-                        // Handle successful post addition
-                        Log.v("Success","Success addPost ")
-                        Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
-                        binding.prograss.visibility = View.GONE
-                        findNavController().navigateUp()
-
-                    }
-                    is Resource.Error -> {
-                        val throwable = result.throwable.message
-                        Toast.makeText(context,
-                            "failed add the pet check your internet$throwable", Toast.LENGTH_SHORT).show()
-                        binding.prograss.visibility = View.GONE
-
-                        // Handle failure (e.g., display an error message)
+                            // Handle failure (e.g., display an error message)
+                        }
                     }
                 }
             }
-
-
         }
+
 
     }
 
     private fun initObservers() {
-        with(binding) {
-            with(postViewModel) {
-                lifecycleScope.launchWhenResumed {
-                    currentUser.collect { resource ->
-                        when (resource) {
-                            is Resource.Success -> {
-                                this@AddPetFragment.currentUser = resource.data
-                                prograss.visibility = View.GONE
-                            }
-                            is Resource.Error -> {
-                                Log.v("current user", resource.toString())
-                                prograss.visibility = View.GONE
-                            }
-                            is Resource.Loading -> {
-                                prograss.visibility = View.VISIBLE
-                            }
-                            else -> {
-                                // Handle other states if necessary
-                            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                postViewModel.currentUser.collectLatest { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            currentUser = resource.data
+                            Log.v("current user", resource.toString())
+                            binding.prograss.visibility = View.GONE
+                        }
+                        is Resource.Error -> {
+                            Log.v("current user", resource.toString())
+                            binding.prograss.visibility = View.GONE
+                        }
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        else -> {
+                            // Handle other states if necessary
                         }
                     }
                 }
             }
         }
     }
+
 
 
 
@@ -294,18 +312,37 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         private const val MAX_IMAGES = 8
 
     }
-
+    @SuppressLint("NewApi")
     private fun checkPermissionAndOpenGallery() {
-        val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                android.Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
         if (PermissionChecker.checkSelfPermission(requireContext(), permission) == PermissionChecker.PERMISSION_GRANTED) {
             openGallery()
         } else {
-            requestStoragePermission()
+            requestAppropriatePermission()
         }
     }
 
-    private fun requestStoragePermission() {
-        permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    // Function to request appropriate permissions based on API level
+    @SuppressLint("NewApi")
+    private fun requestAppropriatePermission() {
+        val permission =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                android.Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            mediaPermissionLauncher.launch(permission)
+        } else {
+            legacyStoragePermissionLauncher.launch(permission)
+        }
     }
 
     private fun openGallery() {

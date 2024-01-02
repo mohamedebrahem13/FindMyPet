@@ -10,6 +10,6 @@ data class User(
     val email: String="",
     val nickname: String="",
     val phone: String="",
-    val Profile_image:String = "",
+    val imagePath:String = "",
     var favoritePosts: List<String> = emptyList() // Add favorite posts attribute
 ): Parcelable

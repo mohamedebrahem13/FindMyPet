@@ -30,7 +30,7 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
     private val _progress = MutableStateFlow<Resource<String>?>(Resource.Loading)
     val progress: StateFlow<Resource<String>?> = _progress
 
-    var uid: String = ""
+    private var uid: String = ""
 
 
 
@@ -54,6 +54,12 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
                             is Resource.Success -> {
                                 // Image upload and URL update both successful
                                 _progress.value = Resource.Success("Image uploaded successfully.")
+
+                                // Now, update the user profile with the new image URL
+                                val updatedUser = newUser.copy(imagePath = imageUrlResult.data)
+                                _progress.value = Resource.Loading
+                                val updateResult = UpdateUserProfileUseCase(updatedUser)
+                                _updateProfileResult.value = updateResult
                             }
                             is Resource.Error -> {
                                 // Handle error for adding image URL
@@ -68,17 +74,11 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
                     }
                     else -> {}
                 }
-
-                // Now, update the user profile
-                _progress.value = Resource.Loading
-                val updateResult = UpdateUserProfileUseCase(newUser)
-                _updateProfileResult.value = updateResult
             } catch (e: Exception) {
                 _progress.value = Resource.Error(e)
             }
         }
     }
-
 
     fun updateProfile(imageUri: Uri?, newUser: User) {
         viewModelScope.launch {
@@ -103,7 +103,7 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
             } catch (e: Exception) {
                 Log.e(
                     "EditProfileViewModel",
-                    "Error in getCurrentUserUidUseCase in ProfileViewModel: ${e.message}"
+                    "Error in getCurrentUserUidUseCase in EditProfileViewModel: ${e.message}"
                 )
                 // Handle the error, show a message, or perform other actions as needed
             }

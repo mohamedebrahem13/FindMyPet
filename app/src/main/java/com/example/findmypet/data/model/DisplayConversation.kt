@@ -11,5 +11,7 @@ data class DisplayConversation(
     val secondUserName: String,
     val secondUserImage: String,
     val secondUserEmile: String,
-    val secondUserPhone: String
+    val secondUserPhone: String,
+    val lastMessage: String = "",
+    val lastMessageTimestamp: Long = 0
 ): Parcelable

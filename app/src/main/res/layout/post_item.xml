@@ -78,7 +78,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:onClick="@{() -> profileImageClickListener.onClick(post)}"
-                app:imageUrl="@{post.user.profile_image}"
+                app:imageUrl="@{post.user.imagePath}"
                 app:civ_border_color="@color/md_theme_dark_inversePrimary"
                 app:civ_border_width="2dp"
                 android:contentDescription="@string/profile_image"

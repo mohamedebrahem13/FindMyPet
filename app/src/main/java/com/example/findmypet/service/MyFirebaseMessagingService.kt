@@ -41,7 +41,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-
+    override fun onNewToken(token: String) {
+        Log.v("newtoken",token)
+        super.onNewToken(token)
+    }
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun createNotification(title: String, body: String) {

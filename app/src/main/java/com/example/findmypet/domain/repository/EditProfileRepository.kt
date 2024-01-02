@@ -6,7 +6,7 @@ import com.example.findmypet.common.UpdateUserProfileResponse
 import com.example.findmypet.data.model.User
 
 typealias AddImageToStorageResponse = Resource<Uri>
-typealias AddImageUrlToFirestoreResponse = Resource<Boolean>
+typealias AddImageUrlToFirestoreResponse = Resource<String>
 typealias GetImageUrlFromFirestoreResponse = Resource<String>
 
 interface EditProfileRepository {

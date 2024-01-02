@@ -1,6 +1,10 @@
 package com.example.findmypet.data.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.example.findmypet.common.Constant
 import com.example.findmypet.common.Constant.COLLECTION_PATH
+import com.example.findmypet.common.Constant.ID
 import com.example.findmypet.data.model.Conversation
 import com.example.findmypet.data.model.DisplayConversation
 import com.example.findmypet.data.model.Message
@@ -73,7 +77,7 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
                 val newConversation = Conversation(
                     channelId = channelId,
                     user1Id = user1Id,
-                    user2Id = user2Id
+                    user2Id = user2Id, lastMessage = messageText, lastMessageTimestamp = System.currentTimeMillis()
                 )
                 createConversationInFirestore(newConversation)
             }
@@ -127,12 +131,13 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
 
                 val userDetails = getUserDetails(secondUserId)
 
+
                 userDetails?.let {
                     val displayConversation = DisplayConversation(
                         conversation.channelId,
                         secondUserId,
                         it.nickname,
-                        it.Profile_image,it.email,it.phone
+                        it.imagePath,it.email,it.phone,conversation.lastMessage,conversation.lastMessageTimestamp
                     )
                     displayConversations.add(displayConversation)
                 }
@@ -143,12 +148,32 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
     }
 
 
-    suspend fun getUserDetails(userId: String): User? {
+    private suspend fun getUserDetails(userId: String): User? {
         return try {
             val userDoc = db.collection(COLLECTION_PATH).document(userId).get().await()
-            userDoc.toObject(User::class.java)
+
+            if (userDoc.exists()) {
+                val user = userDoc.data
+
+                // Extract specific fields from the user document
+                val id = user?.get(ID) as? String ?: ""
+                val email = user?.get(Constant.E_MAIL) as? String ?: ""
+                val nickname = user?.get(Constant.NICKNAME) as? String ?: ""
+                val phoneNumber = user?.get(Constant.PHONE_NUMBER) as? String ?: ""
+                val imagePath = user?.get(Constant.PROFILE_IMAGE_PATH) as? String ?: ""
+
+                // Print the retrieved user details
+                println("Retrieved User Details: ID: $id, Email: $email, Nickname: $nickname, Phone: $phoneNumber, ImagePath: $imagePath")
+
+                // Construct and return a User object with the extracted fields
+                User(id, email, nickname, phoneNumber, imagePath)
+            } else {
+                // Handle case where the user document doesn't exist
+                null
+            }
         } catch (e: Exception) {
             // Handle exceptions or return null if details not found
+            e.printStackTrace()
             null
         }
     }
@@ -163,10 +188,43 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
             "timestamp" to message.timestamp
         )
 
-        db.collection("Messages")
+        val db = FirebaseFirestore.getInstance()
+
+        // Add the message to the 'Messages' collection
+        val messageId = db.collection("Messages")
             .add(messageData)
             .await()
+            .id
+
+        // Update the last message in the conversation document
+        if (messageId.isNotEmpty()) {
+            updateLastMessageInConversation(message.channelId, message.message, message.timestamp)
+        }
     }
+
+
+    // Update the last message in the conversation document
+    private fun updateLastMessageInConversation(channelId: String, lastMessage: String, timestamp: Long) {
+        val db = FirebaseFirestore.getInstance()
+
+        // Assuming 'conversations' collection and each conversation has a document
+        val conversationDocRef = db.collection("Conversations").document(channelId)
+
+        val updateData = hashMapOf<String, Any>(
+            "lastMessage" to lastMessage,
+            "lastMessageTimestamp" to timestamp
+        )
+
+        conversationDocRef.update(updateData)
+            .addOnSuccessListener {
+                // Update successful
+            }
+            .addOnFailureListener { e ->
+                // Handle any errors or log the error message
+                Log.e(TAG, "Error updating last message: $e")
+            }
+    }
+
 
     private suspend fun checkConversationExists(channelId: String): Boolean {
         val conversationDocument = db.collection("Conversations").document(channelId).get().await()
@@ -177,7 +235,9 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
         val conversationData = hashMapOf(
             "channelId" to conversation.channelId,
             "user1Id" to conversation.user1Id,
-            "user2Id" to conversation.user2Id
+            "user2Id" to conversation.user2Id,
+            "lastMessage" to conversation.lastMessage,
+            "lastMessageTimestamp" to conversation.lastMessageTimestamp
         )
 
         db.collection("Conversations")

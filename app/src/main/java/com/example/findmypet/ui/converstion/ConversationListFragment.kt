@@ -1,7 +1,6 @@
 package com.example.findmypet.ui.converstion
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.example.findmypet.adapter.ConversationListAdapter
 import com.example.findmypet.data.model.DisplayConversation
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentConversationListBinding
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -39,15 +37,16 @@ class ConversationListFragment : Fragment() {
 
 
     private fun setupRecyclerView() {
-        conversationAdapter = ConversationListAdapter(ConversationListAdapter.ConversationClickListener { conversation ->
-            Log.v("chat", conversation.channelId)
-            Snackbar.make(requireView(), conversation.channelId, Snackbar.LENGTH_SHORT).show()
+        conversationAdapter = ConversationListAdapter(ConversationListAdapter.ConversationClickListener { displayConversation ->
             findNavController().navigate(
                 ConversationListFragmentDirections.actionConversationListFragmentToChatFragment2(
-                    User(id = conversation.secondUserId,
-                        nickname = conversation.secondUserName,
-                        Profile_image = conversation.secondUserImage, email = conversation.secondUserEmile, phone = conversation.secondUserPhone)
+                    User(id = displayConversation.secondUserId,
+                        nickname = displayConversation.secondUserName,
+                        imagePath = displayConversation.secondUserImage,
+                        email = displayConversation.secondUserEmile,
+                        phone = displayConversation.secondUserPhone)
                 )
+
             )
         })
         binding.recyclerView.apply {

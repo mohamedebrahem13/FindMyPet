@@ -70,7 +70,7 @@
                 android:layout_height="70dp"
                 android:contentDescription="@string/profile_image"
                 android:onClick="@{() -> profileImageClickListener.onClick(post)}"
-                app:imageUrl="@{post.user.profile_image}"
+                app:imageUrl="@{post.user.imagePath}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />

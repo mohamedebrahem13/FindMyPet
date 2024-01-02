@@ -1,5 +1,6 @@
 package com.example.findmypet.ui.profile.edit
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
@@ -12,7 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.UpdateUserProfileResponse
@@ -20,13 +23,14 @@ import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentProfileEditBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileEdit : Fragment() {
     private lateinit var binding: FragmentProfileEditBinding
     private  var imageUri: Uri? =null
     private lateinit var imagePicker: ActivityResultLauncher<String>
-    private val permissionLauncher: ActivityResultLauncher<String> =
+    private val mediaPermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 openGallery()
@@ -34,6 +38,15 @@ class ProfileEdit : Fragment() {
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+    private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                openGallery()
+            } else {
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     private val profileEditViewModel: ProfileEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,32 +90,34 @@ class ProfileEdit : Fragment() {
         return binding.root
     }
 
-    private fun updateProfileObserver(){
-        lifecycleScope.launchWhenStarted {
-            profileEditViewModel.updateProfileResult.collect { result ->
-                when (result) {
-                    is UpdateUserProfileResponse.Loading -> {
-                        binding.prograss.visibility = View.VISIBLE
-                        // Handle loading state
-                    }
-                    is UpdateUserProfileResponse.Success -> {
-                        // Handle success state
-                        binding.prograss.visibility = View.GONE
-                        Toast.makeText(context, "success update profile ", Toast.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
+    private fun updateProfileObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                profileEditViewModel.updateProfileResult.collect { result ->
+                    when (result) {
+                        is UpdateUserProfileResponse.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                            // Handle loading state
+                        }
+                        is UpdateUserProfileResponse.Success -> {
+                            // Handle success state
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(context, "success update profile ", Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                        }
+                        is UpdateUserProfileResponse.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            // Handle error state
+                            val error = result.throwable
+                            Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+                        }
 
-                    }
-                    is UpdateUserProfileResponse.Error -> {
-                        binding.prograss.visibility = View.GONE
-                        // Handle error state
-                        val error = result.throwable
-                        Toast.makeText(context,error.toString(), Toast.LENGTH_SHORT).show()
+                        else -> {}
                     }
                 }
             }
         }
     }
-
 
 
 
@@ -110,32 +125,32 @@ class ProfileEdit : Fragment() {
 
 
     private fun initObserver() {
-        // Observe the progress and update UI accordingly
-        lifecycleScope.launchWhenResumed {
-            profileEditViewModel.progress.collectLatest { progress ->
-                when (progress) {
-                    is Resource.Loading -> {
-                        // Show progress bar
-                        binding.prograss.visibility = View.VISIBLE
-                    }
-                    is Resource.Success -> {
-                        // Hide progress bar and show success message
-                        binding.prograss.visibility = View.GONE
-                        Toast.makeText(context, progress.data, Toast.LENGTH_SHORT).show()
-                    }
-                    is Resource.Error -> {
-                        // Hide progress bar and show error message
-                        binding.prograss.visibility = View.GONE
-                        Toast.makeText(context, progress.throwable.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                profileEditViewModel.progress.collectLatest { progress ->
+                    when (progress) {
+                        is Resource.Loading -> {
+                            // Show progress bar
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        is Resource.Success -> {
+                            // Hide progress bar and show success message
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(context, progress.data, Toast.LENGTH_SHORT).show()
+                        }
+                        is Resource.Error -> {
+                            // Hide progress bar and show error message
+                            binding.prograss.visibility = View.GONE
+                            Toast.makeText(context, progress.throwable.toString(), Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // Handle other states if necessary
+                        }
                     }
                 }
             }
         }
     }
-
-
 
 
     private fun checkAllFields():Boolean {
@@ -167,18 +182,27 @@ class ProfileEdit : Fragment() {
 
 
 
-
+    @SuppressLint("NewApi")
     private fun checkPermissionAndOpenGallery() {
-        val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                android.Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
         if (PermissionChecker.checkSelfPermission(requireContext(), permission) == PermissionChecker.PERMISSION_GRANTED) {
             openGallery()
         } else {
-            requestStoragePermission()
+            requestAppropriatePermission(permission)
         }
     }
-
-    private fun requestStoragePermission() {
-        permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun requestAppropriatePermission(permission: String) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            mediaPermissionLauncher.launch(permission)
+        } else {
+            legacyStoragePermissionLauncher.launch(permission)
+        }
     }
 
     private fun openGallery() {
