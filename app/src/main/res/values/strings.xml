@@ -51,6 +51,8 @@
     <string name="Post">Post</string>
     <string name="Edit_profile">Edit Profile</string>
     <string name="update">Update</string>
+    <string name="Conversation">Conversation</string>
+
 
     <string-array name="egypt_cities">
         <item>Alexandria</item>

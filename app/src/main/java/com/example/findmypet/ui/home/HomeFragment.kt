@@ -74,7 +74,7 @@ class HomeFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.Profile -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
-            R.id.chat -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToConversationListFragment())
+            R.id.Conversation -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToConversationListFragment())
         }
         return true
     }

@@ -4,14 +4,15 @@
 
 
     <item
-        android:id="@+id/chat"
+        android:id="@+id/Conversation"
         android:icon="@drawable/baseline_chat_24"
-        app:showAsAction="always"
-        android:title="@string/chat" />
+        app:showAsAction="ifRoom"
+        android:title="@string/Conversation"
+        />
     <item
         android:id="@+id/Profile"
         android:icon="@drawable/ic_baseline_account_box_24"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/profile" />
 
 

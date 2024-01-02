@@ -65,7 +65,7 @@ class ChatFragment : Fragment() {
             setDisplayShowTitleEnabled(false)
             setDisplayShowCustomEnabled(true)
             customView = customToolbarView
-            setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), com.google.android.material.R.color.cardview_light_background)))
+            setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(requireContext(),R.color.md_theme_light_surface)))
 
         }
 

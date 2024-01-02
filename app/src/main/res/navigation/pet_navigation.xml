@@ -81,7 +81,7 @@
     <fragment
         android:id="@+id/conversationListFragment"
         android:name="com.example.findmypet.ui.converstion.ConversationListFragment"
-        android:label="ConversationListFragment" >
+        android:label="@string/Conversation">
         <action
             android:id="@+id/action_conversationListFragment_to_chatFragment2"
             app:destination="@id/chatFragment" />

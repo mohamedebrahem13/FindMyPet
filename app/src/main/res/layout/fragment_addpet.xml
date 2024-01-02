@@ -122,7 +122,7 @@
 
         <TextView
             android:id="@+id/selectLocation"
-            android:layout_width="207dp"
+            android:layout_width="171dp"
             android:layout_height="51dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"

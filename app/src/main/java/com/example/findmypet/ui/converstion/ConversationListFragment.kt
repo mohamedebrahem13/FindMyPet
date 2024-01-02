@@ -41,7 +41,7 @@ class ConversationListFragment : Fragment() {
             findNavController().navigate(
                 ConversationListFragmentDirections.actionConversationListFragmentToChatFragment2(
                     User(id = displayConversation.secondUserId,
-                        nickname = displayConversation.secondUserName,
+                        nickname = displayConversation.secondUserName.trim(),
                         imagePath = displayConversation.secondUserImage,
                         email = displayConversation.secondUserEmile,
                         phone = displayConversation.secondUserPhone)
