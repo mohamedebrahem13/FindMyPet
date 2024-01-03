@@ -147,6 +147,7 @@
             android:gravity="start"
             android:hint="@string/PetDescription"
             android:importantForAutofill="no"
+            android:inputType="textMultiLine|textAutoCorrect|textAutoComplete"
             android:lines="10"
             android:textColorHint="#546E7A"
             app:layout_constraintEnd_toEndOf="parent"
