@@ -144,7 +144,6 @@ class ChatFragment : Fragment() {
                             showToast(resource.throwable.message.toString())
                         }
 
-                        else -> {}
                     }
                 }
             }

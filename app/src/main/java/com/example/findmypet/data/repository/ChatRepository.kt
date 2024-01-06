@@ -181,9 +181,10 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
         }
     }
 
-    override suspend fun checkUnreadMessages(receiverId: String): Boolean {
+    override suspend fun checkUnreadMessages(receiverId: String,currentUserId:String): Boolean {
         val unreadMessages = db.collection("Messages")
             .whereEqualTo("receiverId", receiverId)
+            .whereEqualTo("senderId", currentUserId)
             .whereEqualTo("isRead", false)
             .get()
             .await()

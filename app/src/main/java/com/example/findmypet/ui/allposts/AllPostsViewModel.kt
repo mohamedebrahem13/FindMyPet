@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPostsUseCase, private val getCurrentUserUseCase: GetCurrentUserUseCase,private val AddPostToFavoriteUseCase:AddPostToFavoriteUseCase ,private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
+class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPostsUseCase, private val getCurrentUserUseCase: GetCurrentUserUseCase, private val addPostToFavoriteUseCase:AddPostToFavoriteUseCase, private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
 
 
     private var originalPosts: List<Post> = emptyList()
@@ -108,7 +108,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
         viewModelScope.launch {
             try {
                 _addFaveSharedFlow.emit(Resource.Loading)
-                val result = AddPostToFavoriteUseCase.execute(postId)
+                val result = addPostToFavoriteUseCase.execute(postId)
                 _addFaveSharedFlow.emit(result)
             } catch (e: Exception) {
                 if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.UNAVAILABLE) {

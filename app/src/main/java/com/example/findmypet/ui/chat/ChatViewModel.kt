@@ -50,7 +50,7 @@ class ChatViewModel @Inject constructor(private val getMessagesForChannelUseCase
                 delay(30000) // 30 seconds delay (adjust as needed)
 
                 // Check for unread messages after a delay
-                val hasUnreadMessages = checkUnreadMessagesUseCase(user2Id)
+                val hasUnreadMessages = checkUnreadMessagesUseCase(user2Id,uid)
 
                 if (hasUnreadMessages) {
                     val recipientToken = getRecipientFCMTokenUseCase.getRecipientFCMToken(user2Id)
