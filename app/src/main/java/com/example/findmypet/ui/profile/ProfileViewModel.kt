@@ -30,7 +30,6 @@ class ProfileViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Error in getCurrentUser: ${e.message}")
-                // Handle the error, show a message, or perform other actions as needed
             }
         }
     }
@@ -45,7 +44,6 @@ class ProfileViewModel @Inject constructor(
                 Log.v("ProfileViewModel", "User is signed out successfully")
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Error in signOut: ${e.message}")
-                // Handle the error, show a message, or perform other actions as needed
             }
         }
     }

@@ -66,6 +66,12 @@ class ConversationListFragment : Fragment() {
     }
 
     private fun displayConversations(conversations: List<DisplayConversation>) {
-        conversationAdapter.submitList(conversations)
+        if (conversations.isEmpty()){
+            binding.textView17.visibility=View.VISIBLE
+        }else{
+            binding.textView17.visibility=View.GONE
+            conversationAdapter.submitList(conversations)
+
+        }
     }
 }

@@ -8,4 +8,7 @@ interface ChatRepositoryInterface {
     fun getMessagesForChannelRealTime(user2Id: String): Flow<List<Message>>
     suspend fun sendMessageAndInitiateChatIfNeeded(user2Id: String, messageText: String)
     fun getAllConversationsWithUserDetailsForCurrentUser(): Flow<List<DisplayConversation>>
+    suspend fun getRecipientFCMToken(receiverId: String): String?
+    suspend fun checkUnreadMessages(receiverId: String): Boolean
+
 }

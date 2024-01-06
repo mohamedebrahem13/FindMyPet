@@ -10,6 +10,9 @@ import com.example.findmypet.common.Constant
 import com.example.findmypet.common.Constant.channelDescription
 import com.example.findmypet.common.Constant.channelId
 import com.example.findmypet.common.Constant.channelName
+import com.example.findmypet.common.Constant.chatChannelDescription
+import com.example.findmypet.common.Constant.chatChannelId
+import com.example.findmypet.common.Constant.chatChannelName
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,7 @@ class HiltApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         createChannel()
+        createChatChannel()
         subscribeToTopic(Constant.Topic)
     }
 
@@ -53,7 +57,22 @@ class HiltApplication : Application() {
             Log.d("NotificationChannel", "Channel created")
         }
     }
+    private fun createChatChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val chatChannelId = chatChannelId
+            val chatChannelName = chatChannelName
+            val chatChannelDescription = chatChannelDescription
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(chatChannelId, chatChannelName, importance).apply {
+                description = chatChannelDescription
+            }
 
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+
+            Log.d("ChatNotificationChannel", "Chat channel created")
+        }
+    }
 
 
 }

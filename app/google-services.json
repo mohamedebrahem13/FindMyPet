@@ -12,7 +12,20 @@
           "package_name": "com.example.findmypet"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "129075210547-nupnrkhk7t1eipt16rdhplkr2u89v3e0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.findmypet",
+            "certificate_hash": "6f6467f48be44820e4c33307c8a28341dd5e2b81"
+          }
+        },
+        {
+          "client_id": "129075210547-hmh6cubjqtvm5f1b40stbltpt1eli5al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDscDVKrQazsGec6ZWKPIzWUX5uly6So5g"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129075210547-hmh6cubjqtvm5f1b40stbltpt1eli5al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

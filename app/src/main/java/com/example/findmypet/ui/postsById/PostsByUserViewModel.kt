@@ -8,7 +8,11 @@ import com.example.findmypet.domain.usecase.firebaseUseCase.posts.DeletePostUseC
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsForCurrentUserUseCase
 import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,7 +60,6 @@ class PostsByUserViewModel @Inject constructor(
                 }
             } catch (e: Throwable) {
                 _userPostsStateFlow.value = Resource.Error(e)
-                // Handle exceptions thrown during collection
                 // e.g., handle network or other errors
             }
         }

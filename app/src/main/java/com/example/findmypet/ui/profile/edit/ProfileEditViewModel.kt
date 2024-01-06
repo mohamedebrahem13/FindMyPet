@@ -105,7 +105,6 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
                     "EditProfileViewModel",
                     "Error in getCurrentUserUidUseCase in EditProfileViewModel: ${e.message}"
                 )
-                // Handle the error, show a message, or perform other actions as needed
             }
 
         }

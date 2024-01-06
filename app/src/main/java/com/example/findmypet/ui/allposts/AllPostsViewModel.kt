@@ -12,7 +12,11 @@ import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsUseCas
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.RemovePostFromFavoriteUseCase
 import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,7 +57,6 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
                 }
             } catch (e: Throwable) {
                 _postsStateFlow.value = Resource.Error(e)
-                // Handle error state as needed
             }
         }
     }
@@ -80,7 +83,6 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
                 _currentUser.value = getCurrentUserUseCase()
             } catch (e: Exception) {
                 Log.e("homeViewModel", "Error in getCurrentUser IN HomeViewModel: ${e.message}")
-                // Handle the error, show a message, or perform other actions as needed
             }
         }
     }

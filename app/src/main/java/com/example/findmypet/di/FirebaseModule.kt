@@ -3,6 +3,8 @@ package com.example.findmypet.di
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.ktx.storage
 import dagger.Module
 import dagger.Provides
@@ -24,6 +26,11 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideFirebaseStorage() = Firebase.storage
+
+    @Provides
+    @Singleton
+    fun provideFirebaseMessaging(): FirebaseMessaging =
+        Firebase.messaging
 
 
 }

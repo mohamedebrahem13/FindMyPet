@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.domain.usecase.firebaseUseCase.CheckCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.SignInUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.UpdateTokenUseCase
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     }
 
 
+
+
     private fun checkCurrentUser() {
         viewModelScope.launch {
             try {
@@ -48,7 +51,6 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 _checkCurrentUser.value = result
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Error in checkCurrentUser: ${e.message}")
-                // Handle the error, show a message, or perform other actions as needed
             }
         }
     }

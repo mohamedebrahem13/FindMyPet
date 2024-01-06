@@ -51,6 +51,7 @@ class HomeFragment : Fragment(), MenuProvider {
 
 
         viewPager.adapter = tabAdapter
+        homeViewModel.onViewOpened()
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val customTabView = layoutInflater.inflate(R.layout.tab_custom_view, null)

@@ -6,5 +6,6 @@ data class Message(
     val senderId: String = "", // ID of the message sender
     val receiverId: String = "", // ID of the message receiver
     val message: String = "", // Content of the message
-    val timestamp: Long = 0 // Timestamp for when the message was sent
+    val timestamp: Long = 0,// Timestamp for when the message was sent
+    val isRead: Boolean = false
 )

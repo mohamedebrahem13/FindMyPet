@@ -16,6 +16,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -26,6 +27,8 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
         val sortedUserIds = listOf(user1Id, user2Id).sorted()
         return "${sortedUserIds[0]}_${sortedUserIds[1]}"
     }
+
+
 
 
     override fun getMessagesForChannelRealTime(user2Id: String): Flow<List<Message>> = callbackFlow {
@@ -53,6 +56,10 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
 
                 trySend(newMessages) // Try sending new messages to the flow
                     .isSuccess // Check if sending was successful
+                launch {
+                    markMessagesAsRead(newMessages, user1Id, user2Id)
+                    Log.v("messagesUnread","messages$newMessages")
+                }
             }
 
             awaitClose {
@@ -61,8 +68,24 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
             }
         }
     }
+    private suspend fun markMessagesAsRead(messages: List<Message>, user1Id: String, user2Id: String) {
+        messages.forEach { message ->
+            if (message.senderId == user2Id && message.receiverId == user1Id && !message.isRead) {
+                // Update the message in the database using your update function (e.g., markMessageAsRead)
+                markMessageAsRead(message)
+            }
+        }
+    }
+    private suspend fun markMessageAsRead(message: Message) {
 
-
+        try {
+            val messageDocRef = db.collection("Messages").document(message.messageId)
+            messageDocRef.update("isRead", true).await()            // Update successful
+        } catch (e: Exception) {
+            // Handle any errors or log the error message
+            Log.e(TAG, "Error updating message read status: $e")
+        }
+    }
 
 
     override suspend fun sendMessageAndInitiateChatIfNeeded(user2Id: String, messageText: String) {
@@ -84,11 +107,13 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
 
             // Send the message
             val message = Message(
+                messageId = "",
                 channelId = channelId,
                 senderId = user1Id,
                 receiverId = user2Id,
                 message = messageText,
-                timestamp = System.currentTimeMillis()
+                timestamp = System.currentTimeMillis(),
+                isRead = false
             )
             sendMessageToFirestore(message)
         }
@@ -147,6 +172,25 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
         }
     }
 
+    override suspend fun getRecipientFCMToken(receiverId: String): String? {
+        return try {
+            val userDoc = db.collection(COLLECTION_PATH).document(receiverId).get().await()
+            userDoc.getString("token")
+        } catch (e: Exception) {
+            null // Handle exceptions or return null if the token is not found
+        }
+    }
+
+    override suspend fun checkUnreadMessages(receiverId: String): Boolean {
+        val unreadMessages = db.collection("Messages")
+            .whereEqualTo("receiverId", receiverId)
+            .whereEqualTo("isRead", false)
+            .get()
+            .await()
+
+        return !unreadMessages.isEmpty
+    }
+
 
     private suspend fun getUserDetails(userId: String): User? {
         return try {
@@ -185,20 +229,25 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
             "senderId" to message.senderId,
             "receiverId" to message.receiverId,
             "message" to message.message,
-            "timestamp" to message.timestamp
+            "timestamp" to message.timestamp,
+            "isRead" to false
         )
 
         val db = FirebaseFirestore.getInstance()
 
-        // Add the message to the 'Messages' collection
-        val messageId = db.collection("Messages")
-            .add(messageData)
-            .await()
-            .id
+        try {
+            val docRef = db.collection("Messages").add(messageData).await()
+            val generatedMessageId = docRef.id
 
-        // Update the last message in the conversation document
-        if (messageId.isNotEmpty()) {
+            // Update the messageId field in the same document
+            db.collection("Messages").document(docRef.id)
+                .update("messageId", generatedMessageId)
+                .await()
+
+            // Update the last message in the conversation document with the new message ID
             updateLastMessageInConversation(message.channelId, message.message, message.timestamp)
+        } catch (e: Exception) {
+            // Handle failure
         }
     }
 

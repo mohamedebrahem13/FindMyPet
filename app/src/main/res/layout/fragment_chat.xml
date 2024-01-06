@@ -42,7 +42,7 @@
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/md_theme_dark_inversePrimary"
-            android:textColorHint="#546E7A"
+            android:textColorHint="@color/md_theme_dark_inversePrimary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -23,6 +23,10 @@ object Constant {
 
     const val FAVORITE="favoritePosts"
 
+    const val chatChannelId = "chat_channel"
+    const val chatChannelName = "Chat Notifications"
+    const val chatChannelDescription = "Notifications for chat messages" // Description for the chat notification channel
+
      const val channelId = "new_pet_channel"
      const val channelName = "New Pet"
     const val Topic="/topics/new_pet"

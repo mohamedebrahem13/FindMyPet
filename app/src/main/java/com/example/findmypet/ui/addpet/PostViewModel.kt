@@ -59,7 +59,6 @@ class PostViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 Log.e("addPetViewModel", "Error in getCurrentUser: ${e.message}")
-                // Handle the error, show a message, or perform other actions as needed
             }
         }
     }

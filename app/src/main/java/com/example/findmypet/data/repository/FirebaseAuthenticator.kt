@@ -1,5 +1,6 @@
 package com.example.findmypet.data.repository
 
+import android.util.Log
 import com.example.findmypet.common.Constant.COLLECTION_PATH
 import com.example.findmypet.common.Constant.E_MAIL
 import com.example.findmypet.common.Constant.ID
@@ -11,12 +12,14 @@ import com.example.findmypet.domain.repository.Authenticator
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirebaseAuthenticator @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
+    ,private val messaging: FirebaseMessaging
 ): Authenticator {
 
     override suspend fun getFirebaseUserUid(): String = firebaseAuth.currentUser?.uid.orEmpty()
@@ -72,4 +75,35 @@ class FirebaseAuthenticator @Inject constructor(
         )    }
 
     override suspend fun signOut() = firebaseAuth.signOut()
+    override suspend fun firebaseMessagingToken(): String {
+        return try {
+            messaging.token.await()
+        } catch (e: Exception) {
+            // Handle exceptions here
+            ""
+        }
+    }
+
+
+
+    override suspend fun updateTokenForCurrentUser(newToken: String) {
+        val userId = getFirebaseUserUid()
+
+        // Check if a user ID is available
+        if (userId.isNotEmpty()) {
+            try {
+                // Example update in Firestore using the provided newToken parameter
+                Log.v("updaateToken","update token $newToken")
+                val userDoc = firebaseFirestore.collection(COLLECTION_PATH).document(userId)
+                userDoc.update("token", newToken).await()
+            } catch (e: Exception) {
+                // Handle exceptions here
+                // Logging, error handling, etc.
+            }
+        } else {
+            // Handle scenario where user ID is not available
+        }    }
+
+
+
 }

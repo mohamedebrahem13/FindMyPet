@@ -143,6 +143,8 @@ class ChatFragment : Fragment() {
                         is MessageResource.Error -> {
                             showToast(resource.throwable.message.toString())
                         }
+
+                        else -> {}
                     }
                 }
             }

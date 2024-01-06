@@ -17,5 +17,5 @@ interface Authenticator {
     suspend fun getCurrentUser(): User
 
     suspend fun signOut()
-
-}
+    suspend fun firebaseMessagingToken(): String
+    suspend fun updateTokenForCurrentUser(newToken: String)}
