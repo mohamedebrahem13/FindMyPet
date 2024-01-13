@@ -116,6 +116,7 @@ class ChatFragment : Fragment() {
     private fun setupSendButton() {
         binding.send.setOnClickListener {
             chat()
+            clearEditText()
         }
     }
 
@@ -137,7 +138,7 @@ class ChatFragment : Fragment() {
                     when (resource) {
                         is MessageResource.Success -> {
                             showToast(resource.message)
-                            clearEditText()
+
 
                         }
                         is MessageResource.Error -> {

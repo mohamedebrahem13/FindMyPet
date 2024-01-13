@@ -38,79 +38,46 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_email"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="16dp"
             android:text="@{user.email}"
+            android:textSize="20sp"
             android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.564"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
             tools:text="cnrture@gmail.com" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_nickname"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="16dp"
+            android:textSize="25sp"
             android:text="@{user.nickname}"
             android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.359"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/tv_email"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image"
             tools:text="cnrture" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textView7"
-            style="@style/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="52dp"
-            android:text="@string/Email"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image"
-            app:layout_constraintVertical_chainStyle="spread" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textView9"
-            style="@style/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
-            android:text="@string/Phone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_phone_number"
-            style="@style/MaterialAlertDialog.Material3.Body.Text"
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="16dp"
             android:text="@{user.phone}"
+            android:textSize="20sp"
             android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
-            tools:text="0121158775654" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textView8"
-            style="@style/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/nickname"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_email"
+            tools:text="0121158775654" />
 
         <ProgressBar
             android:id="@+id/prograss"
@@ -133,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
-            app:layout_constraintVertical_bias="0.306" />
+            app:layout_constraintVertical_bias="0.14" />
 
         <ImageButton
             android:id="@+id/editbutton"

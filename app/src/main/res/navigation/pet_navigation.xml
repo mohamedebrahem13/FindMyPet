@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_zoomFragment"
+            app:destination="@id/zoomFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -85,5 +88,16 @@
         <action
             android:id="@+id/action_conversationListFragment_to_chatFragment2"
             app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/zoomFragment"
+        android:name="com.example.findmypet.ui.postdetails.ZoomFragment"
+        android:label="PostImages">
+        <argument
+            android:name="imageurls"
+            app:argType="string[]" />
+        <argument
+            android:name="imageurl"
+            app:argType="string" />
     </fragment>
 </navigation>

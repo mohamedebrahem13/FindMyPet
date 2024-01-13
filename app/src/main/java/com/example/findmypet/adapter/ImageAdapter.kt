@@ -11,50 +11,27 @@ import com.example.findmypet.R
 import com.example.findmypet.databinding.ItemImageBinding
 
 
-class ImageAdapter(private val imageList: List<String>?, private val itemClickListener: OnImageClickListener? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    companion object {
-        private const val VIEW_TYPE_WITH_DELETE = 1
-        private const val VIEW_TYPE_WITHOUT_DELETE = 2
-    }
+class ImageAdapter(private val imageList: List<String>?, private val itemClickListener: OnImageClickListener? = null) :
+    RecyclerView.Adapter<ImageAdapter.ImageViewHolderWithDelete>() {
 
     interface OnImageClickListener {
         fun onImageClick(position: Int)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_WITH_DELETE) {
-            val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ImageViewHolderWithDelete(binding)
-        } else {
-            val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ImageViewHolderWithoutDelete(binding)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolderWithDelete {
+        val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageViewHolderWithDelete(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ImageViewHolderWithDelete, position: Int) {
         val imageUrl = imageList?.get(position)
-        if (imageUrl != null) {
-            when (holder) {
-                is ImageViewHolderWithDelete -> holder.bind(imageUrl)
-                is ImageViewHolderWithoutDelete -> holder.bind(imageUrl)
-            }
-        }
+        imageUrl?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int {
-        return imageList?.size ?: 0
-    }
+    override fun getItemCount(): Int = imageList?.size ?: 0
 
-    override fun getItemViewType(position: Int): Int {
-        return if (itemClickListener != null) {
-            VIEW_TYPE_WITH_DELETE
-        } else {
-            VIEW_TYPE_WITHOUT_DELETE
-        }
-    }
-
-    inner class ImageViewHolderWithDelete(private val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ImageViewHolderWithDelete(private val binding: ItemImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private val deleteButton = binding.delete
 
         init {
@@ -75,21 +52,6 @@ class ImageAdapter(private val imageList: List<String>?, private val itemClickLi
         }
     }
 
-    inner class ImageViewHolderWithoutDelete(private val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(imageUrl: String) {
-            // Load the image using Glide
-            if (imageUrl.isEmpty()) {
-                binding.imageView.setImageResource(R.drawable.peturl) // Set the placeholder image
-            } else {
-                loadImage(imageUrl, binding.imageView)
-                binding.executePendingBindings()
-            }
-            binding.delete.visibility = View.GONE
-        }
-    }
-
-
     private fun loadImage(imageUrl: String, imageView: ImageView) {
         val options = RequestOptions()
             .dontAnimate()
@@ -101,5 +63,4 @@ class ImageAdapter(private val imageList: List<String>?, private val itemClickLi
             .apply(options)
             .into(imageView)
     }
-
 }

@@ -112,7 +112,6 @@ class ProfileEdit : Fragment() {
                             Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
                         }
 
-                        else -> {}
                     }
                 }
             }

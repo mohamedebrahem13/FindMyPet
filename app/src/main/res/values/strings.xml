@@ -101,4 +101,7 @@
     <string name="chat">type your message here</string>
     <string name="empty_converstion">you dont have any chat messages yet</string>
 
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 </resources>
