@@ -1,8 +1,6 @@
 package com.example.findmypet.di.postrepo
 
-import com.example.findmypet.data.remote.firestore.FirebasePostDataSource
 import com.example.findmypet.data.repository.PostRepositoryImpl
-import com.example.findmypet.domain.datasource.RemotePostDataSource
 import com.example.findmypet.domain.repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,21 +17,11 @@ class PostModule {
 
     @Provides
     @Singleton
-    fun provideRemotePostDataSource(
+    fun providePostRepository(
         firestore: FirebaseFirestore,
         storage: FirebaseStorage,
         firebaseAuth: FirebaseAuth
-    ): RemotePostDataSource {
-        return FirebasePostDataSource(storage,firestore , firebaseAuth)
-    }
-
-
-
-    @Provides
-    @Singleton
-    fun providePostRepository(
-        remotePostDataSource: RemotePostDataSource
-    ): PostRepository = PostRepositoryImpl(remotePostDataSource)
+    ): PostRepository = PostRepositoryImpl(storage,firestore,firebaseAuth)
 
 
 }
