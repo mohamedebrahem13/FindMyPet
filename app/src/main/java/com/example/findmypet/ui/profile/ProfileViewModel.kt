@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.User
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
-import com.example.findmypet.domain.usecase.firebaseUseCase.SignOutUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.SignOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val signOutUseCase: SignOutUseCase) : ViewModel() {
+    private val signOutUseCase: SignOutUseCase
+) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
     val currentUser: StateFlow<Resource<User>?> = _currentUser

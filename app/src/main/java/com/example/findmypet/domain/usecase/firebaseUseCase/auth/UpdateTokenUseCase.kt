@@ -1,4 +1,4 @@
-package com.example.findmypet.domain.usecase.firebaseUseCase
+package com.example.findmypet.domain.usecase.firebaseUseCase.auth
 
 import android.util.Log
 import com.example.findmypet.domain.repository.Authenticator

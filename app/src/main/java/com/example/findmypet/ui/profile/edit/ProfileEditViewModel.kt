@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.UpdateUserProfileResponse
 import com.example.findmypet.data.model.User
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUidUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUidUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.profile.AddImageToFirebaseStorageUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.profile.AddImageUrlToFirestoreUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.profile.UpdateUserProfileUseCase

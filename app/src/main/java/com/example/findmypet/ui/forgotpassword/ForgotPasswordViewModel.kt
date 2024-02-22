@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
-import com.example.findmypet.domain.usecase.firebaseUseCase.ForgotPasswordUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.ForgotPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

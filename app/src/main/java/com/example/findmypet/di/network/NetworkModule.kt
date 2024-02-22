@@ -1,6 +1,8 @@
 package com.example.findmypet.di.network
 
+import com.example.findmypet.BuildConfig
 import com.example.findmypet.common.Constant.BASE_URL
+import com.example.findmypet.common.Constant.CONTENT_TYPE
 import com.example.findmypet.data.repository.FirebaseCloudMessagingRepository
 import com.example.findmypet.domain.network.FCMService
 import com.example.findmypet.domain.usecase.firebaseUseCase.notification.SendNotificationToTopicUseCase
@@ -8,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,12 +24,24 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val headersInterceptor = Interceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("Authorization", "key=${BuildConfig.API_KEY}")
+                .addHeader("Content-Type", CONTENT_TYPE)
+                .build()
+            chain.proceed(request)
+        }
+
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(headersInterceptor)
             .build()
     }
+
 
     @Provides
     @Singleton

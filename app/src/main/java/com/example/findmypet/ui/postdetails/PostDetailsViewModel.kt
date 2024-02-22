@@ -3,7 +3,7 @@ package com.example.findmypet.ui.postdetails
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUidUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUidUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

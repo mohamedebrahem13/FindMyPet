@@ -3,11 +3,13 @@ package com.example.findmypet.data.repository
 import android.net.Uri
 import android.util.Log
 import com.example.findmypet.common.Constant
+import com.example.findmypet.common.Constant.POSTS
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
 import com.example.findmypet.domain.repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -15,7 +17,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
@@ -27,6 +28,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
                                              private val db: FirebaseFirestore,
                                              private val firebaseAuth: FirebaseAuth
 ):PostRepository {
+
     override fun getPostsForUserById(): Flow<Resource<List<Post>>> = flow {
         emit(Resource.Loading)
 
@@ -34,7 +36,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
         if (userId.isNotEmpty()) {
             try {
-                val postsCollection = db.collection(Constant.POSTS)
+                val postsCollection = db.collection(POSTS)
                 val userPostsQuery = postsCollection.whereEqualTo(Constant.USERID, userId).get().await()
 
                 val userPosts = userPostsQuery.toObjects(Post::class.java)
@@ -81,32 +83,29 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
     override suspend fun getFirebaseUserUid(): String = firebaseAuth.currentUser?.uid.orEmpty()
 
-
-    override  fun refreshPosts(): Flow<Resource<List<Post>>> = flow {
+    override fun refreshPosts(lastVisible: DocumentSnapshot?): Flow<Pair<Resource<List<Post>>, DocumentSnapshot?>> = flow {
+        emit(Resource.Loading to null)
         try {
+            var postsQuery = db.collection(POSTS)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(Constant.PAGE_SIZE.toLong())
 
-            emit(Resource.Loading) // Emit loading state
-
-            val postsCollection = db.collection(Constant.POSTS)
-            val allPostsQuery = postsCollection
-                .orderBy("timestamp", Query.Direction.DESCENDING) // Sort by timestamp in descending order
-                .get()
-                .await()
-
-            val allPosts = allPostsQuery.toObjects(Post::class.java)
-            if(allPosts.isEmpty()){
-
-                emit(Resource.Error(Throwable("list is empty")))
-            }else{
-                emit(Resource.Success(allPosts)) // Emit successful result
-
+            if (lastVisible != null) {
+                postsQuery = postsQuery.startAfter(lastVisible)
             }
 
-        } catch (e: Throwable) {
-            emit(Resource.Error(e)) // Emit error if there's an exception
+            val postsSnapshot = postsQuery.get().await()
+            val posts = postsSnapshot.toObjects(Post::class.java)
+           if (posts.isEmpty()){
+             emit(Resource.Error(Throwable("NO MORE POSTS")) to null) // No lastVisible for empty page
+          }else{
+           if (postsSnapshot.size() > 0) { // Check for last page condition
+           emit(Resource.Success(posts) to postsSnapshot.documents.lastOrNull()) // Return lastVisible
+          }
         }
-    }.catch { e ->
-        emit(Resource.Error(e)) // Catch any exceptions in the flow
+        } catch (e: Throwable) {
+            emit(Resource.Error(e) to null) // No lastVisible on error
+        }
     }
 
     override fun getFavoritePosts(): Flow<Resource<List<Post>>> = flow {
@@ -122,7 +121,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
                 val postsList = mutableListOf<Post>()
                 for (postId in favoritePostIds) {
                     try {
-                        val postRef = db.collection(Constant.POSTS).document(postId).get().await()
+                        val postRef = db.collection(POSTS).document(postId).get().await()
                         val post = postRef.toObject(Post::class.java)
                         post?.let { postsList.add(it) }
                     } catch (fetchException: Exception) {
@@ -157,7 +156,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
     override suspend fun addPostRemote(post: Post): Resource<Unit> {
         return try {
-            val postsCollection = db.collection(Constant.POSTS)
+            val postsCollection = db.collection(POSTS)
             val newPostDocument = postsCollection.add(post).await()
             // Update the postId in the original post object with the actual value from Firebase
             val postId = newPostDocument.id
@@ -174,7 +173,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
     override suspend fun deletePostRemote(postId: String): Resource<Unit> {
         return try {
 
-            val postRef = db.collection(Constant.POSTS).document(postId)
+            val postRef = db.collection(POSTS).document(postId)
             val postSnapshot = postRef.get().await()
 
             if (postSnapshot.exists()) {
@@ -238,6 +237,39 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
         } else {
             // Handle the case where there is no authenticated user
             Resource.Error(Exception("User not authenticated"))
+        }
+    }
+
+    override fun searchPostsByPetName(petName: String): Flow<Resource<List<Post>>> = flow {
+        emit(Resource.Loading)
+
+        val userId = getFirebaseUserUid()
+
+        if (userId.isNotEmpty()) {
+            try {
+                emit(Resource.Loading)
+                val postsCollection = db.collection(POSTS)
+                val userPostsQuery = postsCollection
+                    .whereGreaterThanOrEqualTo("pet_name", petName) // Search by pet_name field (greater than or equal to petName)
+                    .whereLessThanOrEqualTo("pet_name", petName + "\uf8ff") // Search by pet_name field (less than or equal to petName followed by a Unicode character greater than any other character)
+                val userPostsQuerySnapshot = userPostsQuery.get().await()
+                val userPosts = userPostsQuerySnapshot.toObjects(Post::class.java)
+                Log.v("userposts1", userPosts.toString())
+                if(userPosts.isEmpty()){
+                    emit(Resource.Error(Throwable("NO POSTS with this name ")))
+                }else{
+                    emit(Resource.Success(userPosts))
+                }
+
+            } catch (e: Throwable) {
+                Log.v("userposts2", "error$e")
+                emit(Resource.Error(e))
+
+            }
+        } else {
+            Log.v("userposts3", "error")
+
+            emit(Resource.Error(Throwable("User not authenticated")))
         }
     }
 

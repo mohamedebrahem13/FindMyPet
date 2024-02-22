@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostToFavoriteUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.RemovePostFromFavoriteUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.posts.SearchPostsByNameUseCase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,10 +23,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPostsUseCase, private val getCurrentUserUseCase: GetCurrentUserUseCase, private val addPostToFavoriteUseCase:AddPostToFavoriteUseCase, private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
+class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPostsUseCase,
+                                            private val searchPostsByNameUseCase: SearchPostsByNameUseCase,
+                                            private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                                            private val addPostToFavoriteUseCase:AddPostToFavoriteUseCase,
+                                            private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
 
-
-    private var originalPosts: List<Post> = emptyList()
+     var isSearching = true // Flag to indicate whether the user is currently searching
 
     private val _postsStateFlow = MutableStateFlow<Resource<List<Post>>>(Resource.Loading)
     val postsStateFlow: StateFlow<Resource<List<Post>>> = _postsStateFlow
@@ -39,7 +44,10 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
     val removeFaveSharedFlow: SharedFlow<Resource<Unit>> = _removeFaveSharedFlow.asSharedFlow()
 
 
+    private var lastVisibleDocument: DocumentSnapshot? = null
 
+    private val _allPosts = MutableStateFlow<List<Post>>(emptyList())
+    private val allPosts: StateFlow<List<Post>> = _allPosts
     init {
         fetchPosts()
     }
@@ -48,35 +56,75 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
     fun fetchPosts() {
         viewModelScope.launch {
             try {
-                val result = getPostsUseCase.execute()
-                result.collect { postsResource ->
-                    if (postsResource is Resource.Success) {
-                        originalPosts = postsResource.data // Store original posts
+                _postsStateFlow.value = Resource.Loading // Emit loading state
+
+                val result = getPostsUseCase.execute(lastVisibleDocument)
+
+                result.collect { (resource, newLastVisible) ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            if (resource.data.isNotEmpty()) {
+                                val currentPosts = _allPosts.value.toMutableList()
+                                currentPosts.addAll(resource.data)
+                                _allPosts.value = currentPosts
+                                lastVisibleDocument = newLastVisible
+                                _postsStateFlow.value = Resource.Success(allPosts.value)
+                            }
+                        }
+                        is Resource.Error -> {
+                            _postsStateFlow.value = resource // Emit error state
+                        }
+                        is Resource.Loading -> {
+                            _postsStateFlow.value = resource                        }
                     }
-                    _postsStateFlow.value = postsResource // Update StateFlow
                 }
             } catch (e: Throwable) {
-                _postsStateFlow.value = Resource.Error(e)
+                _postsStateFlow.value = Resource.Error(e) // Emit error state
             }
         }
     }
 
+
     // Method to perform search
     fun searchPosts(query: String) {
-        val searchedPosts = originalPosts.filter { post ->
-            post.pet_name.contains(query, ignoreCase = true)
+        viewModelScope.launch {
+            if (query.isBlank()) {
+                resetSearch() // If the query is empty, reset to show all posts
+            } else {
+                isSearching = true // Update search state flag
+
+                searchPostsByNameUseCase(query).collect { networkSearchedPosts ->
+                    when(networkSearchedPosts){
+                        is  Resource.Success ->{
+                            _postsStateFlow.value = networkSearchedPosts // Emit error state
+
+                        }
+                        is Resource.Error -> {
+                            _postsStateFlow.value = networkSearchedPosts // Emit error state
+                        }
+                        is Resource.Loading -> {
+                            _postsStateFlow.value = networkSearchedPosts                        }
+                    }
+                    }
+                }
+            }
         }
-        _postsStateFlow.value = Resource.Success(searchedPosts)
-    }
+
 
 
     // Method to revert to the original list
     fun resetSearch() {
-        _postsStateFlow.value = Resource.Success(originalPosts)
+        _postsStateFlow.value = Resource.Success(_allPosts.value)
+        isSearching=false
     }
 
 
 
+    fun refreshPosts(){
+        lastVisibleDocument=null
+        _allPosts.value= emptyList()
+        fetchPosts()
+    }
     fun getCurrentUser() {
         viewModelScope.launch {
             try {

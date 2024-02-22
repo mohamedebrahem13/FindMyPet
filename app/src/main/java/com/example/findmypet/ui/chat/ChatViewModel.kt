@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.MessageResource
 import com.example.findmypet.data.model.Message
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUidUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUidUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.chat.CheckUnreadMessagesUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.chat.GetMessagesForChannelUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.chat.SendMessageAndInitiateChatIfNeededUseCase
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(private val getMessagesForChannelUseCase: GetMessagesForChannelUseCase, private val sendMessageAndInitiateChatIfNeededUseCase:SendMessageAndInitiateChatIfNeededUseCase, private val getCurrentUserUidUseCase: GetCurrentUserUidUseCase, private val checkUnreadMessagesUseCase: CheckUnreadMessagesUseCase, private val getRecipientFCMTokenUseCase: GetRecipientFCMTokenUseCase,private val sendNotificationToUserUseCase: SendNotificationToUserUseCase
+class ChatViewModel @Inject constructor(private val getMessagesForChannelUseCase: GetMessagesForChannelUseCase, private val sendMessageAndInitiateChatIfNeededUseCase:SendMessageAndInitiateChatIfNeededUseCase, private val getCurrentUserUidUseCase: GetCurrentUserUidUseCase, private val checkUnreadMessagesUseCase: CheckUnreadMessagesUseCase, private val getRecipientFCMTokenUseCase: GetRecipientFCMTokenUseCase, private val sendNotificationToUserUseCase: SendNotificationToUserUseCase
 ) : ViewModel() {
     private val _messageFlow = MutableSharedFlow<MessageResource>()
     val messageFlow: SharedFlow<MessageResource> get() = _messageFlow

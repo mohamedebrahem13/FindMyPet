@@ -9,7 +9,7 @@ import com.example.findmypet.common.Constant.ADDITIONAL_TEXT
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
-import com.example.findmypet.domain.usecase.firebaseUseCase.GetCurrentUserUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.notification.SendNotificationToTopicUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.UploadImagesUseCase

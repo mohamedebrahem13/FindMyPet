@@ -1,7 +1,7 @@
 package com.example.findmypet.di.auth
 
 import com.example.findmypet.domain.repository.Authenticator
-import com.example.findmypet.domain.usecase.firebaseUseCase.SignUpUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.SignUpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

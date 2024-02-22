@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.findmypet.adapter.PostListAdapter
 import com.example.findmypet.common.Resource
 import com.example.findmypet.databinding.AllPostsFragmentBinding
@@ -66,6 +67,19 @@ class AllPostsFragment : Fragment() {
         getCurrentUser()
         initObservers()
         refresh()
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!allPostsViewModel.isSearching){
+                    Log.v("issersh",allPostsViewModel.isSearching.toString())
+                    if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        // End of list reached, load more posts
+                        allPostsViewModel.fetchPosts()
+                    }
+                }
+
+            }
+        })
 
 
         return binding.root
@@ -83,6 +97,7 @@ class AllPostsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                allPostsViewModel.isSearching=true
                 allPostsViewModel.searchPosts(s?.toString() ?: "")
             }
 
@@ -103,8 +118,13 @@ class AllPostsFragment : Fragment() {
 
     private fun refresh(){
         binding.swipeRefreshLayout.setOnRefreshListener {
-            allPostsViewModel.fetchPosts()
-            binding.swipeRefreshLayout.isRefreshing = false // To stop the refreshing animation
+            if(!allPostsViewModel.isSearching){
+                allPostsViewModel.refreshPosts()
+                binding.swipeRefreshLayout.isRefreshing = false // To stop the refreshing animation
+            }else{
+                binding.swipeRefreshLayout.isRefreshing = false // To stop the refreshing animation
+
+            }
         }
     }
 
@@ -189,34 +209,28 @@ class AllPostsFragment : Fragment() {
 
 
     private fun observePostsData() {
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 allPostsViewModel.postsStateFlow.collect { result ->
                     when (result) {
-
                         is Resource.Success -> {
-                            binding.prograss.visibility = View.GONE
-                            postListAdapter.submitList(result.data)
-
-                                if (result.data.isEmpty()) {
-                                    binding.tvEmptySorted.visibility =View.VISIBLE
-
-                                } else{
-                                    binding.tvEmptySorted.visibility = View.GONE
-                                    Log.v("success GET THE POSTS", result.data.toString())
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Success get the posts ",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-
+                            Log.v("success",result.data.toString())
+                            if (result.data.isNotEmpty()) {
+                                binding.prograss.visibility = View.GONE
+                                postListAdapter.submitList(result.data)
+                                binding.tvEmptySorted.visibility = View.GONE
+                                Log.v("success GET THE POSTS", result.data.toString())
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Success get the posts ",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                         is Resource.Error -> {
-
                             handleResourceError(result)
+                            Log.v("erroron",result.throwable.toString())
+
                         }
                         Resource.Loading -> {
                             binding.prograss.visibility = View.VISIBLE
@@ -226,6 +240,7 @@ class AllPostsFragment : Fragment() {
             }
         }
     }
+
 
 
 
@@ -246,9 +261,8 @@ class AllPostsFragment : Fragment() {
 
     private fun handleResourceError(resource: Resource.Error) {
         binding.prograss.visibility = View.GONE
-        binding.tvEmptySorted.visibility =View.VISIBLE
         val error = resource.throwable
-        Log.v("allPosts", error.toString())
+        Log.v("error", error.toString())
         Toast.makeText(requireContext(),error.message.toString() , Toast.LENGTH_SHORT).show()
     }
 

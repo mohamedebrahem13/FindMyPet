@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
-import com.example.findmypet.domain.usecase.firebaseUseCase.CheckCurrentUserUseCase
-import com.example.findmypet.domain.usecase.firebaseUseCase.SignInUseCase
-import com.example.findmypet.domain.usecase.firebaseUseCase.UpdateTokenUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.CheckCurrentUserUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.auth.SignInUseCase
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase,private val checkCurrentUserUseCase: CheckCurrentUserUseCase) : ViewModel() {
+class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val checkCurrentUserUseCase: CheckCurrentUserUseCase) : ViewModel() {
 
     private val _result = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val result: StateFlow<Resource<FirebaseUser>?> = _result
