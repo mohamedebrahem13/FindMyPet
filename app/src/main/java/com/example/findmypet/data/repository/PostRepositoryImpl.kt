@@ -3,7 +3,9 @@ package com.example.findmypet.data.repository
 import android.net.Uri
 import android.util.Log
 import com.example.findmypet.common.Constant
+import com.example.findmypet.common.Constant.COLLECTION_PATH
 import com.example.findmypet.common.Constant.POSTS
+import com.example.findmypet.common.Constant.POST_COUNT
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
@@ -113,7 +115,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
         if (userId.isNotEmpty()) {
             try {
-                val userRef = db.collection(Constant.COLLECTION_PATH).document(userId).get().await()
+                val userRef = db.collection(COLLECTION_PATH).document(userId).get().await()
                 val user = userRef.toObject(User::class.java)
 
                 val favoritePostIds = user?.favoritePosts ?: emptyList()
@@ -163,6 +165,11 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
             post.postId = postId
             // Update the Firestore document with the postId
             postsCollection.document(postId).set(post).await()
+            val userId = post.user?.id
+            if (userId != null) {
+                val userDocRef = db.collection(COLLECTION_PATH).document(userId)
+                userDocRef.update(POST_COUNT, FieldValue.increment(1)).await()
+            }
 
             Resource.Success(Unit)
         } catch (e: Exception) {
@@ -271,6 +278,25 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
             emit(Resource.Error(Throwable("User not authenticated")))
         }
+    }
+
+    override suspend fun getUserPostCount(): Int? {
+        val userId = getFirebaseUserUid()
+
+        if (userId.isNotEmpty()) {
+            try {
+                val userDocRef = db.collection(COLLECTION_PATH).document(userId)
+                val userDocSnapshot = userDocRef.get().await()
+
+                if (userDocSnapshot.exists()) {
+                    val postCount = userDocSnapshot.getLong(POST_COUNT)
+                    return postCount?.toInt()
+                }
+            } catch (e: Exception) {
+                Log.e("PostRepositoryImpl", "Error getting user post count: $e")
+            }
+        }
+        return null // Handle the case where userId is empty or other errors occur
     }
 
 

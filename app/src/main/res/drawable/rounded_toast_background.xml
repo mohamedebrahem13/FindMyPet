@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="20dp" /> <!-- Adjust the radius as needed -->
+    <solid android:color="@color/md_theme_dark_secondaryContainer" /> <!-- Background color of the toast -->
+</shape>

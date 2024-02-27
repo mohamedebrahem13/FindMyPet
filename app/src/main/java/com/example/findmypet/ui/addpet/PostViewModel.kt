@@ -12,10 +12,14 @@ import com.example.findmypet.data.model.User
 import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.notification.SendNotificationToTopicUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostUseCase
+import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetUserPostCountUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.UploadImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,13 +28,16 @@ import javax.inject.Inject
 class PostViewModel @Inject constructor(
     private val uploadImagesUseCase: UploadImagesUseCase,
     private val addPostUseCase: AddPostUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
-    ,private val sendNotificationToTopicUseCase: SendNotificationToTopicUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getUserPostCountUseCase: GetUserPostCountUseCase,
+    private val sendNotificationToTopicUseCase: SendNotificationToTopicUseCase
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
     val currentUser: StateFlow<Resource<User>?> = _currentUser
 
+    private val _postCount = MutableSharedFlow<Int>()
+    val postCount: SharedFlow<Int> = _postCount.asSharedFlow()
 
     private val _addPostResult = MutableStateFlow<Resource<Unit>>(Resource.Loading)
     val addPostResult: StateFlow<Resource<Unit>> = _addPostResult
@@ -38,6 +45,9 @@ class PostViewModel @Inject constructor(
     private val _selectedImageUrisFlow = MutableStateFlow<List<Uri>>(emptyList())
     val selectedImageUrisFlow: StateFlow<List<Uri>> = _selectedImageUrisFlow
 
+    init {
+        getUserPostCount()
+    }
 
     fun updateSelectedImageUris(uris: List<Uri>) {
         _selectedImageUrisFlow.value = uris
@@ -63,6 +73,19 @@ class PostViewModel @Inject constructor(
         }
     }
 
+    private fun getUserPostCount() {
+        viewModelScope.launch {
+            try {
+                val count = getUserPostCountUseCase()
+                if (count != null) {
+                    _postCount.emit(count)
+                }
+            } catch (e: Exception) {
+                // Handle error
+                Log.e("YourFragmentViewModel", "Error getting user post count: ${e.message}")
+            }
+        }
+    }
 
 
     fun addPostWithImages(post: Post, imageUris: List<Uri>) {

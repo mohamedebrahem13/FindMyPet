@@ -142,6 +142,11 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
             val conversations2 = conversationsSnapshot2.documents.mapNotNull { document ->
                 document.toObject(Conversation::class.java)
             }
+            // Check if both conversation snapshots are empty
+            if (conversations1.isEmpty() && conversations2.isEmpty()) {
+                emit(emptyList())
+                return@flow
+            }
 
             val allConversations = conversations1 + conversations2
 

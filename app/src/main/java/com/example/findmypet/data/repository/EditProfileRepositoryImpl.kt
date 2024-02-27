@@ -70,7 +70,8 @@ class EditProfileRepositoryImpl @Inject constructor(
                 Constant.NICKNAME to user.nickname,
                 Constant.PHONE_NUMBER to user.phone,
                 Constant.E_MAIL to user.email,
-                Constant.PROFILE_IMAGE_PATH to user.imagePath                // Add other fields you want to update in the user
+                Constant.PROFILE_IMAGE_PATH to user.imagePath ,
+                // Add other fields you want to update in the user
             )
             val userRef = db.collection(COLLECTION_PATH).document(userId)
             userRef.update(userModel).await()

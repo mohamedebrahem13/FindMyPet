@@ -13,6 +13,7 @@ object Constant {
     const val POSTS="posts"
     const val IMAGES = "images"
     const val USERID="user.id"
+    const val POST_COUNT= "postCount"
 
     //Image fields
     const val URL = "url"

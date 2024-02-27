@@ -100,7 +100,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chat">type your message here</string>
-    <string name="empty_conversation">you do not have any chat messages yet</string>
+    <string name="empty_conversation">You do not have any\nchat messages yet</string>
 
 
 
@@ -131,6 +131,7 @@
     <string name="success_update_profile">Success: Profile updated successfully</string>
     <string name="please_enter_valid_name">Please enter a valid name</string>
     <string name="phone_must_be_11_number">Phone must be 11 numbers</string>
+    <string name="max_post_reached_message">You have reached the maximum number of posts allowed please remove one of your posts and try again.</string>
 
 
 

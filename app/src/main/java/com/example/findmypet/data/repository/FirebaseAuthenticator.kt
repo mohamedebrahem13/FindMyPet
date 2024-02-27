@@ -6,6 +6,7 @@ import com.example.findmypet.common.Constant.E_MAIL
 import com.example.findmypet.common.Constant.ID
 import com.example.findmypet.common.Constant.NICKNAME
 import com.example.findmypet.common.Constant.PHONE_NUMBER
+import com.example.findmypet.common.Constant.POST_COUNT
 import com.example.findmypet.common.Constant.PROFILE_IMAGE_PATH
 import com.example.findmypet.data.model.User
 import com.example.findmypet.domain.repository.Authenticator
@@ -40,7 +41,8 @@ class FirebaseAuthenticator @Inject constructor(
             E_MAIL to user.email,
             NICKNAME to user.nickname,
             PHONE_NUMBER to user.phone,
-            PROFILE_IMAGE_PATH to user.imagePath
+            PROFILE_IMAGE_PATH to user.imagePath,
+            POST_COUNT to 0
         )
 
         firebaseFirestore.collection(COLLECTION_PATH).document(getFirebaseUserUid())
@@ -62,17 +64,26 @@ class FirebaseAuthenticator @Inject constructor(
     override suspend fun isCurrentUserExist() = firebaseAuth.currentUser != null
 
     override suspend fun getCurrentUser(): User {
-        val user =
-            firebaseFirestore.collection(COLLECTION_PATH).document(getFirebaseUserUid())
-                .get().await()
+        val userDocument = firebaseFirestore.collection(COLLECTION_PATH)
+            .document(getFirebaseUserUid())
+            .get()
+            .await()
 
-        return User(
-            user[ID]as String,
-            user[E_MAIL] as String,
-            user[NICKNAME] as String,
-            user[PHONE_NUMBER] as String,
-            user[PROFILE_IMAGE_PATH] as String
-        )    }
+        val id = userDocument[ID] as String
+        val email = userDocument[E_MAIL] as String
+        val nickname = userDocument[NICKNAME] as String
+        val phoneNumber = userDocument[PHONE_NUMBER] as String
+        val profileImagePath = userDocument[PROFILE_IMAGE_PATH] as String
+
+        // Retrieve POST_COUNT as an Integer, handle possible null or non-integer values
+        val postCount: Int = try {
+            (userDocument[POST_COUNT] as? Long)?.toInt() ?: 0
+        } catch (e: Exception) {
+            0 // Default to 0 if POST_COUNT is not present or not an integer
+        }
+
+        return User(id, email, nickname, phoneNumber, profileImagePath, postCount)
+    }
 
     override suspend fun signOut() = firebaseAuth.signOut()
     override suspend fun firebaseMessagingToken(): String {

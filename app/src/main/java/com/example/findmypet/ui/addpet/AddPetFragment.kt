@@ -98,16 +98,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         binding.spinner.setSelection(defaultCityIndex)
 
         observeSelectedImageUris()
-
-
-        binding.post.setOnClickListener {
-            if (checkAllFields()){
-                postViewModel.addPostWithImages(Post(
-                    pet_name = binding.editTextTextPersonName.text.toString(), pet_description = binding.PetDescription.text.toString(), pet_age = binding.editTextNumber.text.toString(), pet_gender = selectedGender.toString(),null,selectedCity.toString(),null,
-                    user = currentUser ), postViewModel.selectedImageUrisFlow.value )
-                addPetObserver()
-            }
-        }
+        observePostCount()
 
         binding.TakePet.setOnClickListener {
             checkPermissionAndOpenGallery()
@@ -208,7 +199,46 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
             }
         }
     }
+    private fun handlePostCount(postCount: Int) {
+        if (postCount >= 10) {
+            ToastUtils.showCustomToast(requireContext(), getString(R.string.max_post_reached_message), parentView, false,Toast.LENGTH_LONG)
 
+        } else {
+            // Proceed with adding the post if the user's post count is less than 10
+            setAddPostClickListener()
+        }
+    }
+
+    private fun setAddPostClickListener() {
+        binding.post.setOnClickListener {
+            if (checkAllFields()) {
+                postViewModel.addPostWithImages(
+                    Post(
+                        pet_name = binding.editTextTextPersonName.text.toString(),
+                        pet_description = binding.PetDescription.text.toString(),
+                        pet_age = binding.editTextNumber.text.toString(),
+                        pet_gender = selectedGender.toString(),
+                        null,
+                        selectedCity.toString(),
+                        null,
+                        user = currentUser
+                    ),
+                    postViewModel.selectedImageUrisFlow.value
+                )
+                addPetObserver()
+            }
+        }
+    }
+
+    private fun observePostCount() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                postViewModel.postCount.collect { postCount ->
+                    handlePostCount(postCount)
+                }
+            }
+        }
+    }
 
     private fun addPetObserver(){
         viewLifecycleOwner.lifecycleScope.launch {
@@ -234,6 +264,8 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
                             // Handle failure (e.g., display an error message)
                         }
+
+                        else -> {}
                     }
                 }
             }

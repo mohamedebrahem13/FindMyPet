@@ -21,7 +21,7 @@ interface PostRepository {
     suspend fun addPostToFavorite(postIdToAdd: String): Resource<Unit>
      suspend fun removePostFromFavorite(postIdToRemove: String): Resource<Unit>
      fun searchPostsByPetName(location: String): Flow<Resource<List<Post>>>
-
+    suspend fun  getUserPostCount():  Int?
 
 
 }

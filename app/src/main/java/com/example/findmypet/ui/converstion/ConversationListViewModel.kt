@@ -37,7 +37,10 @@ class ConversationListViewModel @Inject constructor(
                     _conversations.value = emptyList() // Set an empty list or handle differently
                 }
                 .collect { conversationList ->
+
                     _conversations.value = conversationList
+                    Log.e("conversations", conversationList.toString())
+
                 }
         }
     }

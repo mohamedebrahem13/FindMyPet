@@ -57,7 +57,7 @@ class ConversationListFragment : Fragment() {
 
     private fun observeConversations() {
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.conversations.collect { conversations ->
                     displayConversations(conversations)
                 }
@@ -66,10 +66,9 @@ class ConversationListFragment : Fragment() {
     }
 
     private fun displayConversations(conversations: List<DisplayConversation>) {
-        if (conversations.isEmpty()){
-            binding.textView17.visibility=View.VISIBLE
-        }else{
+        if (conversations.isNotEmpty()){
             binding.textView17.visibility=View.GONE
+            binding.imageView4.visibility=View.GONE
             conversationAdapter.submitList(conversations)
 
         }

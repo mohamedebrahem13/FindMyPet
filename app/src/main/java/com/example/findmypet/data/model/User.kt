@@ -12,8 +12,9 @@ data class User(
     val nickname: String="",
     val phone: String="",
     val imagePath:String = "",
+    var postCount: Int = 0,
     var favoritePosts: List<String> = emptyList() // Add favorite posts attribute
 ): Parcelable{
-    constructor() : this("", "", "", "", "", emptyList())
+    constructor() : this("", "", "", "", "",0, emptyList())
 
 }
