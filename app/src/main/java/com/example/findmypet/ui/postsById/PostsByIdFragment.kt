@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,8 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmypet.R
 import com.example.findmypet.adapter.UserPostsAdapter
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.databinding.FragmentPostsByIdBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
@@ -28,6 +29,7 @@ class PostsByIdFragment : Fragment() {
     private lateinit var userPostsAdapter: UserPostsAdapter
     private val viewModel: PostsByUserViewModel by viewModels()
     private lateinit var binding :FragmentPostsByIdBinding
+    private lateinit var parentView: ViewGroup
 
 
 
@@ -68,6 +70,7 @@ class PostsByIdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Other initialization code
+        parentView = requireActivity().findViewById(android.R.id.content)
         observeUserPosts()
     }
 
@@ -80,16 +83,16 @@ class PostsByIdFragment : Fragment() {
 
     private fun showDeleteConfirmationDialog(post: Post) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Delete Post")
-        alertDialogBuilder.setMessage("Are you sure you want to delete this post?")
+        alertDialogBuilder.setTitle(getString(R.string.Delete_Post))
+        alertDialogBuilder.setMessage(getString(R.string.Are_you_sure_you_want_to_delete_this_post))
 
-        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+        alertDialogBuilder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             // User clicked Yes, perform the delete action
             viewModel.observeDeletePostAction(post.postId.toString())
             deletePostObserver()
         }
 
-        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+        alertDialogBuilder.setNegativeButton(getString(R.string.no)) { dialog, _ ->
             // User clicked No, do nothing or handle as needed
             dialog.dismiss() // Dismiss the dialog
         }
@@ -111,22 +114,14 @@ class PostsByIdFragment : Fragment() {
                                 binding.prograss.visibility = View.GONE
 
                                 userPostsAdapter.submitList(userPosts)
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Success get your posts",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    binding.prograss.visibility = View.GONE
+                                ToastUtils.showCustomToast(requireContext(), getString(R.string.success_get_your_posts ),  parentView,true)
+
+                                binding.prograss.visibility = View.GONE
 
                             }
                             is Resource.Error -> {
-                                binding.prograss.visibility = View.GONE
-                                val errorMessage = when (val error = postsResource.throwable) {
-                                    is UnknownHostException -> "Network unavailable. Please check your internet connection."
-                                    else -> error.message ?: "Unknown error"
-                                }
-                                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT)
-                                    .show()
+                                handleResourceError(postsResource)
+
                             }
                             is Resource.Loading -> {
                                 binding.prograss.visibility = View.VISIBLE
@@ -152,12 +147,10 @@ class PostsByIdFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.prograss.visibility = View.GONE
-                            Toast.makeText(requireContext(), "Success delete the post", Toast.LENGTH_SHORT).show()
+                            ToastUtils.showCustomToast(requireContext(), getString(R.string.Success_delete_the_post),  parentView,true)
                         }
                         is Resource.Error -> {
-                            binding.prograss.visibility = View.GONE
-                            val error = result.throwable.message
-                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                            handleResourceError( result)
                         }
                     }
                 }
@@ -180,5 +173,13 @@ class PostsByIdFragment : Fragment() {
             adapter = userPostsAdapter
         }
     }
-
+    private fun handleResourceError(resource: Resource.Error) {
+        binding.prograss.visibility = View.GONE
+        val errorMessage = when (val error = resource.throwable) {
+            is UnknownHostException -> "Network unavailable. Please check your internet connection."
+            else -> error.message ?: "Unknown error"
+        }
+        // Show the custom toast using ToastUtils
+        ToastUtils.showCustomToast(requireContext(), errorMessage, parentView,false)
+    }
 }

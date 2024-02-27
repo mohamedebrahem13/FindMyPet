@@ -1,6 +1,8 @@
 package com.example.findmypet.activities
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -64,9 +66,16 @@ class PetActivity : AppCompatActivity() {
 
     // Function to show the preloaded ad
     fun showAdInFragment() {
-        interstitialAd?.show(this)
-        // Load a new ad for the next time
-        loadInterstitialAd()    }
+        if (interstitialAd != null) {
+            interstitialAd?.show(this)
+            // Load a new ad for the next time
+            loadInterstitialAd()
+        } else {
+            // Log a message or show a Toast indicating that the ad failed to load
+            Log.d("AdLoad", "Interstitial ad failed to load")
+            Toast.makeText(this, "Failed to load interstitial ad", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
 

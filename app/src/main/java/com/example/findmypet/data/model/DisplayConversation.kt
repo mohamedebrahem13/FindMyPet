@@ -1,9 +1,10 @@
 package com.example.findmypet.data.model
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
-
+@Keep
 @Parcelize
 data class DisplayConversation(
     val channelId: String,
@@ -14,4 +15,7 @@ data class DisplayConversation(
     val secondUserPhone: String,
     val lastMessage: String = "",
     val lastMessageTimestamp: Long = 0
-): Parcelable
+): Parcelable{
+    constructor() : this("", "", "", "", "", "", "", 0)
+
+}

@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.activities.MainActivity
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment() {
     private var User: User? =null
     private lateinit var binding:FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +76,7 @@ class ProfileFragment : Fragment() {
 
         binding.btnSignOut.setOnClickListener {
             profileViewModel.signOut()
-            Toast.makeText(context, "signOut Success", Toast.LENGTH_SHORT).show()
+            ToastUtils.showCustomToast(requireContext(), "signOut Success",  parentView,true)
             Intent(requireActivity(), MainActivity::class.java).also {
                     intent -> intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -87,7 +89,10 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
+    }
 
 
 

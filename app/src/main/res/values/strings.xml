@@ -18,8 +18,10 @@
     <string name="SignOut">SignOut</string>
     <string name="Boy">Boy</string>
     <string name="Girl">Girl</string>
-    <string name="search_hint">you can search by pet name </string>
-    <string name="ads_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="search_hint">you can search by pet location </string>
+    <string name="ads_id">ca-app-pub-9101652930040746/6296829934</string>
+    <string name="banner_ads_id">ca-app-pub-9101652930040746/3775442526</string>
+
 
     <string name="remove">remove the post from favorite</string>
     <string name="add_favorite">add the post to favorite</string>
@@ -95,13 +97,61 @@
     <string name="Pet_Details">Pet Details</string>
     <string name="pet_location">Pet Location</string>
     <string name="Hi">Hi,</string>
-    <string name="Search_by_pet_name">Search by pet name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chat">type your message here</string>
-    <string name="empty_converstion">you dont have any chat messages yet</string>
+    <string name="empty_conversation">you do not have any chat messages yet</string>
+
+
 
 
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
+
+
+    <string name="success_remove_post_favorite">Success remove the post from favorite</string>
+    <string name="success_get_the_favorite_posts">Success get the favorite posts</string>
+
+    <string name="success_add_post_favorite">Success add the post to favorite</string>
+    <string name="success_get_posts">Success get the posts</string>
+    <string name="success_get_your_posts">Success get your posts</string>
+
+    <string name="success_add_post">Success addPost</string>
+    <string name="No_new_favorite_posts">No new favorite posts</string>
+    <string name="Success_delete_the_post">Success delete the post</string>
+    <string name="Are_you_sure_you_want_to_delete_this_post">Are you sure you want to delete this post?</string>
+
+    <string name="Delete_Post">Delete Post</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="success_check_email">Success send please check your email</string>
+    <string name="error_something_wrong">Error: Something went wrong</string>
+    <string name="please_enter_valid_email">Please enter a valid email</string>
+    <string name="success_update_profile">Success: Profile updated successfully</string>
+    <string name="please_enter_valid_name">Please enter a valid name</string>
+    <string name="phone_must_be_11_number">Phone must be 11 numbers</string>
+
+
+
+
+
+
+
+    <string name="You_do_not_have_favorite_posts_or_need_to_refresh">"You don't have favorite posts or need to refresh"</string>
+
+    <string name="failed_add_pet_check_internet">Failed to add the pet. Please check your internet connection: %s</string>
+    <string name="max_8_images_selected">You can select a maximum of 8 images</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="girl_selected">GIRL Selected</string>
+    <string name="boy_selected">Boy Selected</string>
+
+
+    <string name="select_pet_images">Please select the pet images</string>
+    <string name="enter_pet_name">Please enter pet name</string>
+    <string name="enter_valid_age">Please enter a valid age (20 or less)</string>
+    <string name="enter_pet_age">Please enter pet age</string>
+    <string name="select_gender">Please select a gender</string>
+    <string name="enter_pet_description">Please enter pet description</string>
+
 </resources>

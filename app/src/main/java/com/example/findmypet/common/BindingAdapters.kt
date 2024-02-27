@@ -39,13 +39,13 @@ object DateConverter {
 
     @JvmStatic
     @BindingAdapter("android:text")
-    fun bindDate(textView: TextView, timestamp: Long) {
+    fun bindDate(textView: TextView, timestamp: Long?) {
+        timestamp ?: return // Null check
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(Date(timestamp))
         textView.text = formattedDate
     }
 }
-
 
 
 

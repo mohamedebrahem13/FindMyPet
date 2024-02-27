@@ -6,11 +6,11 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentSignUp2Binding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +21,8 @@ class SignUpFragment : Fragment() {
 
     private lateinit var binding:FragmentSignUp2Binding
     private val viewModel: SignUpViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +45,7 @@ class SignUpFragment : Fragment() {
             }
         }
 
+
         binding.Signing.setOnClickListener {
         findNavController().navigateUp()
 
@@ -53,7 +56,11 @@ class SignUpFragment : Fragment() {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
 
+    }
 
 
     private fun initObservers() {
@@ -66,11 +73,11 @@ class SignUpFragment : Fragment() {
                        binding.prograss.visibility =View.GONE
                         findNavController().navigateUp()
                         Log.v("Success","Success")
-                        Toast.makeText(context, "SignUP Success", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(),"SignUP Success",  parentView,true)
                     }
                     is Resource.Error -> {
                         binding.prograss.visibility =View.GONE
-                        Toast.makeText(context, "SignUP error ${it.throwable.message.toString()}", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(),"SignUP error ${it.throwable.message.toString()}",  parentView,true)
                         Log.v("error","SignUP error")
 
                     }

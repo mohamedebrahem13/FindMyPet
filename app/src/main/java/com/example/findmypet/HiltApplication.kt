@@ -15,6 +15,7 @@ import com.example.findmypet.common.Constant.chatChannelId
 import com.example.findmypet.common.Constant.chatChannelName
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class HiltApplication : Application() {
         subscribeToTopic(Constant.Topic)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun subscribeToTopic(topic: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {

@@ -14,6 +14,8 @@ import com.example.findmypet.domain.usecase.firebaseUseCase.posts.SearchPostsByN
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -29,7 +31,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
                                             private val addPostToFavoriteUseCase:AddPostToFavoriteUseCase,
                                             private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
 
-     var isSearching = true // Flag to indicate whether the user is currently searching
+     var isSearching = false // Flag to indicate whether the user is currently searching
 
     private val _postsStateFlow = MutableStateFlow<Resource<List<Post>>>(Resource.Loading)
     val postsStateFlow: StateFlow<Resource<List<Post>>> = _postsStateFlow
@@ -51,7 +53,8 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
     init {
         fetchPosts()
     }
-
+    private val delay: Long = 1000
+    private var searchJob: Job? = null
 
     fun fetchPosts() {
         viewModelScope.launch {
@@ -76,6 +79,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
                         }
                         is Resource.Loading -> {
                             _postsStateFlow.value = resource                        }
+
                     }
                 }
             } catch (e: Throwable) {
@@ -88,34 +92,45 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
     // Method to perform search
     fun searchPosts(query: String) {
         viewModelScope.launch {
+            cancelPreviousSearch()
             if (query.isBlank()) {
-                resetSearch() // If the query is empty, reset to show all posts
+                resetSearch()
             } else {
-                isSearching = true // Update search state flag
-
-                searchPostsByNameUseCase(query).collect { networkSearchedPosts ->
-                    when(networkSearchedPosts){
-                        is  Resource.Success ->{
-                            _postsStateFlow.value = networkSearchedPosts // Emit error state
-
-                        }
-                        is Resource.Error -> {
-                            _postsStateFlow.value = networkSearchedPosts // Emit error state
-                        }
-                        is Resource.Loading -> {
-                            _postsStateFlow.value = networkSearchedPosts                        }
-                    }
-                    }
-                }
+                initiateSearch(query)
             }
         }
+    }
 
-
+    private fun cancelPreviousSearch() {
+        searchJob?.cancel()
+    }
+    private fun initiateSearch(query: String) {
+        searchJob = viewModelScope.launch {
+            delay(delay)
+            updateSearchState(true)
+            executeSearch(query)
+        }
+    }
+    private suspend fun executeSearch(query: String) {
+        searchPostsByNameUseCase(query).collect { networkSearchedPosts ->
+            handleSearchResult(networkSearchedPosts)
+        }
+    }
+    private fun handleSearchResult(networkSearchedPosts: Resource<List<Post>>) {
+        when (networkSearchedPosts) {
+            is Resource.Success -> _postsStateFlow.value = networkSearchedPosts
+            is Resource.Error -> _postsStateFlow.value = networkSearchedPosts
+            is Resource.Loading -> _postsStateFlow.value = networkSearchedPosts
+        }
+    }
+    private fun updateSearchState(isSearching: Boolean) {
+        this.isSearching = isSearching
+    }
 
     // Method to revert to the original list
-    fun resetSearch() {
+     fun resetSearch() {
+        updateSearchState(false)
         _postsStateFlow.value = Resource.Success(_allPosts.value)
-        isSearching=false
     }
 
 

@@ -240,7 +240,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
         }
     }
 
-    override fun searchPostsByPetName(petName: String): Flow<Resource<List<Post>>> = flow {
+    override fun searchPostsByPetName(location: String): Flow<Resource<List<Post>>> = flow {
         emit(Resource.Loading)
 
         val userId = getFirebaseUserUid()
@@ -250,13 +250,13 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
                 emit(Resource.Loading)
                 val postsCollection = db.collection(POSTS)
                 val userPostsQuery = postsCollection
-                    .whereGreaterThanOrEqualTo("pet_name", petName) // Search by pet_name field (greater than or equal to petName)
-                    .whereLessThanOrEqualTo("pet_name", petName + "\uf8ff") // Search by pet_name field (less than or equal to petName followed by a Unicode character greater than any other character)
+                    .whereGreaterThanOrEqualTo("pet_location", location) // Search by pet_name field (greater than or equal to petName)
+                    .whereLessThanOrEqualTo("pet_location", location + "\uf8ff") // Search by pet_name field (less than or equal to petName followed by a Unicode character greater than any other character)
                 val userPostsQuerySnapshot = userPostsQuery.get().await()
                 val userPosts = userPostsQuerySnapshot.toObjects(Post::class.java)
                 Log.v("userposts1", userPosts.toString())
                 if(userPosts.isEmpty()){
-                    emit(Resource.Error(Throwable("NO POSTS with this name ")))
+                    emit(Resource.Success(userPosts))
                 }else{
                     emit(Resource.Success(userPosts))
                 }

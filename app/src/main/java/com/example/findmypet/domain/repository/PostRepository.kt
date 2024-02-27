@@ -20,7 +20,7 @@ interface PostRepository {
     suspend fun deletePostRemote(postId: String): Resource<Unit>
     suspend fun addPostToFavorite(postIdToAdd: String): Resource<Unit>
      suspend fun removePostFromFavorite(postIdToRemove: String): Resource<Unit>
-     fun searchPostsByPetName(petName: String): Flow<Resource<List<Post>>>
+     fun searchPostsByPetName(location: String): Flow<Resource<List<Post>>>
 
 
 

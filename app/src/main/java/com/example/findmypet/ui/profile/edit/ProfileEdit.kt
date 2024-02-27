@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.findmypet.R
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.UpdateUserProfileResponse
 import com.example.findmypet.data.model.User
@@ -35,7 +36,7 @@ class ProfileEdit : Fragment() {
             if (isGranted) {
                 openGallery()
             } else {
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
     private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
@@ -43,7 +44,7 @@ class ProfileEdit : Fragment() {
             if (isGranted) {
                 openGallery()
             } else {
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -102,7 +103,7 @@ class ProfileEdit : Fragment() {
                         is UpdateUserProfileResponse.Success -> {
                             // Handle success state
                             binding.prograss.visibility = View.GONE
-                            Toast.makeText(context, "success update profile ", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, getString(R.string.success_update_profile), Toast.LENGTH_SHORT).show()
                             findNavController().navigateUp()
                         }
                         is UpdateUserProfileResponse.Error -> {
@@ -157,17 +158,17 @@ class ProfileEdit : Fragment() {
             if (editTextTextEmailAddress2.text.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(
                     editTextTextEmailAddress2.text
                 ).matches()) {
-                editTextTextEmailAddress2.error = "please enter a valid email"
+                editTextTextEmailAddress2.error = getString(R.string.please_enter_valid_email)
                 return false
             }
 
             if (editTextTextPersonName3.text.isNullOrEmpty()) {
-                editTextTextPersonName3.error = "please enter a valid name"
+                editTextTextPersonName3.error = getString(R.string.please_enter_valid_name)
                 return false
             }
 
             if (editTextPhone.text.isNullOrEmpty() || editTextPhone.length()<11) {
-                editTextPhone.error = "phone must be 11 number"
+                editTextPhone.error = getString(R.string.phone_must_be_11_number)
                 return false
             }
         }

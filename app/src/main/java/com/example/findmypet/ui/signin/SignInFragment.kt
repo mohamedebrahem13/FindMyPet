@@ -9,7 +9,6 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.activities.PetActivity
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +29,7 @@ class SignInFragment : Fragment() {
 
     private lateinit var binding :FragmentSignInBinding
     private val viewModel: SignInViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
 
 
     override fun onCreateView(
@@ -70,7 +71,8 @@ private fun viewModelObserver() {
             viewModel.checkCurrentUser.collectLatest { isUserSignedIn ->
                 if (isUserSignedIn == true) {
                     Log.v("currentUser", "user is signed in")
-                    Toast.makeText(context, "User is signed in", Toast.LENGTH_SHORT).show()
+                    ToastUtils.showCustomToast(requireContext(),"User is signed in",  parentView,true)
+
                     Intent(requireActivity(), PetActivity::class.java).also { intent ->
                         intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -83,8 +85,11 @@ private fun viewModelObserver() {
 
 }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
 
-
+    }
 
     private fun initObservers() {
 
@@ -94,7 +99,8 @@ private fun viewModelObserver() {
         when (it) {
             is Resource.Success -> {
                 binding.prograss.visibility = View.GONE
-                Toast.makeText(context, "Signing Success", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(),"Signing Success",  parentView,true)
+
                 Intent(requireActivity(), PetActivity::class.java).also {
                     intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -102,7 +108,8 @@ private fun viewModelObserver() {
             }
             is Resource.Error -> {
                 binding.prograss.visibility = View.GONE
-                Toast.makeText(context, "Signing error: ${it.throwable.message.toString()}", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(),"Signing error: ${it.throwable.message.toString()}",  parentView,false)
+
                 // Handle the error message received from the ViewModel if needed
             }
             Resource.Loading -> binding.prograss.visibility = View.VISIBLE

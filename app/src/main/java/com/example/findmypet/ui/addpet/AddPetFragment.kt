@@ -22,6 +22,7 @@ import com.example.findmypet.R
 import com.example.findmypet.activities.PetActivity
 import com.example.findmypet.adapter.ImageAdapter
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentAddpetBinding
@@ -38,13 +39,15 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
     private var selectedCity: String? = null
     private var imageAdapter:ImageAdapter?=null
     private val postViewModel:PostViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
+
     private lateinit var imagePicker: ActivityResultLauncher<String>
     private val mediaPermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 openGallery()
             } else {
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
             }
         }
     private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
@@ -52,7 +55,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
             if (isGranted) {
                 openGallery()
             } else {
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
             }
         }
     private lateinit var binding:FragmentAddpetBinding
@@ -62,7 +65,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         imagePicker = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
                 if (postViewModel.selectedImageUrisFlow.value.size + uris.size > MAX_IMAGES) {
-                    Toast.makeText(requireContext(), "You can select a maximum of 8 images", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.max_8_images_selected, Toast.LENGTH_SHORT).show()
                 } else {
                     // add selecting new images
                     postViewModel.updateSelectedImageUris(uris)
@@ -118,7 +121,11 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
 
+    }
 
 
 
@@ -138,12 +145,12 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
             when (checkedId) {
                 R.id.girl -> {
                     selectedGender = "Girl"
-                    Toast.makeText(this.context, "GIRL Selected", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), getString(R.string.girl_selected), Toast.LENGTH_SHORT).show()
+
                 }
                 R.id.boy ->{
                     selectedGender = "Boy"
-                    Toast.makeText(this.context, "boy Selected", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.boy_selected), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -214,18 +221,15 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
                         }
                         is Resource.Success -> {
                             // Handle successful post addition
-                            Log.v("Success", "Success addPost ")
-                            Toast.makeText(context, "Success addPost", Toast.LENGTH_SHORT).show()
+                            ToastUtils.showCustomToast(requireContext(), getString(R.string.success_add_post), parentView, true)
+
                             binding.prograss.visibility = View.GONE
                             findNavController().navigateUp()
                         }
                         is Resource.Error -> {
                             val throwable = result.throwable.message
-                            Toast.makeText(
-                                context,
-                                "failed add the pet check your internet$throwable",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            ToastUtils.showCustomToast(requireContext(), getString(R.string.failed_add_pet_check_internet, throwable), parentView, false)
+
                             binding.prograss.visibility = View.GONE
 
                             // Handle failure (e.g., display an error message)
@@ -272,33 +276,33 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
     private fun checkAllFields():Boolean {
         with(binding){
             if(postViewModel.selectedImageUrisFlow.value.isEmpty()){
-                Toast.makeText(context, "Please select the pet images", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.select_pet_images), Toast.LENGTH_SHORT).show()
                 return false
             }
             if (editTextTextPersonName.text.isNullOrEmpty()
             ) {
-                editTextTextPersonName.error = "please enter pet name"
+                editTextTextPersonName.error = getString(R.string.enter_pet_name)
                 return false
             }
             if (!editTextNumber.text.isNullOrEmpty()) {
                 val age = editTextNumber.text.toString().toInt()
                 if (age > 20) {
-                    editTextNumber.error = "Please enter a valid age (20 or less)"
+                    editTextNumber.error = getString(R.string.enter_valid_age)
                     return false
                 }
             } else {
-                editTextNumber.error = "Please enter pet age"
+                editTextNumber.error = getString(R.string.enter_pet_age)
                 return false
             }
             if (selectedGender == null) {
                 // Display an error message to the user (e.g., show a Toast)
-                Toast.makeText(context, "Please select a gender", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.select_gender), Toast.LENGTH_SHORT).show()
                 return false // Don't proceed with creating the post
             }
 
             if (PetDescription.text.isNullOrEmpty()
             ) {
-                PetDescription.error = "please enter pet Description "
+                PetDescription.error = getString(R.string.enter_pet_description)
                 return false
             }
 

@@ -17,8 +17,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.findmypet.R
 import com.example.findmypet.adapter.PostListAdapter
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.databinding.AllPostsFragmentBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
 import com.google.android.gms.ads.AdRequest
@@ -32,6 +34,8 @@ class AllPostsFragment : Fragment() {
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var binding: AllPostsFragmentBinding
     private val allPostsViewModel: AllPostsViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,18 +91,20 @@ class AllPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
         setupSearchListener(binding.etSearch)
+
     }
 
     private fun setupSearchListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                 // Not needed for your use case
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 allPostsViewModel.isSearching=true
-                allPostsViewModel.searchPosts(s?.toString() ?: "")
+                allPostsViewModel.searchPosts(s?.toString()?.replaceFirstChar { it.uppercase() } ?: "")
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -139,12 +145,11 @@ class AllPostsFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.prograss.visibility = View.GONE
-                            Toast.makeText(requireContext(), "Success remove the post from favorite", Toast.LENGTH_SHORT).show()
+                            ToastUtils.showCustomToast(requireContext(),
+                                getString(R.string.success_remove_post_favorite),  parentView,true)
                         }
                         is Resource.Error -> {
-                            binding.prograss.visibility = View.GONE
-                            val error = result.throwable.message
-                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                            handleResourceError(result)
                         }
                     }
                 }
@@ -165,12 +170,10 @@ class AllPostsFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.prograss.visibility = View.GONE
-                            Toast.makeText(requireContext(), "Success add the post to favorite", Toast.LENGTH_SHORT).show()
+                            ToastUtils.showCustomToast(requireContext(), getString(R.string.success_add_post_favorite), parentView, true)
                         }
                         is Resource.Error -> {
-                            binding.prograss.visibility = View.GONE
-                            val error = result.throwable.message
-                            Toast.makeText(requireContext(), error ?: "Unknown error", Toast.LENGTH_SHORT).show()
+                            handleResourceError(result)
                         }
                     }
                 }
@@ -190,7 +193,7 @@ class AllPostsFragment : Fragment() {
                             binding.hi.visibility = View.VISIBLE
                         }
                         is Resource.Error -> {
-                            Log.v("currentuser", resource.toString())
+                            Log.v("current user", resource.toString())
                             binding.prograss.visibility = View.GONE
                             binding.hi.visibility = View.GONE
                         }
@@ -214,22 +217,24 @@ class AllPostsFragment : Fragment() {
                 allPostsViewModel.postsStateFlow.collect { result ->
                     when (result) {
                         is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
                             Log.v("success",result.data.toString())
                             if (result.data.isNotEmpty()) {
-                                binding.prograss.visibility = View.GONE
-                                postListAdapter.submitList(result.data)
                                 binding.tvEmptySorted.visibility = View.GONE
+                                postListAdapter.submitList(result.data)
                                 Log.v("success GET THE POSTS", result.data.toString())
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Success get the posts ",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                ToastUtils.showCustomToast(requireContext(), getString(R.string.success_get_posts), parentView, true)
+
+                            }else{
+                                postListAdapter.submitList(result.data)
+                                binding.tvEmptySorted.visibility = View.VISIBLE
+
                             }
                         }
                         is Resource.Error -> {
                             handleResourceError(result)
                             Log.v("erroron",result.throwable.toString())
+
 
                         }
                         Resource.Loading -> {
@@ -263,7 +268,8 @@ class AllPostsFragment : Fragment() {
         binding.prograss.visibility = View.GONE
         val error = resource.throwable
         Log.v("error", error.toString())
-        Toast.makeText(requireContext(),error.message.toString() , Toast.LENGTH_SHORT).show()
+        // Show the custom toast using ToastUtils
+        ToastUtils.showCustomToast(requireContext(), error.message.toString(),  parentView,false)
     }
 
 }

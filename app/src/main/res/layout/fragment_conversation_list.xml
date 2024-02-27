@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="@string/empty_converstion"
+            android:text="@string/empty_conversation"
             android:textColor="@color/md_theme_dark_inversePrimary"
             android:textSize="16sp"
             android:textStyle="bold"

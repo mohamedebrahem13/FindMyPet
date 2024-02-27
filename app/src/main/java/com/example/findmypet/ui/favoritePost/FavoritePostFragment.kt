@@ -13,8 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmypet.R
 import com.example.findmypet.adapter.FavoritePostListAdapter
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.databinding.FragmentFavoritePostBinding
 import com.example.findmypet.ui.home.HomeFragmentDirections
@@ -29,6 +31,8 @@ class FavoritePostFragment : Fragment() {
     private val viewModel: FavoritePostsViewModel by viewModels(ownerProducer = { this })
     private lateinit var binding:FragmentFavoritePostBinding
     private lateinit var favoritePostAdapter: FavoritePostListAdapter
+    private lateinit var parentView: ViewGroup
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +77,7 @@ class FavoritePostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
         observeFavoritePosts()
     }
 
@@ -99,30 +104,33 @@ class FavoritePostFragment : Fragment() {
             else -> throwable.message ?: "Unknown error"
         }
         Log.e("fave_posts_error", "Error: $errorMessage")
-        showToast(errorMessage)
+        showToast(errorMessage,false)
     }
 
     private fun handleLoading() {
         binding.prograss.visibility = View.VISIBLE
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun showToast(message: String,isSuccess: Boolean) {
+        ToastUtils.showCustomToast(requireContext(), message,  parentView,isSuccess)
 
     }
     private fun handleSuccess(favoritePosts: List<Post>) {
         if (favoritePosts.isEmpty()) {
-            showToast("You don't have favorite posts or need to refresh")
+
+            showToast(getString(R.string.You_do_not_have_favorite_posts_or_need_to_refresh),false)
             binding.prograss.visibility = View.GONE
             favoritePostAdapter.submitList(favoritePosts)
         } else {
             if (favoritePostAdapter.currentList != favoritePosts) {
                 favoritePostAdapter.submitList(favoritePosts)
-                showToast("Success get the favorite posts")
+
+                showToast(getString(R.string.success_get_the_favorite_posts ),true)
                 binding.prograss.visibility = View.GONE
             } else {
                 binding.prograss.visibility = View.GONE
-                showToast("No new favorite posts")
+
+                showToast(getString(R.string.No_new_favorite_posts ),false)
             }
         }
     }
@@ -155,7 +163,7 @@ class FavoritePostFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             binding.prograss.visibility = View.GONE
-                            Toast.makeText(requireContext(), "Success remove the post from favorite", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.success_remove_post_favorite ), Toast.LENGTH_SHORT).show()
                         }
                         is Resource.Error -> {
                             binding.prograss.visibility = View.GONE

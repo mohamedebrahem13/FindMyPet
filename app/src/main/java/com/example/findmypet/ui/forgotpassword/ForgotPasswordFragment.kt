@@ -5,12 +5,13 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.findmypet.R
 import com.example.findmypet.common.Resource
+import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.databinding.FragmentForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +20,8 @@ class ForgotPasswordFragment : Fragment() {
 
     private lateinit var binding:FragmentForgotPasswordBinding
     private val viewModel: ForgotPasswordViewModel by viewModels()
+    private lateinit var parentView: ViewGroup
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +45,11 @@ class ForgotPasswordFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentView = requireActivity().findViewById(android.R.id.content)
 
-
+    }
 
     private fun observer(){
         viewModel.result.observe(viewLifecycleOwner) {
@@ -52,14 +58,14 @@ class ForgotPasswordFragment : Fragment() {
                 when (it) {
                     is Resource.Success -> {
                         prograss.visibility=View.GONE
-                        Toast.makeText(context, "Success send please check your email ", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(), getString(R.string.success_check_email),  parentView,true)
+
                         findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment())
                     }
 
                     is Resource.Error -> {
                         prograss.visibility=View.GONE
-                        Toast.makeText(context, "error something wrong ", Toast.LENGTH_SHORT).show()
-
+                        ToastUtils.showCustomToast(requireContext(), getString(R.string.error_something_wrong), parentView,false)
                     }
 
                     Resource.Loading ->   prograss.visibility=View.VISIBLE
@@ -80,7 +86,7 @@ class ForgotPasswordFragment : Fragment() {
                 ).matches()
             ) {
 
-                editTextTextEmailAddress.error = "please enter a valid email"
+                editTextTextEmailAddress.error = getString(R.string.please_enter_valid_email)
                 return false
             }
 
