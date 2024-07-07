@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -119,10 +118,10 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
         }
     }
 
-    override fun getAllConversationsWithUserDetailsForCurrentUser(): Flow<List<DisplayConversation>> = flow {
+    override suspend fun getAllConversationsWithUserDetailsForCurrentUser(): List<DisplayConversation> {
         val currentUser = firebaseAuth.currentUser
 
-        currentUser?.let { user ->
+        return currentUser?.let { user ->
             val userId = user.uid
 
             val conversationsSnapshot1 = db.collection("Conversations")
@@ -142,10 +141,10 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
             val conversations2 = conversationsSnapshot2.documents.mapNotNull { document ->
                 document.toObject(Conversation::class.java)
             }
+
             // Check if both conversation snapshots are empty
             if (conversations1.isEmpty() && conversations2.isEmpty()) {
-                emit(emptyList())
-                return@flow
+                return emptyList()
             }
 
             val allConversations = conversations1 + conversations2
@@ -161,20 +160,19 @@ class ChatRepository@Inject constructor(private val db: FirebaseFirestore,privat
 
                 val userDetails = getUserDetails(secondUserId)
 
-
                 userDetails?.let {
                     val displayConversation = DisplayConversation(
                         conversation.channelId,
                         secondUserId,
                         it.nickname,
-                        it.imagePath,it.email,it.phone,conversation.lastMessage,conversation.lastMessageTimestamp
+                        it.imagePath, it.email, it.phone, conversation.lastMessage, conversation.lastMessageTimestamp
                     )
                     displayConversations.add(displayConversation)
                 }
             }
 
-            emit(displayConversations)
-        }
+            displayConversations
+        } ?: emptyList()
     }
 
     override suspend fun getRecipientFCMToken(receiverId: String): String? {

@@ -8,10 +8,8 @@ import com.example.findmypet.domain.usecase.firebaseUseCase.chat.GetAllConversat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 
 @HiltViewModel
@@ -28,20 +26,17 @@ class ConversationListViewModel @Inject constructor(
 
     private fun fetchConversations() {
         viewModelScope.launch {
-            getAllConversationsForCurrentUserUseCase.execute()
-                .catch { exception ->
-                    // Handle the exception here, you can log it or perform other actions
-                    Log.e("conversations", "Error fetching conversations$exception")
-                    // Update UI or notify the user about the error
-                    // For example, you could set a default value or show an error message
-                    _conversations.value = emptyList() // Set an empty list or handle differently
-                }
-                .collect { conversationList ->
-
-                    _conversations.value = conversationList
-                    Log.e("conversations", conversationList.toString())
-
-                }
+            try {
+                val conversationList = getAllConversationsForCurrentUserUseCase.execute()
+                _conversations.value = conversationList
+                Log.d("conversations", conversationList.toString())
+            } catch (exception: Exception) {
+                // Handle the exception here, you can log it or perform other actions
+                Log.e("conversations", "Error fetching conversations", exception)
+                // Update UI or notify the user about the error
+                // For example, you could set a default value or show an error message
+                _conversations.value = emptyList() // Set an empty list or handle differently
+            }
         }
     }
 }
