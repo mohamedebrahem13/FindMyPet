@@ -7,7 +7,7 @@ class SendNotificationToTopicUseCase @Inject constructor(
     private val fcmRepository: FirebaseCloudMessagingRepository
 ) {
 
-    suspend fun sendNotificationToTopic(title: String, body: String, topic: String) {
-        fcmRepository.sendNotificationToTopic(title, body, topic)
+    suspend fun sendNotificationToTopic(title: String, body: String, topic: String, imageUrl: String? = null){
+        fcmRepository.sendNotificationToTopic(title, body, topic,imageUrl)
     }
 }

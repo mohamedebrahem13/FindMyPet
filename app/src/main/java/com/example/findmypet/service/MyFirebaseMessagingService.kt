@@ -4,6 +4,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -17,6 +19,9 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 
 
@@ -34,12 +39,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notification = remoteMessage.notification
             val title = notification?.title ?: "Default Title"
             val body = notification?.body ?: "Default Body"
+            val imageUrl = notification?.imageUrl ?: "Default imageUrl"
+            Log.d("Notification", "Received imageUrl: $imageUrl")
+
 
             // Check if the message is from a specific topic
             if (from == "/topics/new_pet") {
-                createNotification(title, body, Constant.channelId)
+                Log.d("from_topics", "/topics/new_pet")
+
+                createNotification(title, body, imageUrl.toString(), Constant.channelId)
             } else {
-                createNotification(title, body, Constant.chatChannelId)
+                createNotification(title, body, imageUrl .toString(), Constant.channelId)
             }
         }
     }
@@ -56,7 +66,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun createNotification(title: String, body: String, channelId: String) {
+    private fun createNotification(title: String, body: String, imageUrl: String, channelId: String) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val intent = Intent(this, MainActivity::class.java)
@@ -67,15 +77,53 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
 
-        val notification = NotificationCompat.Builder(this, channelId)
+        // Prepare notification builder
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(body)
             .setSmallIcon(R.drawable.pet1)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-            .build()
 
+        // Load and set image if imageUrl is not blank
+        if (imageUrl.isNotBlank()) {
+            val bitmap = getBitmapFromUrl(imageUrl)
+            if (bitmap != null) {
+                notificationBuilder.setStyle(NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap))
+            } else {
+                Log.e("Notification", "Bitmap is null for imageUrl: $imageUrl")
+            }
+        } else {
+            Log.e("Notification", "imageUrl is blank or null")
+        }
+
+        // Build the notification
+        val notification = notificationBuilder.build()
+
+        // Notify with unique ID
         val uniqueNotificationId = System.currentTimeMillis().toInt()
         notificationManager.notify(uniqueNotificationId, notification)
     }
+
+    // Function to fetch bitmap from URL
+    private fun getBitmapFromUrl(imageUrl: String): Bitmap? {
+        if (imageUrl.isBlank()) {
+            Log.e("Notification", "Image URL is blank or null")
+            return null
+        }
+
+        return try {
+            val url = URL(imageUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val inputStream = connection.inputStream
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: IOException) {
+            Log.e("Notification", "Error loading image from URL: ${e.message}")
+            null
+        }
+    }
+
 }

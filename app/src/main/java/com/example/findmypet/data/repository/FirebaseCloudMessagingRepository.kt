@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class FirebaseCloudMessagingRepository @Inject constructor(private val fcmService: FCMService) {
 
-    suspend fun sendNotificationToTopic(title: String, body: String, topic: String) {
-        Log.v("data in", "$title $body")
-        val notificationData = FCMNotificationData(title, body)
+    suspend fun sendNotificationToTopic(title: String, body: String, topic: String, image: String? = null) {
+        Log.v("data in", "$title $body $image")
+        val notificationData = FCMNotificationData(title, body, image)
         val notification = FCMNotification(notificationData, topic)
 
         try {

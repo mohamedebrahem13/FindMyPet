@@ -15,6 +15,7 @@ import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetUserPostCountUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.UploadImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -95,18 +96,29 @@ class PostViewModel @Inject constructor(
             val uploadResult = uploadImagesUseCase(imageUris)
 
             if (uploadResult is Resource.Success) {
+                // Assuming uploadResult.data contains list of image download URLs
+                val imageUrls = uploadResult.data
+
                 // Step 2: Add post with image URLs
-                val addResult = addPostUseCase(post, uploadResult.data)
+                val addResult = addPostUseCase(post, imageUrls)
 
-
+                // Send notification with the first image URL
+                val firstImageUrl = imageUrls.firstOrNull() // Assuming imageUrls is not empty
                 val notificationBody = "$ADDITIONAL_TEXT ${post.pet_name}"
 
-                sendNotificationToTopicUseCase. sendNotificationToTopic(
-                    "New Pet Notification", notificationBody,
-                    Constant.Topic
-                )
+                // Ensure firstImageUrl is not null before sending the notification
+                if (firstImageUrl != null) {
+                    delay(30000) // 30 seconds delay (adjust as needed)
+                    sendNotificationToTopicUseCase.sendNotificationToTopic(
+                        "New Pet Notification", notificationBody,
+                        Constant.Topic, firstImageUrl // Include the first image URL in the payload
+                    )
+                } else {
+                    // Handle case where no images were uploaded
+                    _addPostResult.value = Resource.Error(Throwable("No images uploaded"))
+                }
 
-                //here notify the users
+                // Update add post result state
                 _addPostResult.value = addResult
 
             } else {
