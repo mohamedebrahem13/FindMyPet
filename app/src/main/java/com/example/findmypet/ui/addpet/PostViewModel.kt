@@ -111,7 +111,7 @@ class PostViewModel @Inject constructor(
                     delay(30000) // 30 seconds delay (adjust as needed)
                     sendNotificationToTopicUseCase.sendNotificationToTopic(
                         "New Pet Notification", notificationBody,
-                        Constant.Topic, firstImageUrl // Include the first image URL in the payload
+                        Constant.TOPIC, firstImageUrl // Include the first image URL in the payload
                     )
                 } else {
                     // Handle case where no images were uploaded

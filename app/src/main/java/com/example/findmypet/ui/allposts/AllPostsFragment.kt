@@ -68,14 +68,13 @@ class AllPostsFragment : Fragment() {
             })
         binding.postListAdapter = postListAdapter
 
-        getCurrentUser()
         initObservers()
         refresh()
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if(!allPostsViewModel.isSearching){
-                    Log.v("issersh",allPostsViewModel.isSearching.toString())
+                    Log.v("is_Searching",allPostsViewModel.isSearching.toString())
                     if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                         // End of list reached, load more posts
                         allPostsViewModel.fetchPosts()
@@ -92,7 +91,7 @@ class AllPostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentView = requireActivity().findViewById(android.R.id.content)
-        setupSearchListener(binding.etSearch)
+        setupSearchListener(binding.editTextSearch)
 
     }
 
@@ -182,33 +181,6 @@ class AllPostsFragment : Fragment() {
     }
 
 
-    private fun observeCurrentUser() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                allPostsViewModel.currentUser.collect { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            binding.tvNickname.text = resource.data.nickname.split(" ")[0]
-                            binding.prograss.visibility = View.GONE
-                            binding.hi.visibility = View.VISIBLE
-                        }
-                        is Resource.Error -> {
-                            Log.v("current user", resource.toString())
-                            binding.prograss.visibility = View.GONE
-                            binding.hi.visibility = View.GONE
-                        }
-                        is Resource.Loading -> {
-                            binding.prograss.visibility = View.VISIBLE
-                            binding.hi.visibility = View.GONE
-                        }
-                        else -> {
-                            // Handle other states if necessary
-                        }
-                    }
-                }
-            }
-        }
-    }
 
 
     private fun observePostsData() {
@@ -251,16 +223,7 @@ class AllPostsFragment : Fragment() {
 
 
     private fun initObservers() {
-        observeCurrentUser()
         observePostsData()
-    }
-
-    private fun getCurrentUser() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                allPostsViewModel.getCurrentUser()
-            }
-        }
     }
 
 

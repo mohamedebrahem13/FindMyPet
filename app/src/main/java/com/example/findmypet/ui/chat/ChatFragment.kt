@@ -1,13 +1,10 @@
 package com.example.findmypet.ui.chat
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,12 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.findmypet.R
 import com.example.findmypet.adapter.MessageAdapter
 import com.example.findmypet.common.MessageResource
 import com.example.findmypet.data.model.Message
 import com.example.findmypet.data.model.User
-import com.example.findmypet.databinding.CustomToolbarBinding
 import com.example.findmypet.databinding.FragmentChatBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,31 +38,22 @@ class ChatFragment : Fragment() {
         refreshMessagesForUser(userId = user.id.toString())
 
         // Inflate the custom toolbar layout
-        val customToolbarBinding = CustomToolbarBinding.inflate(layoutInflater, null, false)
 
         // Set user data to the custom toolbar's binding
-        customToolbarBinding.user = user
-        customToolbarBinding.lifecycleOwner = viewLifecycleOwner
+        binding.user = user
 
         // Obtain reference to the custom toolbar view
-        val customToolbarView = customToolbarBinding.root
        // Find the CircleImageView in the custom toolbar layout
-        val profileImageView = customToolbarView.findViewById<de.hdodenhof.circleimageview.CircleImageView>(
-            R.id.profileImageView)
-        profileImageView.setOnClickListener {
+        binding.profileImage.setOnClickListener {
             Toast.makeText(requireContext(), user.nickname, Toast.LENGTH_SHORT).show()
                findNavController().navigate(
                     ChatFragmentDirections.actionChatFragmentToProfileFragment(user)
                 )
         }
-        // Use the custom toolbar view for the action bar
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayShowTitleEnabled(false)
-            setDisplayShowCustomEnabled(true)
-            customView = customToolbarView
-            setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(requireContext(),R.color.md_theme_light_surface)))
-
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
         }
+
 
         binding.lifecycleOwner = viewLifecycleOwner
         setupRecyclerView()
@@ -84,17 +70,6 @@ class ChatFragment : Fragment() {
     }
 
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // Reset the action bar to default when leaving the ChatFragment
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayShowTitleEnabled(true)
-            setDisplayShowCustomEnabled(false)
-            customView = null
-            setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), R.color.md_theme_dark_inversePrimary)))
-        }
-    }
 
     private fun chat() {
         if (checking()) {

@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.R
@@ -14,6 +17,7 @@ import com.example.findmypet.common.Resource
 import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.databinding.FragmentForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ForgotPasswordFragment : Fragment() {
@@ -51,31 +55,44 @@ class ForgotPasswordFragment : Fragment() {
 
     }
 
-    private fun observer(){
-        viewModel.result.observe(viewLifecycleOwner) {
-            with(binding){
-
-                when (it) {
-                    is Resource.Success -> {
-                        prograss.visibility=View.GONE
-                        ToastUtils.showCustomToast(requireContext(), getString(R.string.success_check_email),  parentView,true)
-
-                        findNavController().navigate(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment())
+    private fun observer() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.result.collect { resource ->
+                    with(binding) {
+                        when (resource) {
+                            is Resource.Success -> {
+                                prograss.visibility = View.GONE
+                                ToastUtils.showCustomToast(
+                                    requireContext(),
+                                    getString(R.string.success_check_email),
+                                    parentView,
+                                    true
+                                )
+                                findNavController().navigate(
+                                    ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignInFragment()
+                                )
+                            }
+                            is Resource.Error -> {
+                                prograss.visibility = View.GONE
+                                ToastUtils.showCustomToast(
+                                    requireContext(),
+                                    getString(R.string.error_something_wrong),
+                                    parentView,
+                                    false
+                                )
+                            }
+                            is Resource.Loading -> {
+                                prograss.visibility = View.VISIBLE
+                            }
+                            else -> {
+                                // Handle other cases if necessary
+                            }
+                        }
                     }
-
-                    is Resource.Error -> {
-                        prograss.visibility=View.GONE
-                        ToastUtils.showCustomToast(requireContext(), getString(R.string.error_something_wrong), parentView,false)
-                    }
-
-                    Resource.Loading ->   prograss.visibility=View.VISIBLE
-
-                    else -> {}
                 }
-
             }
         }
-
     }
 
     private fun checking():Boolean{

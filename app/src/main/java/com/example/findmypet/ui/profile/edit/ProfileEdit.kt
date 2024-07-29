@@ -71,6 +71,9 @@ class ProfileEdit : Fragment() {
             checkPermissionAndOpenGallery()
 
         }
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
         binding.update.setOnClickListener {
                    if (checkAllFields()){
                        profileEditViewModel.updateProfile(imageUri, User ( email = binding.editTextTextEmailAddress2.text.toString(),

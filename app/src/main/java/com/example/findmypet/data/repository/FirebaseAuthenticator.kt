@@ -103,17 +103,24 @@ class FirebaseAuthenticator @Inject constructor(
         // Check if a user ID is available
         if (userId.isNotEmpty()) {
             try {
-                // Example update in Fire store using the provided newToken parameter
-                Log.v("updateToken","update token $newToken")
+                // Log the update token action
+                Log.v("updateToken", "Updating token for user ID: $userId with new token: $newToken")
+
+                // Update the Firestore document with the new token
                 val userDoc = firebaseFirestore.collection(COLLECTION_PATH).document(userId)
                 userDoc.update("token", newToken).await()
+
+                // Log success
+                Log.v("updateToken", "Token updated successfully")
             } catch (e: Exception) {
                 // Handle exceptions here
-                // Logging, error handling, etc.
+                Log.e("updateToken", "Error updating token: ${e.message}", e)
             }
         } else {
             // Handle scenario where user ID is not available
-        }    }
+            Log.e("updateToken", "User ID is not available, cannot update token")
+        }
+    }
 
 
 

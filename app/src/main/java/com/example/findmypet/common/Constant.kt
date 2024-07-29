@@ -24,15 +24,16 @@ object Constant {
 
     const val FAVORITE="favoritePosts"
 
-    const val chatChannelId = "chat_channel"
-    const val chatChannelName = "Chat Notifications"
-    const val chatChannelDescription = "Notifications for chat messages" // Description for the chat notification channel
+    const val CHAT_CHANNEL_ID = "chat_channel"
+    const val CHAT_CHANNEL_NAME = "Chat Notifications"
+    const val CHAT_CHANNEL_DESCRIPTION = "Notifications for chat messages"
 
-    const val channelId = "new_pet_channel"
-    const val channelName = "New Pet"
-    const val Topic="/topics/new_pet"
+    const val PET_CHANNEL_ID = "new_pet_channel"
+    const val PET_CHANNEL_NAME = "New Pet"
+    const val TOPIC = "/topics/new_pet"
 
-    const val channelDescription = "Notifications for new pets"
+
+    const val PET_CHANNEL_DESCRIPTION = "Notifications for new pets"
     const val BASE_URL="https://fcm.googleapis.com"
     const val CONTENT_TYPE="application/json"
     const val ADDITIONAL_TEXT = "There is a new post added: "

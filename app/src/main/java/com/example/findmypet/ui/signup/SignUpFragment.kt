@@ -8,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.User
 import com.example.findmypet.databinding.FragmentSignUp2Binding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -62,35 +66,32 @@ class SignUpFragment : Fragment() {
 
     }
 
-
     private fun initObservers() {
-
-        with(viewModel) {
-
-            result.observe(viewLifecycleOwner) {
-                when (it) {
-                    is Resource.Success -> {
-                       binding.prograss.visibility =View.GONE
-                        findNavController().navigateUp()
-                        Log.v("Success","Success")
-                        ToastUtils.showCustomToast(requireContext(),"SignUP Success",  parentView,true)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.result.collect { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            binding.prograss.visibility = View.GONE
+                            findNavController().navigateUp()
+                            Log.v("Success", "Sign-up successful")
+                            ToastUtils.showCustomToast(requireContext(), "SignUP Success", parentView, true)
+                        }
+                        is Resource.Error -> {
+                            binding.prograss.visibility = View.GONE
+                            ToastUtils.showCustomToast(requireContext(), "SignUP error: ${resource.throwable.message}", parentView, true)
+                            Log.v("Error", "Sign-up error")
+                        }
+                        is Resource.Loading -> {
+                            binding.prograss.visibility = View.VISIBLE
+                        }
+                        else -> {}
                     }
-                    is Resource.Error -> {
-                        binding.prograss.visibility =View.GONE
-                        ToastUtils.showCustomToast(requireContext(),"SignUP error ${it.throwable.message.toString()}",  parentView,true)
-                        Log.v("error","SignUP error")
-
-                    }
-                    is Resource.Loading-> {
-                        binding.prograss.visibility = View.VISIBLE
-
-
-                    }
-                    else -> {}
                 }
             }
         }
     }
+
 
 
 

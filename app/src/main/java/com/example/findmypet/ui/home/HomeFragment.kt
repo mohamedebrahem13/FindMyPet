@@ -1,26 +1,28 @@
 package com.example.findmypet.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.findmypet.R
 import com.example.findmypet.adapter.TabAdapter
+import com.example.findmypet.common.Resource
 import com.example.findmypet.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), MenuProvider {
+class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel:HomeViewModel by viewModels()
@@ -30,7 +32,6 @@ class HomeFragment : Fragment(), MenuProvider {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-        requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
         binding.floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24)
         binding.floatingActionButton.imageTintList = null
@@ -52,6 +53,8 @@ class HomeFragment : Fragment(), MenuProvider {
 
         viewPager.adapter = tabAdapter
         homeViewModel.onViewOpened()
+        getCurrentUser()
+        initObservers()
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val customTabView = layoutInflater.inflate(R.layout.tab_custom_view, null)
@@ -64,19 +67,54 @@ class HomeFragment : Fragment(), MenuProvider {
             tab.customView = customTabView
         }.attach()
 
+        // Set click listeners for profile image and messages image
+        binding.profileImage.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
+        }
+
+        binding.messagesImage.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToConversationListFragment())
+        }
+
 
         return binding.root
     }
 
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.user_menu, menu)
+    private fun initObservers() {
+        observeCurrentUser()
     }
 
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.Profile -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
-            R.id.Conversation -> findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToConversationListFragment())
+    private fun getCurrentUser() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                homeViewModel.getCurrentUser()
+            }
         }
-        return true
     }
+
+    private fun observeCurrentUser() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                homeViewModel.currentUser.collect { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            binding.user=resource.data
+                            binding.hi.visibility = View.VISIBLE
+                        }
+                        is Resource.Error -> {
+                            Log.v("current user", resource.toString())
+                            binding.hi.visibility = View.GONE
+                        }
+                        is Resource.Loading -> {
+                            binding.hi.visibility = View.GONE
+                        }
+                        else -> {
+                            // Handle other states if necessary
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

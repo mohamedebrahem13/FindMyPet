@@ -1,11 +1,12 @@
 package com.example.findmypet.ui.forgotpassword
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.domain.usecase.firebaseUseCase.auth.ForgotPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,8 +14,10 @@ import javax.inject.Inject
 class ForgotPasswordViewModel @Inject constructor(private val forgotPasswordUseCase: ForgotPasswordUseCase) :
     ViewModel() {
 
-    private val _result = MutableLiveData<Resource<Void>?>()
-    val result: MutableLiveData<Resource<Void>?> = _result
+    // Private mutable StateFlow for internal updates
+    private val _result = MutableStateFlow<Resource<Void>?>(null)
+    // Public immutable StateFlow for external observation
+    val result: StateFlow<Resource<Void>?> = _result
 
     fun sendPasswordResetEmail(email: String) {
         viewModelScope.launch {

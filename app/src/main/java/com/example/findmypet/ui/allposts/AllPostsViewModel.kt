@@ -1,12 +1,9 @@
 package com.example.findmypet.ui.allposts
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
-import com.example.findmypet.data.model.User
-import com.example.findmypet.domain.usecase.firebaseUseCase.auth.GetCurrentUserUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.AddPostToFavoriteUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.GetPostsUseCase
 import com.example.findmypet.domain.usecase.firebaseUseCase.posts.RemovePostFromFavoriteUseCase
@@ -27,7 +24,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPostsUseCase,
                                             private val searchPostsByNameUseCase: SearchPostsByNameUseCase,
-                                            private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                             private val addPostToFavoriteUseCase:AddPostToFavoriteUseCase,
                                             private val removePostFromFavoriteUseCase: RemovePostFromFavoriteUseCase): ViewModel(){
 
@@ -36,8 +32,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
     private val _postsStateFlow = MutableStateFlow<Resource<List<Post>>>(Resource.Loading)
     val postsStateFlow: StateFlow<Resource<List<Post>>> = _postsStateFlow
 
-    private val _currentUser = MutableStateFlow<Resource<User>?>(Resource.Loading)
-    val currentUser: StateFlow<Resource<User>?> = _currentUser
+
 
     private val _addFaveSharedFlow = MutableSharedFlow<Resource<Unit>>()
     val addFaveSharedFlow: SharedFlow<Resource<Unit>> = _addFaveSharedFlow.asSharedFlow()
@@ -140,15 +135,7 @@ class AllPostsViewModel @Inject constructor(private val getPostsUseCase: GetPost
         _allPosts.value= emptyList()
         fetchPosts()
     }
-    fun getCurrentUser() {
-        viewModelScope.launch {
-            try {
-                _currentUser.value = getCurrentUserUseCase()
-            } catch (e: Exception) {
-                Log.e("homeViewModel", "Error in getCurrentUser IN HomeViewModel: ${e.message}")
-            }
-        }
-    }
+
 
 
     fun removeFav(postId: String) {

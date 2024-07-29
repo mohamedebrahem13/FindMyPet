@@ -1,9 +1,12 @@
 
 <resources>
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
+
         <item name="colorPrimary">@color/md_theme_dark_inversePrimary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/seed</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
         <item name="colorSecondary">@color/md_theme_light_secondary</item>
         <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
@@ -31,5 +34,41 @@
 
     <style name="AppTheme.WhiteAccent">
         <item name="colorAccent">@color/md_theme_light_onSurfaceVariant</item> <!-- Whatever color you want-->
+    </style>
+
+    <!--region TextInputLayout -->
+    <style name="TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxCornerRadiusBottomEnd">30dp</item>
+        <item name="boxCornerRadiusBottomStart">30dp</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="boxCornerRadiusTopEnd">30dp</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxCornerRadiusTopStart">30dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="boxStrokeColor">@color/boarder_search</item>
+        <item name="startIconTint">@color/boarder_search</item>
+        <item name="hintTextAppearance">@style/text</item>
+        <item name="errorEnabled">true</item>
+    </style>
+
+    <!-- Search Input Style -->
+    <style name="TextInputLayout.Name" parent="TextInputLayout.OutlinedBox">
+        <item name="startIconDrawable">@drawable/ic_baseline_search_24</item>
+    </style>
+
+    <!--region TextInputEditText-->
+    <style name="TextInputEditText.OutlinedBox" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColorHint">#CC3E6A00</item>
+        <item name="android:textColor">@color/boarder_search</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textAppearance">@style/text</item>
     </style>
 </resources>

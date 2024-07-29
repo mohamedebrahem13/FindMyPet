@@ -1,5 +1,6 @@
 package com.example.findmypet.common
 
+import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -19,6 +20,21 @@ fun loadImage(imageView: ImageView, url: String?) {
             .placeholder(R.drawable.ic_launcher_background) // Optional: Use a placeholder image
             .error(R.drawable.ic_baseline_error_24) // Optional: Set an error image
             .into(imageView)
+    }
+}
+@BindingAdapter("formattedName")
+fun setFormattedName(textView: TextView, nickname: String?) {
+    if (!TextUtils.isEmpty(nickname)) {
+        val names = nickname!!.split(" ")
+        val firstName = names[0]
+        val capitalizedFirstName = firstName.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT
+            ) else it.toString()
+        }
+        textView.text = capitalizedFirstName
+    } else {
+        textView.text = ""
     }
 }
 

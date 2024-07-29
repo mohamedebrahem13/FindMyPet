@@ -103,6 +103,9 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         binding.TakePet.setOnClickListener {
             checkPermissionAndOpenGallery()
         }
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
 
         return binding.root
     }

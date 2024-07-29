@@ -4,15 +4,9 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ContentValues.TAG
-import android.os.Build
 import android.util.Log
 import com.example.findmypet.common.Constant
-import com.example.findmypet.common.Constant.channelDescription
-import com.example.findmypet.common.Constant.channelId
-import com.example.findmypet.common.Constant.channelName
-import com.example.findmypet.common.Constant.chatChannelDescription
-import com.example.findmypet.common.Constant.chatChannelId
-import com.example.findmypet.common.Constant.chatChannelName
+import com.example.findmypet.common.Constant.TOPIC
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -26,55 +20,46 @@ class HiltApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        createChannel()
-        createChatChannel()
-        subscribeToTopic(Constant.Topic)
+        createNotificationChannels()
+        subscribeToTopic()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun subscribeToTopic(topic: String) {
+    private fun subscribeToTopic() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                FirebaseMessaging.getInstance().subscribeToTopic(topic).await()
-                Log.d(TAG, "Subscribed to $topic topic")
+                FirebaseMessaging.getInstance().subscribeToTopic(TOPIC).await()
+                Log.d(TAG, "Subscribed to $TOPIC topic")
             } catch (e: Exception) {
-                Log.e(TAG, "Subscription to $topic topic failed: ${e.message}")
+                Log.e(TAG, "Subscription to $TOPIC topic failed: ${e.message}")
             }
         }
     }
 
-    private fun createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = channelId
-            val channelName = channelName
-            val channelDescription = channelDescription
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(channelId, channelName, importance).apply {
-                description = channelDescription
-            }
-
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
-
-            Log.d("NotificationChannel", "Channel created")
+    private fun createNotificationChannels() {
+        // Create the new pet notifications channel
+        val petChannel = NotificationChannel(
+            Constant.PET_CHANNEL_ID,
+            Constant.PET_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = Constant.PET_CHANNEL_DESCRIPTION
         }
-    }
-    private fun createChatChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val chatChannelId = chatChannelId
-            val chatChannelName = chatChannelName
-            val chatChannelDescription = chatChannelDescription
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(chatChannelId, chatChannelName, importance).apply {
-                description = chatChannelDescription
-            }
 
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
-
-            Log.d("ChatNotificationChannel", "Chat channel created")
+        // Create the chat notifications channel
+        val chatChannel = NotificationChannel(
+            Constant.CHAT_CHANNEL_ID,
+            Constant.CHAT_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = Constant.CHAT_CHANNEL_DESCRIPTION
         }
-    }
 
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager?.createNotificationChannel(petChannel)
+        notificationManager?.createNotificationChannel(chatChannel)
+
+        Log.d("NotificationChannel", "Channels created")
+    }
 
 }

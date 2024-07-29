@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Border color when focused -->
+    <item android:color="?attr/colorPrimary" android:state_focused="true"/>
+
+    <!-- Border color when hovered (hovered state is API 24+) -->
+    <item  android:color="?attr/colorPrimary" android:state_hovered="true"/>
+
+    <!-- Border color when disabled -->
+    <item  android:color="?attr/colorPrimary" android:state_enabled="false"/>
+
+</selector>

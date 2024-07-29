@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Find My Pet</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="no_results">No results found</string>
 
     <string name="invalid_mail">Not a valid email address. Should be your@email.com</string>
@@ -18,7 +17,7 @@
     <string name="SignOut">SignOut</string>
     <string name="Boy">Boy</string>
     <string name="Girl">Girl</string>
-    <string name="search_hint">you can search by pet location </string>
+    <string name="search_hint">Search By Pet Location </string>
     <string name="ads_id">ca-app-pub-9101652930040746/6296829934</string>
     <string name="banner_ads_id">ca-app-pub-9101652930040746/3775442526</string>
 

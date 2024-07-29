@@ -87,6 +87,9 @@ class PostDetailsFragment : Fragment() {
                 }
             }
         }
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
 
         return binding.root
     }

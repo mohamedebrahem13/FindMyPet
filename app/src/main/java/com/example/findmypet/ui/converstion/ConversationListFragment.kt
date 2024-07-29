@@ -32,6 +32,9 @@ class ConversationListFragment : Fragment() {
         binding = FragmentConversationListBinding.inflate(inflater, container, false)
         setupRecyclerView()
         observeConversations()
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
         return binding.root
     }
 

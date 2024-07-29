@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.findmypet.R
 import com.example.findmypet.databinding.ActivityPetBinding
 import com.google.android.gms.ads.AdRequest
@@ -32,18 +31,18 @@ class PetActivity : AppCompatActivity() {
         MobileAds.initialize(this) {}
 
 
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pet)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
-        setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController)
-
-        // Load the ad when the activity is created
 
         loadInterstitialAd()
+        // Add listener for navigation changes
 
-    }
+
+}
+
     private fun loadInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(
@@ -61,7 +60,6 @@ class PetActivity : AppCompatActivity() {
             }
         )
     }
-
 
 
     // Function to show the preloaded ad
@@ -82,10 +80,5 @@ class PetActivity : AppCompatActivity() {
 
 
 
-    override fun onSupportNavigateUp(): Boolean {
-        if (!navController.popBackStack()) {
-            // Call finish() on your Activity
-            finish()
-        }
-        return navController.navigateUp()||super.onSupportNavigateUp()    }
+
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.findmypet.adapter.ImagePagerAdapter
 import com.example.findmypet.databinding.FragmentZoomBinding
 import com.google.android.material.tabs.TabLayout
@@ -41,7 +42,9 @@ class ZoomFragment : Fragment() {
             tab.text = "Image ${position + 1}"
         }.attach()
 
-
+        binding.buttonBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
         return binding.root
     }
 }
