@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.findmypet.R
 import com.example.findmypet.adapter.PostListAdapter
@@ -45,7 +45,7 @@ class AllPostsFragment : Fragment() {
         val recyclerView = binding.recyclerView
         recyclerView.setHasFixedSize(true)
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         setupAdView()
 

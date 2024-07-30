@@ -37,7 +37,7 @@ object Constant {
     const val BASE_URL="https://fcm.googleapis.com"
     const val CONTENT_TYPE="application/json"
     const val ADDITIONAL_TEXT = "There is a new post added: "
-    const val PAGE_SIZE=5
+    const val PAGE_SIZE=6
 
 
 

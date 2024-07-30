@@ -19,18 +19,17 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
+        style="@style/MyCardViewBorderStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_height="300dp"
+        android:layout_margin="4dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="@{() -> clickListener.onClick(post)}"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="6dp"
-        app:contentPadding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="0dp"
+        app:contentPadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -40,45 +39,60 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewInside"
                 android:layout_width="0dp"
-                android:layout_height="298dp"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{post.imageUrls[0]}"
-                android:contentDescription="@string/pet_image"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
+                app:strokeColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/pet_image"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{post.imageUrls[0]}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ImageContrastCheck" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    app:civ_border_color="@color/md_theme_dark_inversePrimary"
+                    app:civ_border_width="1dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/profile_image"
+                    android:onClick="@{() -> profileImageClickListener.onClick(post)}"
+                    app:imageUrl="@{post.user.imagePath}" />
+            </com.google.android.material.card.MaterialCardView>
 
             <ImageView
                 android:id="@+id/removeFave"
-                android:layout_width="43dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:onClick="@{() -> removeFaveImageClickListener.onClick(post)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_favorite_24" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView5"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:contentDescription="@string/profile_image"
-                android:onClick="@{() -> profileImageClickListener.onClick(post)}"
-                app:imageUrl="@{post.user.imagePath}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
-
+                app:srcCompat="@drawable/fav_fill" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
 

@@ -57,8 +57,16 @@ object DateConverter {
     @BindingAdapter("android:text")
     fun bindDate(textView: TextView, timestamp: Long?) {
         timestamp ?: return // Null check
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)
         val formattedDate = dateFormat.format(Date(timestamp))
+        textView.text = formattedDate
+    }
+    @JvmStatic
+    @BindingAdapter("formattedDate")
+    fun bindDate(textView: TextView, date: Date?) {
+        date ?: return // Null check
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH) // Use Locale.ENGLISH for consistent formatting
+        val formattedDate = dateFormat.format(date)
         textView.text = formattedDate
     }
 }
