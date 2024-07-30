@@ -1,6 +1,7 @@
 package com.example.findmypet.ui.addpet
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,26 +43,23 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
     private lateinit var parentView: ViewGroup
 
     private lateinit var imagePicker: ActivityResultLauncher<String>
-    private val mediaPermissionLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                openGallery()
-            } else {
-                Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
-            }
-        }
-    private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                openGallery()
-            } else {
-                Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
-            }
-        }
+    private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
+
     private lateinit var binding:FragmentAddpetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            // Handle the permissions result here
+            permissions.forEach { (_, isGranted) ->
+                if (isGranted) {
+                    openGallery()
+                } else {
+                    Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         imagePicker = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
                 if (postViewModel.selectedImageUrisFlow.value.size + uris.size > MAX_IMAGES) {
@@ -268,7 +266,6 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
                             // Handle failure (e.g., display an error message)
                         }
 
-                        else -> {}
                     }
                 }
             }
@@ -351,38 +348,52 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         private const val MAX_IMAGES = 8
 
     }
-    @SuppressLint("NewApi")
     private fun checkPermissionAndOpenGallery() {
-        val permission =
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                // For API level 34 and above, you need to check and request both permissions
+                Manifest.permission.READ_MEDIA_IMAGES
+                Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+
             }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                Manifest.permission.READ_MEDIA_IMAGES
+            }
+            else -> {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+        }
 
         if (PermissionChecker.checkSelfPermission(requireContext(), permission) == PermissionChecker.PERMISSION_GRANTED) {
             openGallery()
         } else {
-            requestAppropriatePermission()
+            requestPermissionsBasedOnVersion()
         }
     }
-
     // Function to request appropriate permissions based on API level
-    @SuppressLint("NewApi")
-    private fun requestAppropriatePermission() {
-        val permission =
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+    private fun requestPermissionsBasedOnVersion() {
+        val permissions = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+                )
             }
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            mediaPermissionLauncher.launch(permission)
-        } else {
-            legacyStoragePermissionLauncher.launch(permission)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else -> {
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            }
         }
+
+        requestPermissions.launch(permissions)
     }
+
 
     private fun openGallery() {
         if (postViewModel.selectedImageUrisFlow.value.size < MAX_IMAGES) {

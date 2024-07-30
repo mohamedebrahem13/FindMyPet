@@ -1,7 +1,8 @@
 package com.example.findmypet.ui.profile.edit
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -31,27 +32,24 @@ class ProfileEdit : Fragment() {
     private lateinit var binding: FragmentProfileEditBinding
     private  var imageUri: Uri? =null
     private lateinit var imagePicker: ActivityResultLauncher<String>
-    private val mediaPermissionLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                openGallery()
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
-            }
-        }
-    private val legacyStoragePermissionLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                openGallery()
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
-            }
-        }
+    private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
+
 
     private val profileEditViewModel: ProfileEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            // Handle the permissions result here
+            permissions.forEach { (_, isGranted) ->
+                if (isGranted) {
+                    openGallery()
+                } else {
+                    Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
         // Initialize the image picker with the GetContent contract
         imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
@@ -185,27 +183,51 @@ class ProfileEdit : Fragment() {
 
 
 
-    @SuppressLint("NewApi")
     private fun checkPermissionAndOpenGallery() {
-        val permission =
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                // For API level 34 and above, you need to check and request both permissions
+                Manifest.permission.READ_MEDIA_IMAGES
+                Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+
             }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                Manifest.permission.READ_MEDIA_IMAGES
+            }
+            else -> {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+        }
 
         if (PermissionChecker.checkSelfPermission(requireContext(), permission) == PermissionChecker.PERMISSION_GRANTED) {
             openGallery()
         } else {
-            requestAppropriatePermission(permission)
+            requestPermissionsBasedOnVersion()
         }
     }
-    private fun requestAppropriatePermission(permission: String) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            mediaPermissionLauncher.launch(permission)
-        } else {
-            legacyStoragePermissionLauncher.launch(permission)
+
+
+    private fun requestPermissionsBasedOnVersion() {
+        val permissions = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else -> {
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            }
         }
+
+        requestPermissions.launch(permissions)
     }
 
     private fun openGallery() {
