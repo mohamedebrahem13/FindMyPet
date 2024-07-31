@@ -48,7 +48,7 @@
         <item name="boxCornerRadiusTopStart">30dp</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
-        <item name="hintEnabled">false</item>
+        <item name="hintEnabled">true</item>
         <item name="hintTextAppearance">@style/Font.Bold</item>
         <item name="boxStrokeColor">@color/boarder_search</item>
         <item name="startIconTint">@color/boarder_search</item>
@@ -56,6 +56,25 @@
         <item name="errorTextAppearance">@style/TextInputLayoutError</item>
         <item name="android:textAppearance">@style/Font.Regular</item>
         <item name="errorEnabled">true</item>
+    </style>
+    <!-- Message Input Style -->
+    <style name="TextInputLayout.OutlinedBox_Message" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginHorizontal">21dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxCornerRadiusBottomEnd">29dp</item>
+        <item name="boxCornerRadiusBottomStart">29dp</item>
+        <item name="boxCornerRadiusTopEnd">29dp</item>
+        <item name="boxCornerRadiusTopStart">29dp</item>
+        <item name="hintEnabled">true</item>
+        <item name="hintTextAppearance">@style/Font.SemiBold</item>
+        <item name="startIconTint">@color/boarder_search</item>
+        <item name="errorTextColor">@color/md_theme_light_error</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeColor">@color/boarder_search</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
     </style>
 
     <!-- Search Input Style -->
@@ -67,8 +86,8 @@
     <style name="TextInputEditText.OutlinedBox" parent="Widget.Material3.TextInputEditText.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColorHint">#CC3E6A00</item>
-        <item name="android:textColor">@color/boarder_search</item>
+        <item name="android:textColorHint">@color/boarder_search</item>
+        <item name="android:textColor">@color/md_theme_light_primary</item>
         <item name="android:textSize">14sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAlignment">viewStart</item>
@@ -83,6 +102,24 @@
         <item name="android:imeOptions">actionNext</item>
     </style>
 
+    <style name="TextInputEditText.Description" parent="TextInputEditText.OutlinedBox">
+        <item name="android:minLines">3</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:padding">21dp</item>
+        <item name="android:gravity">start|top</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:inputType">textMultiLine|text</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="TextInputEditText.Age" parent="TextInputEditText.OutlinedBox">
+        <!-- Set the input type to number with a filter for positive integers -->
+        <item name="android:inputType">number</item>
+        <!-- Set the IME options for better navigation -->
+        <item name="android:imeOptions">actionNext</item>
+
+    </style>
+
     <style name="TextInputEditText.Email" parent="TextInputEditText.OutlinedBox">
         <item name="android:inputType">textEmailAddress</item>
         <item name="android:imeOptions">actionNext</item>
@@ -94,24 +131,22 @@
 
 
     <style name="TextInputLayout.Phone" parent="TextInputLayout.OutlinedBox">
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginEnd">0dp</item>
-        <item name="boxCornerRadiusBottomEnd">0dp</item>
-        <item name="boxCornerRadiusBottomStart">22dp</item>
-        <item name="boxCornerRadiusTopEnd">0dp</item>
-        <item name="boxCornerRadiusTopStart">22dp</item>
         <item name="startIconDrawable">@drawable/ic_baseline_phone_24</item>
     </style>
 
     <style name="TextInputLayout.Email" parent="TextInputLayout.OutlinedBox">
         <item name="startIconDrawable">@drawable/ic_email</item>
     </style>
+
     <style name="TextInputLayout.Password" parent="TextInputLayout.OutlinedBox">
         <item name="startIconDrawable">@drawable/ic_lock</item>
         <item name="endIconMode">password_toggle</item>
     </style>
     <style name="TextInputLayout.Name" parent="TextInputLayout.OutlinedBox">
         <item name="startIconDrawable">@drawable/ic_baseline_person_24</item>
+    </style>
+    <style name="TextInputLayout.pets" parent="TextInputLayout.OutlinedBox">
+        <item name="startIconDrawable">@drawable/ic_pets</item>
     </style>
 
     <!--region TextInputLayout-->
@@ -203,23 +238,11 @@
         <item name="android:fontFamily">@font/poppins_black</item>
     </style>
 
-    <style name="button_style">
+    <style name="Button" parent="ThemeOverlay.Material3.Button">
         <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/Font.Bold</item>
 
     </style>
-    <!--style for edittext-->
-    <style name="edittext_style">
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-
-        <item name="android:background">@drawable/shape</item>
-        <item name="android:ems">10</item>
-        <item name="android:textColorHint">#757575</item>
-    </style>
-
 
     <style name="text_warning">
         <item name="android:textStyle">bold</item>

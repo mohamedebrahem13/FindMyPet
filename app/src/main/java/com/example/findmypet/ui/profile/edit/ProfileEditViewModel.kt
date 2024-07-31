@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUseCase:UpdateUserProfileUseCase,private val addImageUrlToFirestoreUseCase: AddImageUrlToFirestoreUseCase, private val addImageToFirebaseStorageUseCase: AddImageToFirebaseStorageUseCase , private val getCurrentUserUidUseCase: GetCurrentUserUidUseCase): ViewModel() {
+class ProfileEditViewModel  @Inject constructor(private val userProfileUseCase:UpdateUserProfileUseCase, private val addImageUrlToFirestoreUseCase: AddImageUrlToFirestoreUseCase, private val addImageToFirebaseStorageUseCase: AddImageToFirebaseStorageUseCase, private val getCurrentUserUidUseCase: GetCurrentUserUidUseCase): ViewModel() {
 
 
     private val _updateProfileResult = MutableStateFlow<UpdateUserProfileResponse>(UpdateUserProfileResponse.Loading)
@@ -44,9 +44,7 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
             try {
                 // First, upload the image to Firebase Storage
                 _progress.value = Resource.Loading
-                val storageResult = addImageToFirebaseStorageUseCase(uri)
-
-                when (storageResult) {
+                when (val storageResult = addImageToFirebaseStorageUseCase(uri)) {
                     is Resource.Success -> {
                         // Now that storage is successful, upload the image URL to Firebase Firestore
                         val imageUrlResult = addImageUrlToFirestoreUseCase(storageResult.data)
@@ -58,7 +56,7 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
                                 // Now, update the user profile with the new image URL
                                 val updatedUser = newUser.copy(imagePath = imageUrlResult.data)
                                 _progress.value = Resource.Loading
-                                val updateResult = UpdateUserProfileUseCase(updatedUser)
+                                val updateResult = userProfileUseCase(updatedUser)
                                 _updateProfileResult.value = updateResult
                             }
                             is Resource.Error -> {
@@ -85,7 +83,7 @@ class ProfileEditViewModel  @Inject constructor(private val UpdateUserProfileUse
             if (imageUri == null) {
                 // Update the user profile without adding an image
                 _progress.value = Resource.Loading
-                val updateResult = UpdateUserProfileUseCase(newUser)
+                val updateResult = userProfileUseCase(newUser)
                 _updateProfileResult.value = updateResult
             } else {
                 addImage(imageUri, newUser)

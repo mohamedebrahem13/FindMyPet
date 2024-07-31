@@ -53,75 +53,77 @@
             app:srcCompat="@drawable/ic_baseline_add_a_photo_24"
             tools:ignore="ImageContrastCheck" />
 
-        <EditText
-            android:id="@+id/editTextTextEmailAddress2"
-            style="@style/edittext_style"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextTextEmailAddress3"
+            style="@style/TextInputLayout.Email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/Email"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:text="@{user.email}"
-            android:textColorHint="@color/md_theme_dark_inversePrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.487"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
-
-
-        <EditText
-            android:id="@+id/editTextPhone"
-            style="@style/edittext_style"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/Phone"
-            android:inputType="phone"
-            android:minHeight="48dp"
-            android:text="@{user.phone}"
-            android:textColorHint="@color/md_theme_dark_inversePrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName3"
-            style="@style/edittext_style"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/nickname"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@{user.nickname}"
-            android:textColorHint="@color/md_theme_dark_inversePrimary"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:ignore="SpeakableTextPresentCheck">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                style="@style/TextInputEditText.Email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{user.email}"
+                android:hint="@string/Email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextPhone2"
+            style="@style/TextInputLayout.Phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone"
+                style="@style/TextInputEditText.Phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{user.phone}"
+                android:hint="@string/Phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextTextPersonName2"
+            style="@style/TextInputLayout.Name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                style="@style/TextInputEditText.Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{user.nickname}"
+                android:hint="@string/nickname" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/update"
+            style="@style/Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextPhone2" />
 
         <ProgressBar
             android:id="@+id/prograss"

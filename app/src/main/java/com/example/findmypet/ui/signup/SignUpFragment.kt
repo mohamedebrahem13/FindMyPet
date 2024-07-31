@@ -40,10 +40,10 @@ class SignUpFragment : Fragment() {
         binding.button.setOnClickListener {
           if (checkAllFields()){
               viewModel.signUpWithEmailAndPassword(
-                  User( email = binding.editTextTextEmailAddress3.text.toString(),
-                      nickname = binding.editTextTextPersonName2.text.toString(),
-                      phone = binding.editTextPhone2.text.toString()),
-               binding.editTextTextPassword4.text.toString(),
+                  User( email = binding.etEmail.text.toString(),
+                      nickname = binding.etName.text.toString(),
+                      phone = binding.etPhone.text.toString()),
+               binding.etPassword.text.toString(),
          )
 
             }
@@ -92,51 +92,53 @@ class SignUpFragment : Fragment() {
         }
     }
 
-
-
-
-    private fun checkAllFields():Boolean {
-        with(binding){
-            if (editTextTextEmailAddress3.text.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(
-                    editTextTextEmailAddress3.text
-                ).matches()) {
-                editTextTextEmailAddress3.error = "please enter a valid email"
+    private fun checkAllFields(): Boolean {
+        with(binding) {
+            // Check email
+            val email = etEmail.text.toString()
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editTextTextEmailAddress3.error = "Please enter a valid email"
                 return false
             }
 
-            if (editTextTextPersonName2.text.isNullOrEmpty()) {
-                editTextTextPersonName2.error = "please enter a valid name"
+            // Check name
+            val name = etName.text.toString()
+            if (name.isEmpty()) {
+                editTextTextPersonName2.error = "Please enter a valid name"
                 return false
             }
 
-            if (editTextTextPassword4.text.isNullOrEmpty()|| editTextTextPassword4.length() < 6) {
-               editTextTextPassword4.error = "Password must be minimum 6 characters"
+            // Check password
+            val password = etPassword.text.toString()
+            if (password.isEmpty() || password.length < 6) {
+                editTextTextPassword4.error = "Password must be at least 6 characters long"
                 return false
             }
 
-            if (editTextTextPassword5.text.isNullOrEmpty() ) {
-                editTextTextPassword5.error = "Password is required"
+            // Check password confirmation
+            val passwordVerify = etPasswordVerify.text.toString()
+            if (passwordVerify.isEmpty()) {
+                editTextTextPassword5.error = "Password confirmation is required"
                 return false
-            } else if (editTextTextPassword5.length() < 6) {
-                editTextTextPassword5.error = "Password must be minimum 6 characters"
+            } else if (passwordVerify.length < 6) {
+                editTextTextPassword5.error = "Password must be at least 6 characters long"
                 return false
-            } else if (editTextTextPassword5.text.toString()!= editTextTextPassword4.text.toString()) {
-                editTextTextPassword5.error = "Password must be the same"
+            } else if (passwordVerify != password) {
+                editTextTextPassword5.error = "Passwords must match"
                 return false
             }
-            if (editTextPhone2.text.isNullOrEmpty() || editTextPhone2.length() < 11 || !editTextPhone2.text.startsWith("01")) {
+
+            // Check phone number
+            val phone = etPhone.text.toString()
+            if (phone.isEmpty() || phone.length < 11 || !phone.startsWith("01")) {
                 editTextPhone2.error = "Phone number must start with 01 and be 11 digits long"
                 return false
             }
 
-
-            // after all validation return true.
+            // All validations passed
             return true
         }
-
-
     }
-
 
 
 

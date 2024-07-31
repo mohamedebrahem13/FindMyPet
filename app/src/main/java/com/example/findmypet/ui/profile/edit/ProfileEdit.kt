@@ -74,9 +74,9 @@ class ProfileEdit : Fragment() {
         }
         binding.update.setOnClickListener {
                    if (checkAllFields()){
-                       profileEditViewModel.updateProfile(imageUri, User ( email = binding.editTextTextEmailAddress2.text.toString(),
-                           nickname = binding.editTextTextPersonName3.text.toString(),
-                           phone = binding.editTextPhone.text.toString()))
+                       profileEditViewModel.updateProfile(imageUri, User ( email = binding.etEmail.text.toString(),
+                           nickname = binding.etName.text.toString(),
+                           phone = binding.etPhone.text.toString()))
                        updateProfileObserver()
                        initObserver()
 
@@ -154,28 +154,33 @@ class ProfileEdit : Fragment() {
     }
 
 
-    private fun checkAllFields():Boolean {
-        with(binding){
-            if (editTextTextEmailAddress2.text.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(
-                    editTextTextEmailAddress2.text
-                ).matches()) {
-                editTextTextEmailAddress2.error = getString(R.string.please_enter_valid_email)
+    private fun checkAllFields(): Boolean {
+        with(binding) {
+            val email = etEmail.text.toString().trim()
+            val name = etName.text.toString().trim()
+            val phone = etPhone.text.toString().trim()
+
+            // Validate email
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editTextTextEmailAddress3.error = getString(R.string.please_enter_valid_email)
                 return false
             }
 
-            if (editTextTextPersonName3.text.isNullOrEmpty()) {
-                editTextTextPersonName3.error = getString(R.string.please_enter_valid_name)
+            // Validate name
+            if (name.isEmpty()) {
+                editTextTextPersonName2.error = getString(R.string.please_enter_valid_name)
                 return false
             }
 
-            if (editTextPhone.text.isNullOrEmpty() || editTextPhone.length()<11) {
-                editTextPhone.error = getString(R.string.phone_must_be_11_number)
+            // Validate phone number
+            if (phone.isEmpty() || phone.length < 11) {
+                editTextPhone2.error = getString(R.string.phone_must_be_11_number)
                 return false
             }
+
+            return true
         }
-        return true
     }
-
 
 
 

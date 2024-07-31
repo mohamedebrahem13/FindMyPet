@@ -14,8 +14,8 @@
 
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
@@ -32,54 +32,52 @@
             android:id="@+id/post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="120dp"
+            android:layout_marginTop="8dp"
             android:text="@string/Post"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PetDescription"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintEnd_toEndOf="@+id/edit_PetDescription"
+            app:layout_constraintStart_toStartOf="@+id/edit_PetDescription"
+            app:layout_constraintTop_toBottomOf="@+id/edit_PetDescription" />
 
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextNumber"
-            style="@style/edittext_style"
+            style="@style/TextInputLayout.pets"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+            tools:ignore="SpeakableTextPresentCheck">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_age"
+                style="@style/TextInputEditText.Age"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/pet_age" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextTextPersonName2"
+            style="@style/TextInputLayout.pets"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/pet_age"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:minHeight="48dp"
-            android:textColorHint="#616161"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            style="@style/edittext_style"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/pet_name"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColorHint="#616161"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                style="@style/TextInputEditText.Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/pet_name" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/Gender"
@@ -87,7 +85,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:text="@string/Gender"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/radioGroup"
@@ -134,23 +131,23 @@
                 android:text="@string/Boy" />
         </RadioGroup>
 
-        <EditText
-            android:id="@+id/PetDescription"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="start"
-            android:hint="@string/PetDescription"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textAutoCorrect|textAutoComplete"
-            android:lines="10"
-            android:textColorHint="#546E7A"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_PetDescription"
+            style="@style/TextInputLayout.OutlinedBox_Message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_Description"
+                style="@style/TextInputEditText.Description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:hint="@string/PetDescription"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
             android:id="@+id/spinner"
@@ -191,7 +188,7 @@
 
             <TextView
                 android:id="@+id/take_pet_image"
-                style="@style/TextView.Regular"
+                style="@style/TextView.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

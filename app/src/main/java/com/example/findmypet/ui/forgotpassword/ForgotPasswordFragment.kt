@@ -37,7 +37,7 @@ class ForgotPasswordFragment : Fragment() {
         observer()
         binding.send.setOnClickListener {
                 if (checking()){
-                    viewModel.sendPasswordResetEmail(binding.editTextTextEmailAddress.text.toString())
+                    viewModel.sendPasswordResetEmail(binding.etEmail.text.toString())
                 }
             }
         binding.alreadyHaveAccount.setOnClickListener {
@@ -94,23 +94,18 @@ class ForgotPasswordFragment : Fragment() {
             }
         }
     }
-
-    private fun checking():Boolean{
-
+    private fun checking(): Boolean {
         with(binding) {
-            if (editTextTextEmailAddress.text.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(
-                    editTextTextEmailAddress.text
-                ).matches()
-            ) {
+            val email = etEmail.text.toString().trim()
 
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 editTextTextEmailAddress.error = getString(R.string.please_enter_valid_email)
                 return false
             }
 
             return true
         }
-
-
     }
+
 
     }

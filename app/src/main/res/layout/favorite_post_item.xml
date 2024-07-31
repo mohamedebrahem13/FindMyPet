@@ -68,14 +68,14 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView5"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="16dp"
-                    app:civ_border_color="@color/md_theme_dark_inversePrimary"
-                    app:civ_border_width="1dp"
                     android:layout_marginTop="10dp"
                     android:contentDescription="@string/profile_image"
                     android:onClick="@{() -> profileImageClickListener.onClick(post)}"
+                    app:civ_border_color="@color/md_theme_dark_inversePrimary"
+                    app:civ_border_width="1dp"
                     app:imageUrl="@{post.user.imagePath}" />
             </com.google.android.material.card.MaterialCardView>
 

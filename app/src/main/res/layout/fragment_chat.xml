@@ -18,8 +18,8 @@
         <!-- Back Button -->
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
@@ -100,12 +100,13 @@
             app:layout_constraintEnd_toStartOf="@+id/send"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
+            style="@style/Button"
             android:text="@string/send"
             app:layout_constraintBottom_toBottomOf="@+id/editTextText2"
             app:layout_constraintEnd_toEndOf="parent"

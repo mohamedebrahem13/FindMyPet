@@ -219,9 +219,9 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
             if (checkAllFields()) {
                 postViewModel.addPostWithImages(
                     Post(
-                        pet_name = binding.editTextTextPersonName.text.toString(),
-                        pet_description = binding.PetDescription.text.toString(),
-                        pet_age = binding.editTextNumber.text.toString(),
+                        pet_name = binding.etName.text.toString(),
+                        pet_description = binding.etDescription.text.toString(),
+                        pet_age = binding.etAge.toString(),
                         pet_gender = selectedGender.toString(),
                         null,
                         selectedCity.toString(),
@@ -309,36 +309,45 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
 
 
-    private fun checkAllFields():Boolean {
-        with(binding){
-            if(postViewModel.selectedImageUrisFlow.value.isEmpty()){
+    private fun checkAllFields(): Boolean {
+        with(binding) {
+            // Check if any images are selected
+            if (postViewModel.selectedImageUrisFlow.value.isEmpty()) {
                 Toast.makeText(context, getString(R.string.select_pet_images), Toast.LENGTH_SHORT).show()
                 return false
             }
-            if (editTextTextPersonName.text.isNullOrEmpty()
-            ) {
-                editTextTextPersonName.error = getString(R.string.enter_pet_name)
+
+            // Validate pet name
+            val name = etName.text.toString()
+            if (name.isEmpty()) {
+                editTextTextPersonName2.error = getString(R.string.enter_pet_name)
                 return false
             }
-            if (!editTextNumber.text.isNullOrEmpty()) {
-                val age = editTextNumber.text.toString().toInt()
-                if (age > 20) {
+
+            // Validate pet age
+            val ageText = etAge.text.toString()
+            if (ageText.isEmpty()) {
+                editTextNumber.error = getString(R.string.enter_pet_age)
+                return false
+            } else {
+                val age = ageText.toIntOrNull()
+                if (age == null || age > 20) {
                     editTextNumber.error = getString(R.string.enter_valid_age)
                     return false
                 }
-            } else {
-                editTextNumber.error = getString(R.string.enter_pet_age)
-                return false
-            }
-            if (selectedGender == null) {
-                // Display an error message to the user (e.g., show a Toast)
-                Toast.makeText(context, getString(R.string.select_gender), Toast.LENGTH_SHORT).show()
-                return false // Don't proceed with creating the post
             }
 
-            if (PetDescription.text.isNullOrEmpty()
-            ) {
-                PetDescription.error = getString(R.string.enter_pet_description)
+            // Validate selected gender
+            if (selectedGender == null) {
+                Toast.makeText(context, getString(R.string.select_gender), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            // Validate pet description
+            val description = etName.text.toString()
+
+            if (description.isEmpty()) {
+                editPetDescription.error = getString(R.string.enter_pet_description)
                 return false
             }
 
