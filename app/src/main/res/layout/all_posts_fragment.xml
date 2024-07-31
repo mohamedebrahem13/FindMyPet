@@ -30,7 +30,7 @@
         <!-- Search Bar -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
-            style="@style/TextInputLayout.Name"
+            style="@style/TextInputLayout.Search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -45,7 +45,8 @@
                 style="@style/TextInputEditText.OutlinedBox"
                 android:hint="@string/search_hint"
                 android:inputType="text"
-                android:padding="8dp" />
+                android:padding="8dp"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +74,7 @@
 
         <TextView
             android:id="@+id/tvEmptySorted"
-            style="@style/text"
+            style="@style/TextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="40dp"

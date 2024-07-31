@@ -49,14 +49,17 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
         <item name="hintEnabled">false</item>
+        <item name="hintTextAppearance">@style/Font.Bold</item>
         <item name="boxStrokeColor">@color/boarder_search</item>
         <item name="startIconTint">@color/boarder_search</item>
-        <item name="hintTextAppearance">@style/text</item>
+        <item name="errorTextColor">@color/md_theme_light_error</item>
+        <item name="errorTextAppearance">@style/TextInputLayoutError</item>
+        <item name="android:textAppearance">@style/Font.Regular</item>
         <item name="errorEnabled">true</item>
     </style>
 
     <!-- Search Input Style -->
-    <style name="TextInputLayout.Name" parent="TextInputLayout.OutlinedBox">
+    <style name="TextInputLayout.Search" parent="TextInputLayout.OutlinedBox">
         <item name="startIconDrawable">@drawable/ic_baseline_search_24</item>
     </style>
 
@@ -69,8 +72,55 @@
         <item name="android:textSize">14sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAlignment">viewStart</item>
-        <item name="android:textAppearance">@style/text</item>
+        <item name="android:textAppearance">@style/Font.Bold</item>
     </style>
+    <style name="TextInputEditText.Password" parent="TextInputEditText.OutlinedBox">
+        <item name="android:inputType">textPassword</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+    <style name="TextInputEditText.Phone" parent="TextInputEditText.OutlinedBox">
+        <item name="android:inputType">phone</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="TextInputEditText.Email" parent="TextInputEditText.OutlinedBox">
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+    <style name="TextInputEditText.Name" parent="TextInputEditText.OutlinedBox">
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+
+    <style name="TextInputLayout.Phone" parent="TextInputLayout.OutlinedBox">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="boxCornerRadiusBottomEnd">0dp</item>
+        <item name="boxCornerRadiusBottomStart">22dp</item>
+        <item name="boxCornerRadiusTopEnd">0dp</item>
+        <item name="boxCornerRadiusTopStart">22dp</item>
+        <item name="startIconDrawable">@drawable/ic_baseline_phone_24</item>
+    </style>
+
+    <style name="TextInputLayout.Email" parent="TextInputLayout.OutlinedBox">
+        <item name="startIconDrawable">@drawable/ic_email</item>
+    </style>
+    <style name="TextInputLayout.Password" parent="TextInputLayout.OutlinedBox">
+        <item name="startIconDrawable">@drawable/ic_lock</item>
+        <item name="endIconMode">password_toggle</item>
+    </style>
+    <style name="TextInputLayout.Name" parent="TextInputLayout.OutlinedBox">
+        <item name="startIconDrawable">@drawable/ic_baseline_person_24</item>
+    </style>
+
+    <!--region TextInputLayout-->
+    <style name="TextInputLayoutError" parent="Font.Regular">
+        <item name="android:textColor">@color/md_theme_light_error</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+
     <!--region CardView-->
     <style name="MyCardViewBorderStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@android:color/transparent</item>
@@ -80,4 +130,100 @@
         <item name="cardCornerRadius">16dp</item>
 
     </style>
+
+    <!--region TextView -->
+    <style name="TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+        <item name="android:textAppearance">@style/Font</item>
+        <item name="fontStyle">normal</item>
+    </style>
+    <style name="TextView.Medium" parent="TextView">
+        <item name="android:textAppearance">@style/Font.Medium</item>
+    </style>
+
+    <style name="TextView.Regular_12" parent="TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAppearance">@style/Font.Regular</item>
+    </style>
+
+    <style name="TextView.Regular" parent="TextView">
+        <item name="android:textAppearance">@style/Font.Regular</item>
+    </style>
+
+    <style name="TextView.light" parent="TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAppearance">@style/Font.light</item>
+    </style>
+
+    <style name="TextView.Bold" parent="TextView">
+        <item name="android:textAppearance">@style/Font.Bold</item>
+    </style>
+
+    <style name="TextView.Black" parent="TextView">
+        <item name="android:textAppearance">@style/Font.black</item>
+    </style>
+
+    <style name="TextView.SemiBold" parent="TextView">
+        <item name="android:textAppearance">@style/Font.SemiBold</item>
+    </style>
+
+    <style name="TextView.Thin" parent="TextView">
+        <item name="android:textAppearance">@style/Font.Thin</item>
+    </style>
+
+    <!-- Font styles -->
+    <style name="Font" parent="@android:style/TextAppearance" />
+
+    <style name="Font.Bold" parent="Font">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="Font.Medium" parent="Font">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Font.Regular" parent="Font">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="Font.SemiBold" parent="Font">
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="Font.Thin" parent="Font">
+        <item name="android:fontFamily">@font/poppins_thin</item>
+    </style>
+    <style name="Font.light" parent="Font">
+        <item name="android:fontFamily">@font/poppins_light</item>
+    </style>
+    <style name="Font.black" parent="Font">
+        <item name="android:fontFamily">@font/poppins_black</item>
+    </style>
+
+    <style name="button_style">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <!--style for edittext-->
+    <style name="edittext_style">
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+        <item name="android:background">@drawable/shape</item>
+        <item name="android:ems">10</item>
+        <item name="android:textColorHint">#757575</item>
+    </style>
+
+
+    <style name="text_warning">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_theme_dark_errorContainer</item>
+    </style>
+
 </resources>

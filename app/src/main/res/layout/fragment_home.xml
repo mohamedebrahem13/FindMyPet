@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="18sp"
-            style="@style/text"
+            style="@style/TextView.Bold"
             app:formattedName="@{user.nickname}"
             app:layout_constraintBottom_toBottomOf="@+id/hi"
             app:layout_constraintStart_toEndOf="@+id/hi"
@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/hi"
-            style="@style/text"
+            style="@style/TextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

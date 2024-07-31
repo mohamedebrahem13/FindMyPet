@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.findmypet.R
 import com.example.findmypet.activities.PetActivity
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.ToastUtils
@@ -45,8 +46,8 @@ class SignInFragment : Fragment() {
         binding.loginbtn.setOnClickListener{
            if (checking()){
                viewModel.signInWithEmailAndPassword(
-                   binding.editTextTextEmailAddress.text.toString(),
-                   binding.editTextTextPassword.text.toString()
+                   binding.etEmail.text.toString(),
+                   binding.etPassword.text.toString()
                )
                initObservers()
 
@@ -99,7 +100,8 @@ private fun viewModelObserver() {
         when (it) {
             is Resource.Success -> {
                 binding.prograss.visibility = View.GONE
-                ToastUtils.showCustomToast(requireContext(),"Signing Success",  parentView,true)
+                ToastUtils.showCustomToast(requireContext(),
+                    getString(R.string.signing_success),  parentView,true)
 
                 Intent(requireActivity(), PetActivity::class.java).also {
                     intent -> intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
@@ -129,25 +131,31 @@ private fun viewModelObserver() {
 
 
 
-    private fun checking():Boolean  {
-        //check for email and password if null make toast and tell user else navigate to welcome fragment
-        with(binding){
-            if (editTextTextEmailAddress.text.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(
-                    editTextTextEmailAddress.text
-                ).matches()
-            ) {
+    private fun checking(): Boolean {
+        // Check for email and password. If null or invalid, show a toast and return false.
+        with(binding) {
+            // Convert Editable to String
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
 
-                editTextTextEmailAddress.error = "please enter a valid email"
+            // Check if email is empty or invalid
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editTextTextEmailAddress.error = getString(R.string.please_enter_a_valid_email) // Use the TextInputLayout to set the error
                 return false
+            } else {
+                editTextTextEmailAddress.error = null // Clear the error if the email is valid
             }
-            if (editTextTextPassword.text.isNullOrEmpty() || editTextTextPassword.text.length < 6){
-                editTextTextPassword.error = "please enter a valid password"
+
+            // Check if password is empty or too short
+            if (password.isEmpty() || password.length < 6) {
+                editTextTextPassword.error = getString(R.string.please_enter_a_valid_password) // Use the TextInputLayout to set the error
                 return false
+            } else {
+                editTextTextPassword.error = null // Clear the error if the password is valid
             }
+
             return true
-
         }
-
     }
 
 

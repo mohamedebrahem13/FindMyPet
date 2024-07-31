@@ -28,8 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{customTabText}"
-        android:textSize="12sp"
-        android:textColor="@color/md_theme_dark_inversePrimary"
-        android:paddingTop="4dp" />
+            style="@style/TextView.SemiBold"
+            android:paddingTop="4dp" />
     </LinearLayout>
 </layout>

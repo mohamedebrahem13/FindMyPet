@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/textView5"
-                style="@style/text"
+                style="@style/TextView.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/SignUp"
@@ -158,7 +158,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:text="@string/already_have_account"
-            android:textColor="@color/md_theme_dark_inversePrimary"
+            style="@style/TextView.SemiBold"
             app:layout_constraintEnd_toStartOf="@+id/Signing"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,9 +171,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="110dp"
             android:text="@string/Signing"
-            android:textColor="#5E3C1C"
             android:textSize="15sp"
-            app:fontFamily="sans-serif-black"
+            style="@style/TextView.Bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/button" />

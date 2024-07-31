@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -90,9 +91,12 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
 
         radioCheck()
         setSpinner()
+
         val defaultCity = getString(R.string.default_city)
         val cityArray = resources.getStringArray(R.array.egypt_cities)
+        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_item, cityArray)
         val defaultCityIndex = cityArray.indexOf(defaultCity)
+        binding.spinner.adapter = adapter
         binding.spinner.setSelection(defaultCityIndex)
 
         observeSelectedImageUris()

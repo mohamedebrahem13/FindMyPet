@@ -18,15 +18,15 @@
 
         <TextView
             android:id="@+id/textMessageDate"
+            style="@style/TextView.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="#808080"
             android:layout_marginBottom="4dp"
             android:text="@{message.timestamp}" />
 
         <TextView
             android:id="@+id/textMessage"
+            style="@style/TextView.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"

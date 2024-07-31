@@ -51,13 +51,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_email"
-            style="@style/text"
+            style="@style/TextView.SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@{user.email}"
             android:textSize="20sp"
-            android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
@@ -65,13 +64,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_nickname"
-            style="@style/text"
+            style="@style/TextView.SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="25sp"
             android:text="@{user.nickname}"
-            android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,13 +78,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_phone_number"
-            style="@style/text"
+            style="@style/TextView.SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@{user.phone}"
             android:textSize="20sp"
-            android:textColor="@color/md_theme_dark_inversePrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_email"

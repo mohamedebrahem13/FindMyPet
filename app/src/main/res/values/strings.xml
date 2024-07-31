@@ -48,7 +48,7 @@
 
     <string name="profile">Profile</string>
     <string name="take_image_pet">Take Pet Image</string>
-    <string name="SelectYourLocation">Select Your Location</string>
+    <string name="SelectYourLocation">Your Location</string>
     <string name="Post">Post</string>
     <string name="Edit_profile">Edit Profile</string>
     <string name="update">Update</string>
@@ -153,5 +153,8 @@
     <string name="enter_pet_age">Please enter pet age</string>
     <string name="select_gender">Please select a gender</string>
     <string name="enter_pet_description">Please enter pet description</string>
+    <string name="please_enter_a_valid_password">Please enter a valid password</string>
+    <string name="please_enter_a_valid_email">Please enter a valid email</string>
+    <string name="signing_success">Signing Success</string>
 
 </resources>

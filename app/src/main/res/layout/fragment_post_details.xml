@@ -63,10 +63,9 @@
 
                 <TextView
                     android:id="@+id/petNameTextView"
-                    style="@style/Widget.AppCompat.TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/md_theme_dark_inversePrimary"
+                    style="@style/TextView.Regular"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -76,26 +75,24 @@
 
                 <TextView
                     android:id="@+id/petDescriptionTextView"
-                    style="@style/Widget.AppCompat.TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:textColor="@color/md_theme_dark_inversePrimary"
                     android:textSize="15sp"
+                    style="@style/TextView.Regular"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13"
+                    app:layout_constraintTop_toBottomOf="@+id/second_user"
                     app:text="@{post_data.pet_description}"
                     tools:text="This is the Pet Description" />
 
                 <TextView
                     android:id="@+id/petAgeTextView"
-                    style="@style/Widget.AppCompat.TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/md_theme_dark_inversePrimary"
+                    style="@style/TextView.Regular"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView10"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -118,12 +115,10 @@
 
                 <TextView
                     android:id="@+id/petLocationTextView"
-                    style="@style/Widget.AppCompat.TextView"
+                    style="@style/TextView.Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/md_theme_dark_inversePrimary"
                     android:textSize="15sp"
-                    app:drawableLeftCompat="@drawable/ic_location"
                     app:drawableStartCompat="@drawable/ic_location"
                     app:layout_constraintBottom_toBottomOf="@+id/textView12"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +140,7 @@
 
                 <TextView
                     android:id="@+id/Pet_Details"
-                    style="@style/text"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -171,7 +166,7 @@
 
                 <TextView
                     android:id="@+id/textView6"
-                    style="@style/text"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -182,7 +177,7 @@
 
                 <TextView
                     android:id="@+id/textView10"
-                    style="@style/text"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -192,7 +187,7 @@
 
                 <TextView
                     android:id="@+id/textView11"
-                    style="@style/text"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -202,7 +197,7 @@
 
                 <TextView
                     android:id="@+id/textView12"
-                    style="@style/text"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -211,8 +206,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
                 <TextView
-                    android:id="@+id/textView13"
-                    style="@style/text"
+                    android:id="@+id/second_user"
+                    style="@style/TextView.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

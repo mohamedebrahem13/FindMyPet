@@ -114,7 +114,7 @@
 
             <TextView
                 android:id="@+id/postDateTextView"
-                style="@style/text"
+                style="@style/TextView.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -126,11 +126,11 @@
 
             <TextView
                 android:id="@+id/petLocationTextView"
-                style="@style/text"
+                style="@style/TextView.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{post.pet_location}"
                 android:textSize="15sp"

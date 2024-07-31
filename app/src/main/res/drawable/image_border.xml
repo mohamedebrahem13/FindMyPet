@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#00000000" /> <!-- Background color (transparent in this example) -->
-    <stroke
-        android:width="7dp"
-    android:color="@color/md_theme_dark_inversePrimary"
-    />
-</shape>

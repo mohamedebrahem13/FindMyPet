@@ -42,7 +42,7 @@ fun setFormattedName(textView: TextView, nickname: String?) {
 @BindingAdapter("postImageUrl")
 fun postImage(imageView: ImageView, url: String?) {
     if (url.isNullOrEmpty()) {
-        imageView.setImageResource(R.drawable.peturl) // Set the placeholder image
+        imageView.setImageResource(R.drawable.ic_baseline_error_24) // Set the placeholder image
     } else {
         Glide.with(imageView.context)
             .load(url).dontAnimate()

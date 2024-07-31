@@ -43,7 +43,7 @@ class ImageAdapter(private val imageList: List<String>?, private val itemClickLi
         fun bind(imageUrl: String) {
             // Load the image using Glide
             if (imageUrl.isEmpty()) {
-                binding.imageView.setImageResource(R.drawable.peturl) // Set the placeholder image
+                binding.imageView.setImageResource(R.drawable.ic_baseline_error_24) // Set the placeholder image
             } else {
                 loadImage(imageUrl, binding.imageView)
                 binding.executePendingBindings()
