@@ -248,5 +248,24 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/md_theme_dark_errorContainer</item>
     </style>
+    <style name="CustomRadioButton1" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="android:drawableStart">@drawable/ic_pets</item>
+        <item name="android:textAppearance">@style/Font.SemiBold</item>
+        <item name="android:text">@string/Boy</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+        <item name="android:paddingStart">8dp</item>
+    </style>
 
+    <style name="CustomRadioButton2" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="android:drawableStart">@drawable/ic_pets</item>
+        <item name="android:textAppearance">@style/Font.SemiBold</item>
+        <item name="android:text">@string/Girl</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
 </resources>

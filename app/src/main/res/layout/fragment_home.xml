@@ -10,9 +10,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
-        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="16dp"
         tools:context=".ui.home.HomeFragment">
         <!-- Profile Image -->
 
@@ -32,11 +32,11 @@
 
         <TextView
             android:id="@+id/userName"
+            style="@style/TextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="18sp"
-            style="@style/TextView.Bold"
             app:formattedName="@{user.nickname}"
             app:layout_constraintBottom_toBottomOf="@+id/hi"
             app:layout_constraintStart_toEndOf="@+id/hi"
@@ -74,27 +74,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileImage"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <!-- Include the ViewPager to display tab content -->
+
+        <!-- Include your FloatingActionButton for adding new posts -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <!-- Include your FloatingActionButton for adding new posts -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="52dp"
-            android:clickable="true"
             android:focusable="true"
-            app:fabSize="normal"
+            android:clickable="true"
+            android:backgroundTint="@color/md_theme_light_primary"
+            android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.89"

@@ -72,7 +72,7 @@
                     android:onClick="@{() -> postListener.onDeleteClick(post)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/delete_forever"
+                    app:srcCompat="@drawable/delete_forever_50"
                     tools:ignore="SpeakableTextPresentCheck" />
 
             </com.google.android.material.card.MaterialCardView>

@@ -33,7 +33,6 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
 
-        binding.floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24)
         binding.floatingActionButton.imageTintList = null
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddPet())
