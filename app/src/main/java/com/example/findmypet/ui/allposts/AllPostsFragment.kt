@@ -54,7 +54,7 @@ class AllPostsFragment : Fragment() {
                 Toast.makeText(this.context, post.pet_name, Toast.LENGTH_SHORT).show()
 
                 findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(post,"AllPostsFragment")
+                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(post,getString(R.string.allpostsfragment))
                 )
             },
             PostListAdapter.ProfileImageClickListener { post ->
@@ -205,7 +205,7 @@ class AllPostsFragment : Fragment() {
                         }
                         is Resource.Error -> {
                             handleResourceError(result)
-                            Log.v("erroron",result.throwable.toString())
+                            Log.v("error",result.throwable.toString())
 
 
                         }

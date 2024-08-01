@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmypet.R
 import com.example.findmypet.adapter.DetailsImageAdapter
 import com.example.findmypet.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,12 +58,12 @@ class PostDetailsFragment : Fragment() {
             imageUrlsRecyclerView.adapter = detailsImageAdapter
 
             when (sourceFragment) {
-                "PostsByIdFragment" -> {
+                getString(R.string.postsbyidfragment)-> {
                     imageButton.visibility = View.GONE
                     chat.visibility = View.GONE
                 }
 
-                "AllPostsFragment", "FavoriteFragment" -> {
+                getString(R.string.allpostsfragment), getString(R.string.favoritefragment) -> {
                     if (post.user?.id == currentUid) {
                         imageButton.visibility = View.GONE
                         chat.visibility = View.GONE

@@ -140,12 +140,12 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.girl -> {
-                    selectedGender = "Girl"
+                    selectedGender = getString(R.string.girl)
                     Toast.makeText(requireContext(), getString(R.string.girl_selected), Toast.LENGTH_SHORT).show()
 
                 }
                 R.id.boy ->{
-                    selectedGender = "Boy"
+                    selectedGender = getString(R.string.boy)
                     Toast.makeText(requireContext(), getString(R.string.boy_selected), Toast.LENGTH_SHORT).show()
                 }
             }

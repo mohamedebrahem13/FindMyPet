@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.findmypet.R
 import com.example.findmypet.activities.MainActivity
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.ToastUtils
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
-    private var User: User? =null
+    private var currentUser: User? =null
     private lateinit var binding:FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var parentView: ViewGroup
@@ -62,11 +63,12 @@ class ProfileFragment : Fragment() {
 
 
             binding.editbutton.setOnClickListener {
-                if (User != null) {
-                    findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit(User!!))
+                if (currentUser != null) {
+                    findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileEdit(currentUser!!))
                 } else {
                     // Handle the case where User is null (no internet or user data not fetched)
-                    Toast.makeText(context, "User data not available. Check your internet connection.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        getString(R.string.user_data_not_available_check_your_internet_connection), Toast.LENGTH_SHORT).show()
                 }
             }
         binding.buttonBack.setOnClickListener{
@@ -76,7 +78,8 @@ class ProfileFragment : Fragment() {
 
         binding.btnSignOut.setOnClickListener {
             profileViewModel.signOut()
-            ToastUtils.showCustomToast(requireContext(), "signOut Success",  parentView,true)
+            ToastUtils.showCustomToast(requireContext(),
+                getString(R.string.signout_success),  parentView,true)
             Intent(requireActivity(), MainActivity::class.java).also {
                     intent -> intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -115,7 +118,7 @@ class ProfileFragment : Fragment() {
                         currentUser.collect { resource ->
                             when (resource) {
                                 is Resource.Success -> {
-                                    User = resource.data
+                                    this@ProfileFragment.currentUser = resource.data
                                     user = resource.data
                                     prograss.visibility = View.GONE
                                 }

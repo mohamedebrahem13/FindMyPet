@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.findmypet.R
 import com.example.findmypet.common.Resource
 import com.example.findmypet.common.ToastUtils
 import com.example.findmypet.data.model.User
@@ -75,7 +76,8 @@ class SignUpFragment : Fragment() {
                             binding.prograss.visibility = View.GONE
                             findNavController().navigateUp()
                             Log.v("Success", "Sign-up successful")
-                            ToastUtils.showCustomToast(requireContext(), "SignUP Success", parentView, true)
+                            ToastUtils.showCustomToast(requireContext(),
+                                getString(R.string.signup_success), parentView, true)
                         }
                         is Resource.Error -> {
                             binding.prograss.visibility = View.GONE
@@ -97,41 +99,43 @@ class SignUpFragment : Fragment() {
             // Check email
             val email = etEmail.text.toString()
             if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                editTextTextEmailAddress3.error = "Please enter a valid email"
+                editTextTextEmailAddress3.error = getString(R.string.please_enter_a_valid_email)
                 return false
             }
 
             // Check name
             val name = etName.text.toString()
             if (name.isEmpty()) {
-                editTextTextPersonName2.error = "Please enter a valid name"
+                editTextTextPersonName2.error = getString(R.string.please_enter_a_valid_name)
                 return false
             }
 
             // Check password
             val password = etPassword.text.toString()
             if (password.isEmpty() || password.length < 6) {
-                editTextTextPassword4.error = "Password must be at least 6 characters long"
+                editTextTextPassword4.error =
+                    getString(R.string.password_must_be_at_least_6_characters_long)
                 return false
             }
 
             // Check password confirmation
             val passwordVerify = etPasswordVerify.text.toString()
             if (passwordVerify.isEmpty()) {
-                editTextTextPassword5.error = "Password confirmation is required"
+                editTextTextPassword5.error = getString(R.string.password_confirmation_is_required)
                 return false
             } else if (passwordVerify.length < 6) {
-                editTextTextPassword5.error = "Password must be at least 6 characters long"
+                editTextTextPassword5.error =getString(R.string.password_must_be_at_least_6_characters_long)
                 return false
             } else if (passwordVerify != password) {
-                editTextTextPassword5.error = "Passwords must match"
+                editTextTextPassword5.error = getString(R.string.passwords_must_match)
                 return false
             }
 
             // Check phone number
             val phone = etPhone.text.toString()
             if (phone.isEmpty() || phone.length < 11 || !phone.startsWith("01")) {
-                editTextPhone2.error = "Phone number must start with 01 and be 11 digits long"
+                editTextPhone2.error =
+                    getString(R.string.phone_number_must_start_with_01_and_be_11_digits_long)
                 return false
             }
 

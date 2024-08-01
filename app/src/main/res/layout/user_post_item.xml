@@ -61,17 +61,18 @@
                     app:postImageUrl="@{post.imageUrls[0]}"
                     tools:ignore="ImageContrastCheck" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="@string/delete_post"
                     android:minHeight="48dp"
                     android:onClick="@{() -> postListener.onDeleteClick(post)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_delete_24"
+                    app:srcCompat="@drawable/delete_forever"
                     tools:ignore="SpeakableTextPresentCheck" />
 
             </com.google.android.material.card.MaterialCardView>

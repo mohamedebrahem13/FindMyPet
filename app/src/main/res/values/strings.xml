@@ -156,5 +156,23 @@
     <string name="please_enter_a_valid_password">Please enter a valid password</string>
     <string name="please_enter_a_valid_email">Please enter a valid email</string>
     <string name="signing_success">Signing Success</string>
+    <string name="delete_post">"delete post "</string>
+    <string name="network_unavailable_please_check_your_internet_connection">Network unavailable. Please check your internet connection.</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="postsbyidfragment">PostsByIdFragment</string>
+    <string name="allpostsfragment">AllPostsFragment</string>
+    <string name="favoritefragment">FavoriteFragment</string>
+    <string name="user_data_not_available_check_your_internet_connection">User data not available. Check your internet connection.</string>
+    <string name="signout_success">signOut Success</string>
+    <string name="user_is_signed_in">user is signed in</string>
+    <string name="please_enter_a_valid_name">Please enter a valid name</string>
+    <string name="password_must_be_at_least_6_characters_long">Password must be at least 6 characters long</string>
+    <string name="password_confirmation_is_required">Password confirmation is required</string>
+    <string name="passwords_must_match">Passwords must match</string>
+    <string name="phone_number_must_start_with_01_and_be_11_digits_long">Phone number must start with 01 and be 11 digits long</string>
+    <string name="signup_success">SignUP Success</string>
+    <string name="please_enter_a_message">Please enter a message</string>
+    <string name="girl">Girl</string>
+    <string name="boy">Boy</string>
 
 </resources>

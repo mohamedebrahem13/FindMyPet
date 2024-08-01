@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmypet.R
 import com.example.findmypet.adapter.MessageAdapter
 import com.example.findmypet.common.MessageResource
 import com.example.findmypet.data.model.Message
@@ -77,7 +78,8 @@ class ChatFragment : Fragment() {
             viewModel.sendMessageAndInitiate(user.id.toString(), messageText)
         } else {
             // Show a toast message when EditText is empty
-            Toast.makeText(requireContext(), "Please enter a message", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.please_enter_a_message), Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -47,7 +47,7 @@ class PostsByIdFragment : Fragment() {
             clickListener = { post ->
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                        post, "PostsByIdFragment"
+                        post, getString(R.string.postsbyidfragment)
                     )
                 )
             },
@@ -176,8 +176,8 @@ class PostsByIdFragment : Fragment() {
     private fun handleResourceError(resource: Resource.Error) {
         binding.prograss.visibility = View.GONE
         val errorMessage = when (val error = resource.throwable) {
-            is UnknownHostException -> "Network unavailable. Please check your internet connection."
-            else -> error.message ?: "Unknown error"
+            is UnknownHostException -> getString(R.string.network_unavailable_please_check_your_internet_connection)
+            else -> error.message ?: getString(R.string.unknown_error)
         }
         // Show the custom toast using ToastUtils
         ToastUtils.showCustomToast(requireContext(), errorMessage, parentView,false)

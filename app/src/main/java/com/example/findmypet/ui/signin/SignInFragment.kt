@@ -71,8 +71,8 @@ private fun viewModelObserver() {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             viewModel.checkCurrentUser.collectLatest { isUserSignedIn ->
                 if (isUserSignedIn == true) {
-                    Log.v("currentUser", "user is signed in")
-                    ToastUtils.showCustomToast(requireContext(),"User is signed in",  parentView,true)
+                    Log.v("currentUser", getString(R.string.user_is_signed_in))
+                    ToastUtils.showCustomToast(requireContext(), getString(R.string.user_is_signed_in),  parentView,true)
 
                     Intent(requireActivity(), PetActivity::class.java).also { intent ->
                         intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)

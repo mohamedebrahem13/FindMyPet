@@ -48,7 +48,7 @@ class FavoritePostFragment : Fragment() {
             postClickListener = FavoritePostListAdapter.PostListener {
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                        it, "FavoriteFragment"
+                        it, getString(R.string.favoritefragment)
                     )
                 )
 
@@ -100,8 +100,8 @@ class FavoritePostFragment : Fragment() {
     private fun handleError(throwable: Throwable) {
         binding.prograss.visibility = View.GONE
         val errorMessage = when (throwable) {
-            is UnknownHostException -> "Network unavailable. Please check your internet connection."
-            else -> throwable.message ?: "Unknown error"
+            is UnknownHostException -> getString(R.string.network_unavailable_please_check_your_internet_connection)
+            else -> throwable.message ?: getString(R.string.unknown_error)
         }
         Log.e("fave_posts_error", "Error: $errorMessage")
         showToast(errorMessage,false)
