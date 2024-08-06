@@ -15,10 +15,6 @@ object Constant {
     const val USERID="user.id"
     const val POST_COUNT= "postCount"
 
-    //Image fields
-    const val URL = "url"
-    const val CREATED_AT = "createdAt"
-
     //File names
     const val PROFILE_IMAGE_NAME = ".jpg"
 

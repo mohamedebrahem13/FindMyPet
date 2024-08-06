@@ -221,7 +221,7 @@ class AddPetFragment : Fragment(), ImageAdapter.OnImageClickListener {
                     Post(
                         pet_name = binding.etName.text.toString(),
                         pet_description = binding.etDescription.text.toString(),
-                        pet_age = binding.etAge.toString(),
+                        pet_age = binding.etAge.text.toString(),
                         pet_gender = selectedGender.toString(),
                         null,
                         selectedCity.toString(),

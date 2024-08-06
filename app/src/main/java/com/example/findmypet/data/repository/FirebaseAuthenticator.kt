@@ -27,14 +27,6 @@ class FirebaseAuthenticator @Inject constructor(
 
 
     override suspend fun signUpWithEmailAndPassword(user: User, password: String) {
-
-
-        val phoneExists = checkPhoneNumberExists(user.phone)
-
-        if (phoneExists) {
-            // Handle scenario where phone number already exists
-            throw throw Exception("Phone number already exists")
-        }
         firebaseAuth.createUserWithEmailAndPassword(user.email.trim(), password.trim()).await()
         val userModel = hashMapOf(
             ID to getFirebaseUserUid(),
@@ -49,11 +41,6 @@ class FirebaseAuthenticator @Inject constructor(
             .set(userModel).await()
     }
 
-    private suspend fun checkPhoneNumberExists(phoneNumber: String): Boolean {
-        val usersRef = firebaseFirestore.collection(COLLECTION_PATH)
-        val snapshot = usersRef.whereEqualTo(PHONE_NUMBER, phoneNumber).get().await()
-        return !snapshot.isEmpty
-    }
 
     override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
@@ -122,6 +109,25 @@ class FirebaseAuthenticator @Inject constructor(
         }
     }
 
+    // New method to delete user account
+    override suspend fun deleteUserAccount() {
+        val userId = getFirebaseUserUid()
 
+        if (userId.isNotEmpty()) {
+            try {
+                // Delete user document from FireStore
+                firebaseFirestore.collection(COLLECTION_PATH).document(userId).delete().await()
+
+                // Delete user from Firebase Authentication
+                firebaseAuth.currentUser?.delete()?.await()
+
+                Log.v("deleteUserAccount", "User account deleted successfully")
+            } catch (e: Exception) {
+                Log.e("deleteUserAccount", "Error deleting user account: ${e.message}", e)
+            }
+        } else {
+            Log.e("deleteUserAccount", "User ID is not available, cannot delete account")
+        }
+    }
 
 }

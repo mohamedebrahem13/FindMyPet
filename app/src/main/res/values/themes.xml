@@ -268,4 +268,10 @@
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">16dp</item>
     </style>
+
+    <style name="find.PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAppearance">@style/Font.Bold</item>
+        <item name="android:itemBackground">@color/md_theme_light_primary</item>
+    </style>
 </resources>

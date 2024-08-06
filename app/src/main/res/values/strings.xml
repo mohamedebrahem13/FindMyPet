@@ -174,5 +174,9 @@
     <string name="please_enter_a_message">Please enter a message</string>
     <string name="girl">Girl</string>
     <string name="boy">Boy</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="are_you_sure_you_want_to_delete_your_account">are you sure you want to delete your account</string>
+    <string name="account_deleted_successfully">account_deleted_successfully</string>
+    <string name="error_deleting_account">error_deleting_account</string>
 
 </resources>

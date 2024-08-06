@@ -6,6 +6,7 @@ import com.example.findmypet.common.Constant
 import com.example.findmypet.common.Constant.COLLECTION_PATH
 import com.example.findmypet.common.Constant.POSTS
 import com.example.findmypet.common.Constant.POST_COUNT
+import com.example.findmypet.common.Constant.USERID
 import com.example.findmypet.common.Resource
 import com.example.findmypet.data.model.Post
 import com.example.findmypet.data.model.User
@@ -39,15 +40,16 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
         if (userId.isNotEmpty()) {
             try {
                 val postsCollection = db.collection(POSTS)
-                val userPostsQuery = postsCollection.whereEqualTo(Constant.USERID, userId).get().await()
+                val userPostsQuery =
+                    postsCollection.whereEqualTo(Constant.USERID, userId).get().await()
 
                 val userPosts = userPostsQuery.toObjects(Post::class.java)
                 Log.v("userposts", userPosts.toString())
 
-                if(userPosts.isEmpty()){
+                if (userPosts.isEmpty()) {
                     emit(Resource.Error(Throwable("userPosts is empty")))
 
-                }else{
+                } else {
                     emit(Resource.Success(userPosts)) // Emit successful result
 
                 }
@@ -85,30 +87,31 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
     override suspend fun getFirebaseUserUid(): String = firebaseAuth.currentUser?.uid.orEmpty()
 
-    override fun refreshPosts(lastVisible: DocumentSnapshot?): Flow<Pair<Resource<List<Post>>, DocumentSnapshot?>> = flow {
-        emit(Resource.Loading to null)
-        try {
-            var postsQuery = db.collection(POSTS)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(Constant.PAGE_SIZE.toLong())
+    override fun refreshPosts(lastVisible: DocumentSnapshot?): Flow<Pair<Resource<List<Post>>, DocumentSnapshot?>> =
+        flow {
+            emit(Resource.Loading to null)
+            try {
+                var postsQuery = db.collection(POSTS)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .limit(Constant.PAGE_SIZE.toLong())
 
-            if (lastVisible != null) {
-                postsQuery = postsQuery.startAfter(lastVisible)
+                if (lastVisible != null) {
+                    postsQuery = postsQuery.startAfter(lastVisible)
+                }
+
+                val postsSnapshot = postsQuery.get().await()
+                val posts = postsSnapshot.toObjects(Post::class.java)
+                if (posts.isEmpty()) {
+                    emit(Resource.Error(Throwable("NO MORE POSTS")) to null) // No lastVisible for empty page
+                } else {
+                    if (postsSnapshot.size() > 0) { // Check for last page condition
+                        emit(Resource.Success(posts) to postsSnapshot.documents.lastOrNull()) // Return lastVisible
+                    }
+                }
+            } catch (e: Throwable) {
+                emit(Resource.Error(e) to null) // No lastVisible on error
             }
-
-            val postsSnapshot = postsQuery.get().await()
-            val posts = postsSnapshot.toObjects(Post::class.java)
-           if (posts.isEmpty()){
-             emit(Resource.Error(Throwable("NO MORE POSTS")) to null) // No lastVisible for empty page
-          }else{
-           if (postsSnapshot.size() > 0) { // Check for last page condition
-           emit(Resource.Success(posts) to postsSnapshot.documents.lastOrNull()) // Return lastVisible
-          }
         }
-        } catch (e: Throwable) {
-            emit(Resource.Error(e) to null) // No lastVisible on error
-        }
-    }
 
     override fun getFavoritePosts(): Flow<Resource<List<Post>>> = flow {
         val userId = getFirebaseUserUid()
@@ -209,7 +212,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
     override suspend fun addPostToFavorite(postIdToAdd: String): Resource<Unit> {
         val userId = getFirebaseUserUid()
-        return if(userId.isNotEmpty()) {
+        return if (userId.isNotEmpty()) {
             try {
                 val userRef = db.collection("users").document(userId)
 
@@ -229,7 +232,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
 
     override suspend fun removePostFromFavorite(postIdToRemove: String): Resource<Unit> {
         val userId = getFirebaseUserUid()
-        return if(userId.isNotEmpty()) {
+        return if (userId.isNotEmpty()) {
             try {
                 val userRef = db.collection("users").document(userId)
 
@@ -257,14 +260,20 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
                 emit(Resource.Loading)
                 val postsCollection = db.collection(POSTS)
                 val userPostsQuery = postsCollection
-                    .whereGreaterThanOrEqualTo("pet_location", location) // Search by pet_name field (greater than or equal to petName)
-                    .whereLessThanOrEqualTo("pet_location", location + "\uf8ff") // Search by pet_name field (less than or equal to petName followed by a Unicode character greater than any other character)
+                    .whereGreaterThanOrEqualTo(
+                        "pet_location",
+                        location
+                    ) // Search by pet_name field (greater than or equal to petName)
+                    .whereLessThanOrEqualTo(
+                        "pet_location",
+                        location + "\uf8ff"
+                    ) // Search by pet_name field (less than or equal to petName followed by a Unicode character greater than any other character)
                 val userPostsQuerySnapshot = userPostsQuery.get().await()
                 val userPosts = userPostsQuerySnapshot.toObjects(Post::class.java)
                 Log.v("userposts1", userPosts.toString())
-                if(userPosts.isEmpty()){
+                if (userPosts.isEmpty()) {
                     emit(Resource.Success(userPosts))
-                }else{
+                } else {
                     emit(Resource.Success(userPosts))
                 }
 
@@ -299,5 +308,34 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
         return null // Handle the case where userId is empty or other errors occur
     }
 
+    override suspend fun deleteUserPosts() {
+        val userId = getFirebaseUserUid()
+        try {
+            val postsRef = db.collection(POSTS)
+            val querySnapshot = postsRef.whereEqualTo(USERID, userId).get().await()
 
+            if (querySnapshot.isEmpty) {
+                // No posts found for the user, consider it a success
+                return
+            }
+
+            db.runTransaction { transaction ->
+                for (document in querySnapshot.documents) {
+                    val postRef = postsRef.document(document.id)
+                    val post = document.toObject(Post::class.java)
+
+                    transaction.delete(postRef)
+                    post?.imageUrls?.forEach { imageUrl ->
+                        val imageRef = storage.getReferenceFromUrl(imageUrl)
+                        imageRef.delete()
+                    }
+                }
+            }.await()
+
+        } catch (e: Exception) {
+            // Log the exception for debugging
+            Log.e("FirebasePostDataSource", "Error deleting posts: $e")
+            // Handle exception (e.g., report failure)
+        }
+    }
 }
