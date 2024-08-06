@@ -41,7 +41,7 @@ class PostRepositoryImpl @Inject constructor(private val storage: FirebaseStorag
             try {
                 val postsCollection = db.collection(POSTS)
                 val userPostsQuery =
-                    postsCollection.whereEqualTo(Constant.USERID, userId).get().await()
+                    postsCollection.whereEqualTo(USERID, userId).get().await()
 
                 val userPosts = userPostsQuery.toObjects(Post::class.java)
                 Log.v("userposts", userPosts.toString())
