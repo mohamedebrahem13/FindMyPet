@@ -35,3 +35,6 @@ Find My Pet is an Android application designed to help pet owners locate lost pe
 ![Screenshot 1](Screenshot/Screen7.png)
 ![Screenshot 1](Screenshot/Screen8.png)
 ![Screenshot 1](Screenshot/Screen9.png)
+![Screenshot 1](Screenshot/Screen10.png)
+![Screenshot 1](Screenshot/Screen11.png)
+![Screenshot 1](Screenshot/Screen12.png)
