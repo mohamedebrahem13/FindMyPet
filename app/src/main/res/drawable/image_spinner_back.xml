@@ -4,5 +4,5 @@
         android:width="1dp"
     android:color="@color/md_theme_dark_inversePrimary"/>
     <!-- Rounded corners -->
-    <corners android:radius="16dp"/>
+    <corners android:radius="25dp"/>
 </shape>
