@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/radio_un_checked"
+        android:gravity="center|end"
+        android:left="16dp"
+        android:right="16dp" />
+</layer-list>

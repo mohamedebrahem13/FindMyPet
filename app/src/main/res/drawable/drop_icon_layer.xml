@@ -3,4 +3,5 @@
     <item android:drawable="@drawable/arrow_drop_down"
         android:gravity="end|center_vertical"
         android:left="8dp" android:right="8dp"/>
+    <item android:drawable="@drawable/image_spinner_back"/>
 </layer-list>
