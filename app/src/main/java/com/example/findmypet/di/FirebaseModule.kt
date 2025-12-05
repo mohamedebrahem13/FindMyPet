@@ -1,11 +1,11 @@
 package com.example.findmypet.di
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.ktx.messaging
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.messaging.messaging
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +31,4 @@ object FirebaseModule {
     @Singleton
     fun provideFirebaseMessaging(): FirebaseMessaging =
         Firebase.messaging
-
-
 }

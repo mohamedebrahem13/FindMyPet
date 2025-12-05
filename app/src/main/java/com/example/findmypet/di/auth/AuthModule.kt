@@ -4,13 +4,13 @@ import com.example.findmypet.data.repository.EditProfileRepositoryImpl
 import com.example.findmypet.data.repository.FirebaseAuthenticator
 import com.example.findmypet.domain.repository.Authenticator
 import com.example.findmypet.domain.repository.EditProfileRepository
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

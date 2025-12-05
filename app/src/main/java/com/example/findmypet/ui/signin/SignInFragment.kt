@@ -37,7 +37,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding= FragmentSignInBinding.inflate(inflater)
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
@@ -112,7 +111,6 @@ private fun viewModelObserver() {
                 binding.prograss.visibility = View.GONE
                 ToastUtils.showCustomToast(requireContext(),"Signing error: ${it.throwable.message.toString()}",  parentView,false)
 
-                // Handle the error message received from the ViewModel if needed
             }
             Resource.Loading -> binding.prograss.visibility = View.VISIBLE
 
@@ -132,26 +130,22 @@ private fun viewModelObserver() {
 
 
     private fun checking(): Boolean {
-        // Check for email and password. If null or invalid, show a toast and return false.
         with(binding) {
-            // Convert Editable to String
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
 
-            // Check if email is empty or invalid
             if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                editTextTextEmailAddress.error = getString(R.string.please_enter_a_valid_email) // Use the TextInputLayout to set the error
+                editTextTextEmailAddress.error = getString(R.string.please_enter_a_valid_email)
                 return false
             } else {
-                editTextTextEmailAddress.error = null // Clear the error if the email is valid
+                editTextTextEmailAddress.error = null
             }
 
-            // Check if password is empty or too short
             if (password.isEmpty() || password.length < 6) {
-                editTextTextPassword.error = getString(R.string.please_enter_a_valid_password) // Use the TextInputLayout to set the error
+                editTextTextPassword.error = getString(R.string.please_enter_a_valid_password)
                 return false
             } else {
-                editTextTextPassword.error = null // Clear the error if the password is valid
+                editTextTextPassword.error = null
             }
 
             return true
