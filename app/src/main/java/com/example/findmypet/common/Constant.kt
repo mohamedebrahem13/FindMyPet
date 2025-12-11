@@ -35,7 +35,4 @@ object Constant {
     const val ADDITIONAL_TEXT = "There is a new post added: "
     const val PAGE_SIZE=6
 
-
-
-
 }

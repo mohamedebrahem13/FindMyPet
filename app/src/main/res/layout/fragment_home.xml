@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="user"
             type="com.example.findmypet.data.model.User" />
@@ -14,9 +15,7 @@
         android:layout_height="match_parent"
         android:paddingTop="16dp"
         tools:context=".ui.home.HomeFragment">
-        <!-- Profile Image -->
 
-        <!-- Profile Image -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="50dp"
@@ -57,8 +56,8 @@
 
         <ImageView
             android:id="@+id/messagesImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/baseline_chat_25"
             app:layout_constraintBottom_toBottomOf="@+id/userName"
@@ -77,9 +76,6 @@
             app:tabMode="fixed"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <!-- Include the ViewPager to display tab content -->
-
-        <!-- Include your FloatingActionButton for adding new posts -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -96,9 +92,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="52dp"
-            android:focusable="true"
-            android:clickable="true"
             android:backgroundTint="@color/md_theme_light_primary"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

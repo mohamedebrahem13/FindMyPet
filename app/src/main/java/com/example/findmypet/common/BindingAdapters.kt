@@ -13,12 +13,12 @@ import java.util.Locale
 @BindingAdapter("imageUrl")
 fun loadImage(imageView: ImageView, url: String?) {
     if (url.isNullOrEmpty()) {
-        imageView.setImageResource(R.drawable.ic_baseline_account_circle_24) // Set the placeholder image
+        imageView.setImageResource(R.drawable.ic_profile_place_holder)
     } else {
         Glide.with(imageView.context)
             .load(url).dontAnimate()
-            .placeholder(R.drawable.ic_launcher_background) // Optional: Use a placeholder image
-            .error(R.drawable.ic_baseline_error_24) // Optional: Set an error image
+            .placeholder(R.drawable.ic_profile_place_holder)
+            .error(R.drawable.ic_baseline_error_24)
             .into(imageView)
     }
 }
@@ -42,12 +42,12 @@ fun setFormattedName(textView: TextView, nickname: String?) {
 @BindingAdapter("postImageUrl")
 fun postImage(imageView: ImageView, url: String?) {
     if (url.isNullOrEmpty()) {
-        imageView.setImageResource(R.drawable.ic_baseline_error_24) // Set the placeholder image
+        imageView.setImageResource(R.drawable.ic_baseline_error_24)
     } else {
         Glide.with(imageView.context)
             .load(url).dontAnimate()
-            .placeholder(R.drawable.ic_launcher_background) // Optional: Use a placeholder image
-            .error(R.drawable.ic_baseline_error_24) // Optional: Set an error image
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_baseline_error_24)
             .into(imageView)
     }
 }
@@ -64,8 +64,8 @@ object DateConverter {
     @JvmStatic
     @BindingAdapter("formattedDate")
     fun bindDate(textView: TextView, date: Date?) {
-        date ?: return // Null check
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH) // Use Locale.ENGLISH for consistent formatting
+        date ?: return
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)
         val formattedDate = dateFormat.format(date)
         textView.text = formattedDate
     }

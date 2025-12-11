@@ -13,8 +13,7 @@ localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace 'com.example.findmypet'
-    compileSdk 36
-
+    compileSdk = 36
     defaultConfig {
         applicationId "com.example.findmypet"
         minSdk 29
@@ -47,8 +46,8 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
 }
 
@@ -61,7 +60,7 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:34.6.0")
     implementation "com.google.firebase:firebase-auth-ktx:23.2.1"
     implementation "com.google.firebase:firebase-firestore-ktx:25.1.4"
-    implementation "com.google.firebase:firebase-storage-ktx:20.3.0" // correct latest version
+    implementation "com.google.firebase:firebase-storage-ktx:21.0.2"
     implementation "com.google.firebase:firebase-messaging:25.0.1"
 
     // Google Play
